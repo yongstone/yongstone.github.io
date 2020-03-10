@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="跟很多同学一样，想搭建自己的Blog，一开始尝试了阿里云的虚拟主机加WordPress，部署好了之后发现WordPress中的Markdown只能以插件的方式存在，个人觉得不太好用，而且代码高亮也有很多问题，然后阿里云的虚拟机主机莫名奇妙的出现了一次无法访问，开工单咨询说是可能是遭到了攻击，让我购买阿里云的防护功能组件，我听了呵呵一笑。后来就在网上看还有没有其他方式可以搭建自己相对稳定的Blog，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Github+Hexo+Nodejs+Qiniu 搭建个人博客">
+<meta property="og:url" content="http://falkon.cn/2020/03/10/ck7lwe6qq000djsr4gsqy1clw/index.html">
+<meta property="og:site_name" content="Falkon">
+<meta property="og:description" content="跟很多同学一样，想搭建自己的Blog，一开始尝试了阿里云的虚拟主机加WordPress，部署好了之后发现WordPress中的Markdown只能以插件的方式存在，个人觉得不太好用，而且代码高亮也有很多问题，然后阿里云的虚拟机主机莫名奇妙的出现了一次无法访问，开工单咨询说是可能是遭到了攻击，让我购买阿里云的防护功能组件，我听了呵呵一笑。后来就在网上看还有没有其他方式可以搭建自己相对稳定的Blog，">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://q6p62toq8.bkt.clouddn.com/images/sign-up.png">
+<meta property="og:image" content="http://q6p62toq8.bkt.clouddn.com/images/repo-name.png">
+<meta property="og:image" content="http://q6p62toq8.bkt.clouddn.com/images/ch-theme.png">
+<meta property="og:image" content="http://q6p62toq8.bkt.clouddn.com/images/slate.png">
+<meta property="og:image" content="http://q6p62toq8.bkt.clouddn.com/images/commit-ch.png">
+<meta property="og:image" content="http://q6p62toq8.bkt.clouddn.com/images/welcome.png">
+<meta property="og:image" content="http://q6p62toq8.bkt.clouddn.com/images/ssh-key-add.png">
+<meta property="og:image" content="http://q6p62toq8.bkt.clouddn.com/images/gd-domains.png">
+<meta property="og:image" content="http://q6p62toq8.bkt.clouddn.com/images/gd-mg-dns.png">
+<meta property="og:image" content="http://q6p62toq8.bkt.clouddn.com/images/gd-add-records.png">
+<meta property="og:image" content="http://q6p62toq8.bkt.clouddn.com/images/https.png">
+<meta property="og:image" content="http://q6p62toq8.bkt.clouddn.com/images/nodejs-lts.png">
+<meta property="og:image" content="http://q6p62toq8.bkt.clouddn.com/images/nodejs-down.png">
+<meta property="og:image" content="http://q6p62toq8.bkt.clouddn.com/images/landscape.png">
+<meta property="og:image" content="http://q6p62toq8.bkt.clouddn.com/images/qiniu-i-panel.png">
+<meta property="article:published_time" content="2020-03-10T06:09:24.093Z">
+<meta property="article:modified_time" content="2020-03-10T06:11:55.661Z">
+<meta property="article:author" content="Falkon">
+<meta property="article:tag" content="Hexo">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://q6p62toq8.bkt.clouddn.com/images/sign-up.png">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.png">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.png">
+          
+        
+    
+    <!-- title -->
+    <title>Github+Hexo+Nodejs+Qiniu 搭建个人博客</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fa fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fa fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about">About</a></li>
+         
+          <li><a href="/archives">Archives</a></li>
+         
+          <li><a href="/review">Review</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2020/03/10/ck7lwe6qr000ejsr4emf6dpdl/"><i class="fa fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2020/03/10/ck7lwe6qt000ijsr43fc364bz/"><i class="fa fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fa fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://falkon.cn/2020/03/10/ck7lwe6qq000djsr4gsqy1clw/" target="_blank" rel="noopener"><i class="fa fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://falkon.cn/2020/03/10/ck7lwe6qq000djsr4gsqy1clw/&text=Github+Hexo+Nodejs+Qiniu 搭建个人博客" target="_blank" rel="noopener"><i class="fa fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://falkon.cn/2020/03/10/ck7lwe6qq000djsr4gsqy1clw/&title=Github+Hexo+Nodejs+Qiniu 搭建个人博客" target="_blank" rel="noopener"><i class="fa fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://falkon.cn/2020/03/10/ck7lwe6qq000djsr4gsqy1clw/&is_video=false&description=Github+Hexo+Nodejs+Qiniu 搭建个人博客" target="_blank" rel="noopener"><i class="fa fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Github+Hexo+Nodejs+Qiniu 搭建个人博客&body=Check out this article: http://falkon.cn/2020/03/10/ck7lwe6qq000djsr4gsqy1clw/"><i class="fa fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://falkon.cn/2020/03/10/ck7lwe6qq000djsr4gsqy1clw/&title=Github+Hexo+Nodejs+Qiniu 搭建个人博客" target="_blank" rel="noopener"><i class="fa fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://falkon.cn/2020/03/10/ck7lwe6qq000djsr4gsqy1clw/&title=Github+Hexo+Nodejs+Qiniu 搭建个人博客" target="_blank" rel="noopener"><i class="fa fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://falkon.cn/2020/03/10/ck7lwe6qq000djsr4gsqy1clw/&title=Github+Hexo+Nodejs+Qiniu 搭建个人博客" target="_blank" rel="noopener"><i class="fa fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://falkon.cn/2020/03/10/ck7lwe6qq000djsr4gsqy1clw/&title=Github+Hexo+Nodejs+Qiniu 搭建个人博客" target="_blank" rel="noopener"><i class="fa fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://falkon.cn/2020/03/10/ck7lwe6qq000djsr4gsqy1clw/&name=Github+Hexo+Nodejs+Qiniu 搭建个人博客&description=" target="_blank" rel="noopener"><i class="fa fa-tumblr " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-资源描述"><span class="toc-number">1.</span> <span class="toc-text">1. 资源描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-创建Github-Pages"><span class="toc-number">2.</span> <span class="toc-text">2. 创建Github Pages</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-Github配置"><span class="toc-number">3.</span> <span class="toc-text">3. Github配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-域名配置"><span class="toc-number">4.</span> <span class="toc-text">4. 域名配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-安装Node-js"><span class="toc-number">5.</span> <span class="toc-text">5. 安装Node.js</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-安装Hexo"><span class="toc-number">6.</span> <span class="toc-text">6. 安装Hexo</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-Hexo常用命令"><span class="toc-number">7.</span> <span class="toc-text">7. Hexo常用命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-七牛图床"><span class="toc-number">8.</span> <span class="toc-text">8. 七牛图床</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-配置主题"><span class="toc-number">9.</span> <span class="toc-text">9. 配置主题</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index width mx-auto px2 my4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        Github+Hexo+Nodejs+Qiniu 搭建个人博客
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Falkon</span>
+      </span>
+      
+    <div class="postdate">
+        <time datetime="2020-03-10T06:09:24.093Z" itemprop="datePublished">2020-03-10</time>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/Hexo/" rel="tag">Hexo</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>跟很多同学一样，想搭建自己的Blog，一开始尝试了阿里云的虚拟主机加WordPress，部署好了之后发现WordPress中的Markdown只能以插件的方式存在，个人觉得不太好用，而且代码高亮也有很多问题，然后阿里云的虚拟机主机莫名奇妙的出现了一次无法访问，开工单咨询说是可能是遭到了攻击，让我购买阿里云的防护功能组件，我听了呵呵一笑。<br>后来就在网上看还有没有其他方式可以搭建自己相对稳定的Blog，看到了各种大神的关于Github Pages 搭建Blog的方法后决定尝试下，网上的最多的方法就是Github+Jeklly和Github+Hexo的方式，仔细浏览后发现很多帖子说Jeklly生成文章的方式较慢，最终决定选择Github+Hexo的方式来搭建自己的Blog。</p>
+<h3 id="1-资源描述"><a href="#1-资源描述" class="headerlink" title="1. 资源描述"></a>1. 资源描述</h3><ul>
+<li><a href="https://github.com/" target="_blank" rel="noopener">Github</a> 博客主平台，官方建议使用空间保持在1GB以内</li>
+<li><a href="https://www.godaddy.com/" target="_blank" rel="noopener">Godaddy</a> 注册自己的域名，可选国内服务商需要备案</li>
+<li><a href="https://nodejs.org/en/" target="_blank" rel="noopener">Node.js</a> 基于Chrome V8 JavaScript引擎的JavaScript框架</li>
+<li><a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> 基于Node.js的静态博客框架</li>
+<li><a href="https://github.com/iissnan/hexo-theme-next/releases" target="_blank" rel="noopener">NexT</a> Hexo的主题模板，可选其他，参考<a href="https://hexo.io/themes/" target="_blank" rel="noopener">Hexo官网主题</a></li>
+<li><a href="https://portal.qiniu.com/signup?code=3lf4mtmg7mjbm" target="_blank" rel="noopener">Qiniu</a> 免费10G图片云存储，作为博客图床</li>
+</ul>
+<h3 id="2-创建Github-Pages"><a href="#2-创建Github-Pages" class="headerlink" title="2. 创建Github Pages"></a>2. 创建Github Pages</h3><ul>
+<li>注册Github<br>打开Github官网链接,输入Username，Email，Password<img src="http://q6p62toq8.bkt.clouddn.com/images/sign-up.png"></li>
+<li>创建Github Pages<br>点击Start a project创建新的仓库，例如我注册用户名为cnethan，我的仓库名就是cnethan.github.io<img src="http://q6p62toq8.bkt.clouddn.com/images/repo-name.png"></li>
+<li>选择一个Github Pages的模板<br>点击Settings，找到Github Pages选择Change theme<img src="http://q6p62toq8.bkt.clouddn.com/images/ch-theme.png"></li>
+<li>选择Slate模板进行测试，个人习惯，可以选择其他的<img src="http://q6p62toq8.bkt.clouddn.com/images/slate.png"></li>
+<li>选择好模板后点击底部的Commit changes<img src="http://q6p62toq8.bkt.clouddn.com/images/commit-ch.png"></li>
+<li>新开一个网页输入cnethan.github.io看到Welcome to Github Pages,那么恭喜你一个简单基于Github的博客已经搭建成功了，不要着急，下面我们会继续改造它<img src="http://q6p62toq8.bkt.clouddn.com/images/welcome.png">
+
+</li>
+</ul>
+<h3 id="3-Github配置"><a href="#3-Github配置" class="headerlink" title="3. Github配置"></a>3. Github配置</h3><ul>
+<li>安装git，参考<a href="https://git-scm.com/book/zh/v2" target="_blank" rel="noopener">Pro Git</a><br>** 注意 **: 我的操作系统为Fedora 29，Windows系统需要在安装好git后，使用cmd或者右键菜单的Git bash来查看版本和创建，如果你使用查看版本的命令没有问题，就可以使用后续的创建命令，如果有问题请邮箱联系我</li>
+<li>安装完成后查看git版本<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@antz ~]<span class="comment"># git --version</span></span><br><span class="line">git version 2.20.1</span><br></pre></td></tr></table></figure></li>
+<li>配置全局用户名和邮箱<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@antz ~]<span class="comment"># git config --global user.name "yourname"</span></span><br><span class="line">[root@antz ~]<span class="comment"># git config --global user.email "youremail"</span></span><br></pre></td></tr></table></figure></li>
+<li>生成SSH key<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">[root@antz ~]<span class="comment"># ssh-keygen -t rsa -C "username@example.com"</span></span><br><span class="line">Generating public/private rsa key pair.</span><br><span class="line">Enter file <span class="keyword">in</span> <span class="built_in">which</span> to save the key (/root/.ssh/id_rsa): </span><br><span class="line">Enter passphrase (empty <span class="keyword">for</span> no passphrase): </span><br><span class="line">Enter same passphrase again: </span><br><span class="line">Your identification has been saved <span class="keyword">in</span> /root/.ssh/id_rsa.</span><br><span class="line">Your public key has been saved <span class="keyword">in</span> /root/.ssh/id_rsa.pub.</span><br><span class="line">The key fingerprint is:</span><br><span class="line">2c:27:d5:0a:f4:c4:2b:a9:b1:7b:ae:89:fd:d8:e9:73 username@example.com</span><br><span class="line">The key<span class="string">'s randomart image is:</span></span><br><span class="line"><span class="string">+--[ RSA 2048]----+</span></span><br><span class="line"><span class="string">|      ...        |</span></span><br><span class="line"><span class="string">|     . o..       |</span></span><br><span class="line"><span class="string">|      ..o..      |</span></span><br><span class="line"><span class="string">|    . o+..       |</span></span><br><span class="line"><span class="string">|     +o.S        |</span></span><br><span class="line"><span class="string">|    o  +         |</span></span><br><span class="line"><span class="string">|     .           |</span></span><br><span class="line"><span class="string">|   o.+o.E        |</span></span><br><span class="line"><span class="string">|  . =**o         |</span></span><br><span class="line"><span class="string">+-----------------+</span></span><br></pre></td></tr></table></figure></li>
+<li>查看SSH key<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@antz ~]<span class="comment"># cat .ssh/id_rsa.pub </span></span><br><span class="line">ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA0VrgUBhmUgNVxioPFe5+VDEbClKgvuXxqEBQkLTzDKDZ2O77Dye3mlgq94IxlvnwFMh3FtoyB2zLwJaVQ+U+s8Ol4RrtnTCc0XYDKx6C+/Ooq/Befmc4SkJr2OzUovrBaPw8B0gnxG4lhlFxQ18tfuMpHuNJkRBRFP93YfB5uaWfYSCYu3TVsB/XOB0OXj++Re7ynXyQBG0ECjvDtR3pQFqyeVPXQ3O9GYA6v3+5ka1ofDL5no8kj2pnAD6sxmRTgvDPE8PxfQmm7tte9GUYoU6Y/yTqd9VmCEpKufsX8mdkI325e2CINxDYxmqn4Ix8+E7zSKHKcutwxD/i393mvQ== username@example.com</span><br></pre></td></tr></table></figure></li>
+<li>将SSH key添加到Github<br>点击你Github头像的小三角，在下拉列表中找到Settings，选中SSH and GPG keys，点击New SSH key，将你查看到的SSH key 复制并粘贴<img src="http://q6p62toq8.bkt.clouddn.com/images/ssh-key-add.png"></li>
+<li>测试是否添加成功<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@antz .ssh]<span class="comment"># ssh -T git@github.com</span></span><br><span class="line">The authenticity of host <span class="string">'github.com (13.250.177.223)'</span> can<span class="string">'t be established.</span></span><br><span class="line"><span class="string">RSA key fingerprint is SHA256:nThbg6kXUpJWGl7E1IGOCspRomTxdCARLviKw6E5SY8.</span></span><br><span class="line"><span class="string">Are you sure you want to continue connecting (yes/no)? yes</span></span><br><span class="line"><span class="string">Warning: Permanently added '</span>github.com,13.250.177.223<span class="string">' (RSA) to the list of known hosts.</span></span><br><span class="line"><span class="string">Hi cnethan! You'</span>ve successfully authenticated, but GitHub does not provide shell access.</span><br></pre></td></tr></table></figure>
+<h3 id="4-域名配置"><a href="#4-域名配置" class="headerlink" title="4. 域名配置"></a>4. 域名配置</h3></li>
+<li>注册域名<br>打开<a href="https://sg.godaddy.com/zh/" target="_blank" rel="noopener">Godaddy</a>官网，注册并选择域名，支持支付宝支付</li>
+<li>查看购买的域名，点击Domains下的All Domains标签<img src="http://q6p62toq8.bkt.clouddn.com/images/gd-domains.png"></li>
+<li>配置解析<br>点击所购买的域名后拉到底部点击Manage DNS<img src="http://q6p62toq8.bkt.clouddn.com/images/gd-mg-dns.png"></li>
+<li>添加记录<br>添加指向Github Pages的A记录，IP地址如下：<br>185.199.108.153<br>185.199.109.153<br>185.199.110.153<br>185.199.111.153<img src="http://q6p62toq8.bkt.clouddn.com/images/gd-add-records.png"></li>
+<li>查看解析是否生效，约15分钟左右<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@antz ~]<span class="comment"># dig cnethan.github.io +noall +answer</span></span><br><span class="line"></span><br><span class="line">; &lt;&lt;&gt;&gt; DiG 9.11.4-P2-RedHat-9.11.4-13.P2.fc29 &lt;&lt;&gt;&gt; cnethan.github.io +noall +answer</span><br><span class="line">;; global options: +cmd</span><br><span class="line">cnethan.github.io.	3600	IN	A	185.199.108.153</span><br><span class="line">cnethan.github.io.	3600	IN	A	185.199.111.153</span><br><span class="line">cnethan.github.io.	3600	IN	A	185.199.110.153</span><br><span class="line">cnethan.github.io.	3600	IN	A	185.199.109.153</span><br></pre></td></tr></table></figure></li>
+<li>开启自定义域名https访问<br>自定义域名后默认的链接为http，为了安全起见我们开启Github Pages的https<img src="http://q6p62toq8.bkt.clouddn.com/images/https.png"></li>
+<li>Github添加CNAME，可开始自定义域名的https访问<br>在cnethan.github.io的仓库下新建一个名称为大写CNAME的文件，内容为你的域名，也可以是二级域名<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ethanme.com</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h3 id="5-安装Node-js"><a href="#5-安装Node-js" class="headerlink" title="5. 安装Node.js"></a>5. 安装Node.js</h3><ul>
+<li>Node.js官网<br>打开<a href="https://nodejs.org/en/" target="_blank" rel="noopener">Node.js</a>的官网，选择LTS版，点击下方的Other Downloads<img src="http://q6p62toq8.bkt.clouddn.com/images/nodejs-lts.png"></li>
+<li>Windows系统下载<br>根据自己的系统选择32-bit，或者64-bit的msi安装包,运行安装包一路Next<img src="http://q6p62toq8.bkt.clouddn.com/images/nodejs-down.png"></li>
+<li>打开cmd查看版本<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Microsoft Windows [版本 <span class="number">10</span>.<span class="number">0</span>.<span class="number">17134</span>.<span class="number">472</span>]</span><br><span class="line">(c) <span class="number">2018</span> Microsoft Corporation。保留所有权利。</span><br><span class="line"></span><br><span class="line"><span class="function">C:\<span class="title">WINDOWS</span>\<span class="title">system32</span>&gt;<span class="title">node</span> -<span class="title">v</span></span></span><br><span class="line"><span class="function"><span class="title">v10</span>.15.1</span></span><br></pre></td></tr></table></figure></li>
+<li>Linux 系统安装<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">[root@antz ~]<span class="comment"># dnf install nodejs</span></span><br><span class="line">Last metadata expiration check: 0:28:33 ago on Sun 17 Feb 2019 03:01:36 PM CST.</span><br><span class="line">Dependencies resolved.</span><br><span class="line">================================================================================</span><br><span class="line"> Package      Arch         Version                          Repository     Size</span><br><span class="line">================================================================================</span><br><span class="line">Installing:</span><br><span class="line"> nodejs       x86_64       1:10.15.0-1.fc29                 updates       6.3 M</span><br><span class="line">Installing dependencies:</span><br><span class="line"> libuv        x86_64       1:1.26.0-1.fc29                  updates       126 k</span><br><span class="line">Installing weak dependencies:</span><br><span class="line"> npm          x86_64       1:6.4.1-1.10.15.0.1.fc29         updates       3.6 M</span><br><span class="line"></span><br><span class="line">Transaction Summary</span><br><span class="line">================================================================================</span><br><span class="line">Install  3 Packages</span><br><span class="line"></span><br><span class="line">Total download size: 10 M</span><br><span class="line">Installed size: 45 M</span><br><span class="line">Is this ok [y/N]: y</span><br><span class="line">Downloading Packages:</span><br><span class="line">(1/3): libuv-1.26.0-1.fc29.x86_64.rpm            85 kB/s | 126 kB     00:01    </span><br><span class="line">(2/3): npm-6.4.1-1.10.15.0.1.fc29.x86_64.rpm    2.2 MB/s | 3.6 MB     00:01    </span><br><span class="line">(3/3): nodejs-10.15.0-1.fc29.x86_64.rpm         3.6 MB/s | 6.3 MB     00:01    </span><br><span class="line">--------------------------------------------------------------------------------</span><br><span class="line">Total                                           2.5 MB/s |  10 MB     00:03     </span><br><span class="line">Running transaction check</span><br><span class="line">Transaction check succeeded.</span><br><span class="line">Running transaction <span class="built_in">test</span></span><br><span class="line">Transaction <span class="built_in">test</span> succeeded.</span><br><span class="line">Running transaction</span><br><span class="line">  Running scriptlet: npm-1:6.4.1-1.10.15.0.1.fc29.x86_64                    1/1 </span><br><span class="line">  Preparing        :                                                        1/1 </span><br><span class="line">  Installing       : libuv-1:1.26.0-1.fc29.x86_64                           1/3 </span><br><span class="line">  Installing       : npm-1:6.4.1-1.10.15.0.1.fc29.x86_64                    2/3 </span><br><span class="line">  Installing       : nodejs-1:10.15.0-1.fc29.x86_64                         3/3 </span><br><span class="line">  Running scriptlet: nodejs-1:10.15.0-1.fc29.x86_64                         3/3 </span><br><span class="line">  Verifying        : libuv-1:1.26.0-1.fc29.x86_64                           1/3 </span><br><span class="line">  Verifying        : nodejs-1:10.15.0-1.fc29.x86_64                         2/3 </span><br><span class="line">  Verifying        : npm-1:6.4.1-1.10.15.0.1.fc29.x86_64                    3/3 </span><br><span class="line"></span><br><span class="line">Installed:</span><br><span class="line">  nodejs-1:10.15.0-1.fc29.x86_64       npm-1:6.4.1-1.10.15.0.1.fc29.x86_64      </span><br><span class="line">  libuv-1:1.26.0-1.fc29.x86_64        </span><br><span class="line"></span><br><span class="line">Complete!</span><br></pre></td></tr></table></figure></li>
+<li>版本查看<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@antz ~]<span class="comment"># node -v</span></span><br><span class="line">v10.15.0</span><br></pre></td></tr></table></figure>
+<h3 id="6-安装Hexo"><a href="#6-安装Hexo" class="headerlink" title="6. 安装Hexo"></a>6. 安装Hexo</h3></li>
+<li>npm 安装Hexo，可参考<a href="https://hexo.io/docs/" target="_blank" rel="noopener">官方文档</a><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@antz ~]<span class="comment"># npm i -g hexo</span></span><br><span class="line">npm WARN deprecated titlecase@1.1.2: no longer maintained</span><br><span class="line">/usr/bin/hexo -&gt; /usr/lib/node_modules/hexo/bin/hexo</span><br><span class="line">npm WARN optional SKIPPING OPTIONAL DEPENDENCY: fsevents@1.2.7 (node_modules/hexo/node_modules/fsevents):</span><br><span class="line">npm WARN notsup SKIPPING OPTIONAL DEPENDENCY: Unsupported platform <span class="keyword">for</span> fsevents@1.2.7: wanted &#123;<span class="string">"os"</span>:<span class="string">"darwin"</span>,<span class="string">"arch"</span>:<span class="string">"any"</span>&#125; (current: &#123;<span class="string">"os"</span>:<span class="string">"linux"</span>,<span class="string">"arch"</span>:<span class="string">"x64"</span>&#125;)</span><br><span class="line"></span><br><span class="line">+ hexo@3.8.0</span><br><span class="line">added 360 packages from 474 contributors <span class="keyword">in</span> 50.916s</span><br></pre></td></tr></table></figure></li>
+<li>初始化Hexo<br>建立自己Blog的目录，比如我的目录/home/ethan/hexoblog，其中hexoblog为建立的目录，然后cd到hexoblog目录，Windows下在cmd中使用dir命令进入到自己创建的目录，然后执行初始化命令<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">[root@antz hexoblog]<span class="comment"># hexo init</span></span><br><span class="line">INFO  Cloning hexo-starter to /home/devin/hexoblog</span><br><span class="line">Cloning into <span class="string">'/home/devin/hexoblog'</span>...</span><br><span class="line">remote: Enumerating objects: 68, <span class="keyword">done</span>.</span><br><span class="line">remote: Total 68 (delta 0), reused 0 (delta 0), pack-reused 68</span><br><span class="line">Unpacking objects: 100% (68/68), <span class="keyword">done</span>.</span><br><span class="line">Submodule <span class="string">'themes/landscape'</span> (https://github.com/hexojs/hexo-theme-landscape.git) registered <span class="keyword">for</span> path <span class="string">'themes/landscape'</span></span><br><span class="line">Cloning into <span class="string">'/home/devin/hexoblog/themes/landscape'</span>...</span><br><span class="line">remote: Enumerating objects: 1, <span class="keyword">done</span>.        </span><br><span class="line">remote: Counting objects: 100% (1/1), <span class="keyword">done</span>.        </span><br><span class="line">remote: Total 867 (delta 0), reused 0 (delta 0), pack-reused 866        </span><br><span class="line">Receiving objects: 100% (867/867), 2.55 MiB | 25.00 KiB/s, <span class="keyword">done</span>.</span><br><span class="line">Resolving deltas: 100% (459/459), <span class="keyword">done</span>.</span><br><span class="line">Submodule path <span class="string">'themes/landscape'</span>: checked out <span class="string">'73a23c51f8487cfcd7c6deec96ccc7543960d350'</span></span><br><span class="line">INFO  Install dependencies</span><br><span class="line">npm WARN deprecated titlecase@1.1.2: no longer maintained</span><br><span class="line">npm notice created a lockfile as package-lock.json. You should commit this file.</span><br><span class="line">npm WARN optional SKIPPING OPTIONAL DEPENDENCY: fsevents@1.2.7 (node_modules/fsevents):</span><br><span class="line">npm WARN notsup SKIPPING OPTIONAL DEPENDENCY: Unsupported platform <span class="keyword">for</span> fsevents@1.2.7: wanted &#123;<span class="string">"os"</span>:<span class="string">"darwin"</span>,<span class="string">"arch"</span>:<span class="string">"any"</span>&#125; (current: &#123;<span class="string">"os"</span>:<span class="string">"linux"</span>,<span class="string">"arch"</span>:<span class="string">"x64"</span>&#125;)</span><br><span class="line"></span><br><span class="line">added 421 packages from 503 contributors and audited 4697 packages <span class="keyword">in</span> 16.161s</span><br><span class="line">found 2 low severity vulnerabilities</span><br><span class="line">  run `npm audit fix` to fix them, or `npm audit` <span class="keyword">for</span> details</span><br><span class="line">INFO  Start blogging with Hexo!</span><br></pre></td></tr></table></figure></li>
+<li>查看目录结构<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@antz hexoblog]<span class="comment"># ll</span></span><br><span class="line">total 168</span><br><span class="line">-rw-r--r--   1 root root   1765 Feb 17 15:37 _config.yml</span><br><span class="line">drwxr-xr-x 284 root root  12288 Feb 17 15:39 node_modules</span><br><span class="line">-rw-r--r--   1 root root    443 Feb 17 15:37 package.json</span><br><span class="line">-rw-r--r--   1 root root 137127 Feb 17 15:39 package-lock.json</span><br><span class="line">drwxr-xr-x   2 root root   4096 Feb 17 15:37 scaffolds</span><br><span class="line">drwxr-xr-x   3 root root   4096 Feb 17 15:37 <span class="built_in">source</span></span><br><span class="line">drwxr-xr-x   3 root root   4096 Feb 17 15:37 themes</span><br></pre></td></tr></table></figure></li>
+<li>配置站点信息，参考<a href="https://hexo.io/docs/configuration" target="_blank" rel="noopener">官方文档</a><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">[root@antz</span> <span class="string">hexoblog]#</span> <span class="string">vi</span> <span class="string">_config.yml</span></span><br><span class="line"><span class="attr">title:</span> <span class="string">Ethan's</span> <span class="string">Blog</span></span><br><span class="line"><span class="attr">subtitle:</span></span><br><span class="line"><span class="attr">description:</span> <span class="string">数据不备份，丢失泪两行</span></span><br><span class="line"><span class="attr">keywords:</span></span><br><span class="line"><span class="attr">author:</span> <span class="string">Ethan</span> <span class="string">Fang</span></span><br><span class="line"><span class="attr">language:</span> <span class="string">zh-Hans</span></span><br><span class="line"><span class="attr">timezone:</span></span><br></pre></td></tr></table></figure></li>
+<li>配置deploy<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">[root@antz</span> <span class="string">hexoblog]#</span> <span class="string">vi</span> <span class="string">_config.yml</span></span><br><span class="line"><span class="attr">deploy:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">git</span></span><br><span class="line">  <span class="attr">repo:</span> <span class="string">https://github.com/cnethan/cnethan.github.io.git</span></span><br><span class="line">  <span class="attr">branch:</span> <span class="string">master</span></span><br></pre></td></tr></table></figure></li>
+<li>ERROR Deployer not found: git<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 如果在deploy的时候出现上述错误，清执行下列命令</span></span><br><span class="line">[root@antz ~]<span class="comment"># npm install hexo-deployer-git --save</span></span><br></pre></td></tr></table></figure></li>
+<li>恭喜！！！<br>在使用<code>hexo deploy</code>命令后，一个基于Hexo的Blog终于初步完成了，可以访问自己指向Github的域名，看到如下页面内容后，那么我们离真正成功只差99%了～～～哈哈哈<img src="http://q6p62toq8.bkt.clouddn.com/images/landscape.png">
+<h3 id="7-Hexo常用命令"><a href="#7-Hexo常用命令" class="headerlink" title="7. Hexo常用命令"></a>7. Hexo常用命令</h3></li>
+<li>Hexo new命令<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 添加一篇新的文章，需要进入到文章所在的目录_posts</span></span><br><span class="line">[root@antz _posts]<span class="comment"># hexo new "article_name"</span></span><br><span class="line">INFO  -----------------------------------------------------------</span><br><span class="line">INFO  qiniu state: online</span><br><span class="line">INFO  qiniu sync:  <span class="literal">true</span></span><br><span class="line">INFO  qiniu <span class="built_in">local</span> dir:  static</span><br><span class="line">INFO  qiniu url:   http://pn4evi1ob.bkt.clouddn.com/static</span><br><span class="line">INFO  -----------------------------------------------------------</span><br><span class="line">INFO  Created: /home/ethan/hexoblog/<span class="built_in">source</span>/_posts/article-name.md</span><br></pre></td></tr></table></figure></li>
+<li>Hexo clean命令<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 清除缓存文件db.json和生成的public文件</span></span><br><span class="line">[root@antz hexoblog]<span class="comment"># hexo clean</span></span><br><span class="line">INFO  -----------------------------------------------------------</span><br><span class="line">INFO  qiniu state: online</span><br><span class="line">INFO  qiniu sync:  <span class="literal">true</span></span><br><span class="line">INFO  qiniu <span class="built_in">local</span> dir:  static</span><br><span class="line">INFO  qiniu url:   http://pn4evi1ob.bkt.clouddn.com/static</span><br><span class="line">INFO  -----------------------------------------------------------</span><br><span class="line">INFO  Deleted database.</span><br><span class="line">INFO  Deleted public folder.</span><br></pre></td></tr></table></figure></li>
+<li>Hexo generate命令<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 生成静态文件，可以使用hexo g</span></span><br><span class="line">root@antz hexoblog]<span class="comment"># hexo g</span></span><br><span class="line">INFO  -----------------------------------------------------------</span><br><span class="line">INFO  qiniu state: online</span><br><span class="line">INFO  qiniu sync:  <span class="literal">true</span></span><br><span class="line">INFO  qiniu <span class="built_in">local</span> dir:  static</span><br><span class="line">INFO  qiniu url:   http://pn4evi1ob.bkt.clouddn.com/static</span><br><span class="line">INFO  -----------------------------------------------------------</span><br><span class="line">INFO  Start processing</span><br><span class="line">INFO  Now start qiniu sync.</span><br><span class="line">INFO  Need upload file num: 0</span><br><span class="line">WARN  ===============================================================</span><br><span class="line">WARN  ========================= ATTENTION! ==========================</span><br><span class="line">WARN  ===============================================================</span><br><span class="line">WARN   NexT repository is moving here: https://github.com/theme-next</span><br><span class="line">WARN  ===============================================================</span><br><span class="line">WARN   It<span class="string">'s rebase to v6.0.0 and future maintenance will resume there</span></span><br><span class="line"><span class="string">WARN  ===============================================================</span></span><br><span class="line"><span class="string">INFO  Files loaded in 618 ms</span></span><br><span class="line"><span class="string">INFO  Generated: index.html</span></span><br><span class="line"><span class="string">INFO  Generated: about/index.html</span></span><br><span class="line"><span class="string">INFO  Generated: categories/index.html</span></span><br><span class="line"><span class="string">INFO  Generated: archives/index.html</span></span><br><span class="line"><span class="string">INFO  Generated: tags/index.html</span></span><br><span class="line"><span class="string">...... 略</span></span><br><span class="line"><span class="string">INFO  Generated: lib/font-awesome/fonts/fontawesome-webfont.svg</span></span><br><span class="line"><span class="string">INFO  Generated: lib/velocity/velocity.js</span></span><br><span class="line"><span class="string">INFO  Generated: lib/three/three.min.js</span></span><br><span class="line"><span class="string">INFO  137 files generated in 1.48 s</span></span><br></pre></td></tr></table></figure></li>
+<li>Hexo server命令<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 启动本地服务，默认访问地址为http://localhost:4000/，可使用hexo s</span></span><br><span class="line">[root@antz hexoblog]<span class="comment"># hexo s</span></span><br><span class="line">INFO  -----------------------------------------------------------</span><br><span class="line">INFO  qiniu state: online</span><br><span class="line">INFO  qiniu sync:  <span class="literal">true</span></span><br><span class="line">INFO  qiniu <span class="built_in">local</span> dir:  static</span><br><span class="line">INFO  qiniu url:   http://pn4evi1ob.bkt.clouddn.com/static</span><br><span class="line">INFO  -----------------------------------------------------------</span><br><span class="line">INFO  Start processing</span><br><span class="line">INFO  Now start qiniu sync.</span><br><span class="line">INFO  Need upload file num: 0</span><br><span class="line">WARN  ===============================================================</span><br><span class="line">WARN  ========================= ATTENTION! ==========================</span><br><span class="line">WARN  ===============================================================</span><br><span class="line">WARN   NexT repository is moving here: https://github.com/theme-next</span><br><span class="line">WARN  ===============================================================</span><br><span class="line">WARN   It<span class="string">'s rebase to v6.0.0 and future maintenance will resume there</span></span><br><span class="line"><span class="string">WARN  ===============================================================</span></span><br><span class="line"><span class="string">INFO  Hexo is running at http://localhost:4000 . Press Ctrl+C to stop.</span></span><br><span class="line"><span class="string">INFO  Now start qiniu watch.</span></span><br></pre></td></tr></table></figure></li>
+<li>Hexo deploy命令<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 配置好Hexo的_config.yml配置文件后，会将本地的生成的静态内容推送到Github</span></span><br><span class="line">[root@antz _posts]<span class="comment"># hexo deploy</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h3 id="8-七牛图床"><a href="#8-七牛图床" class="headerlink" title="8. 七牛图床"></a>8. 七牛图床</h3><ul>
+<li><a href="https://portal.qiniu.com/signup?code=3lf4mtmg7mjbm" target="_blank" rel="noopener">七牛官网</a><br>点击注册，选择个人，填写账户信息，需要支付宝和身份证，提前准备好支付宝和身份证正反面照片，审核约需要1-3个工作日</li>
+<li>审核通过后，在控制台点击对象存储建立存储空间，查看空间大小以及个人面板的功能<img src="http://q6p62toq8.bkt.clouddn.com/images/qiniu-i-panel.png">
+
+</li>
+</ul>
+<h3 id="9-配置主题"><a href="#9-配置主题" class="headerlink" title="9. 配置主题"></a>9. 配置主题</h3><ul>
+<li>主题的下载和配置请参考<a href="http://theme-next.iissnan.com/getting-started.html" target="_blank" rel="noopener">NexT</a>这篇博客</li>
+<li>配置七牛-站点配置文件<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">plugins:</span></span><br><span class="line"><span class="comment">#- hexo-qiniu-sync</span></span><br><span class="line"><span class="attr">qiniu:</span></span><br><span class="line">  <span class="attr">offline:</span> <span class="literal">false</span></span><br><span class="line">  <span class="attr">sync:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">bucket:</span> <span class="string">cnethan</span> <span class="comment"># 你的空间名称</span></span><br><span class="line">  <span class="comment"># secret_file: sec/qn.json or C:</span></span><br><span class="line">  <span class="attr">access_key:</span> <span class="string">your</span> <span class="string">AK</span></span><br><span class="line">  <span class="attr">secret_key:</span> <span class="string">your</span> <span class="string">SK</span></span><br><span class="line">  <span class="attr">dirPrefix:</span> <span class="string">static</span></span><br><span class="line">  <span class="attr">urlPrefix:</span> <span class="string">http://pn4evi1ob.bkt.clouddn.com/static</span> <span class="comment"># 外链默认域名</span></span><br><span class="line">  <span class="attr">up_host:</span> <span class="string">http://upload.qiniu.com</span> <span class="comment">#默认即可</span></span><br><span class="line">  <span class="attr">local_dir:</span> <span class="string">static</span></span><br><span class="line">  <span class="attr">update_exist:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">image:</span></span><br><span class="line">    <span class="attr">folder:</span> <span class="string">images</span></span><br><span class="line">    <span class="attr">extend:</span></span><br><span class="line">  <span class="attr">js:</span></span><br><span class="line">    <span class="attr">folder:</span> <span class="string">js</span></span><br><span class="line">  <span class="attr">css:</span></span><br><span class="line">    <span class="attr">folder:</span> <span class="string">css</span></span><br></pre></td></tr></table></figure></li>
+<li>新增栏目<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 增加标签栏目，在站点的source目录下新建一个tags的文件夹</span></span><br><span class="line"><span class="string">[root@antz</span> <span class="string">source]#</span> <span class="string">hexo</span> <span class="string">new</span> <span class="string">page</span> <span class="string">"tags"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 增加分类栏目，在站点的source目录下新建一个categories的文件夹</span></span><br><span class="line"><span class="string">[root@antz</span> <span class="string">source]#</span> <span class="string">hexo</span> <span class="string">new</span> <span class="string">page</span> <span class="string">"categories"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 增加关于栏目，在站点的source目录下新建一个about的文件夹</span></span><br><span class="line"><span class="string">[root@antz</span> <span class="string">source]#</span> <span class="string">hexo</span> <span class="string">new</span> <span class="string">page</span> <span class="string">"about"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 配置主题下的_config.yml</span></span><br><span class="line"><span class="attr">menu:</span></span><br><span class="line">  <span class="attr">home:</span> <span class="string">/</span> <span class="string">||</span> <span class="string">home</span></span><br><span class="line">  <span class="attr">about:</span> <span class="string">/about/</span> <span class="string">||</span> <span class="string">user</span></span><br><span class="line">  <span class="attr">tags:</span> <span class="string">/tags/</span> <span class="string">||</span> <span class="string">tags</span></span><br><span class="line">  <span class="attr">categories:</span> <span class="string">/categories/</span> <span class="string">||</span> <span class="string">th</span></span><br><span class="line">  <span class="attr">archives:</span> <span class="string">/archives/</span> <span class="string">||</span> <span class="string">archive</span></span><br><span class="line">  <span class="comment">#schedule: /schedule/ || calendar</span></span><br><span class="line">  <span class="comment">#sitemap: /sitemap.xml || sitemap</span></span><br><span class="line">  <span class="comment">#commonweal: /404/ || heartbeat</span></span><br></pre></td></tr></table></figure></li>
+<li>标签云<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 编辑站点目录下的source/tags/index.md，分类和关于可对照修改</span></span><br><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="attr">title:</span></span><br><span class="line"><span class="attr">date:</span> <span class="number">2019</span><span class="number">-02</span><span class="number">-17</span> <span class="number">22</span><span class="string">:01:38</span></span><br><span class="line"><span class="attr">type:</span> <span class="string">tags</span></span><br><span class="line"><span class="attr">layout:</span> <span class="string">"tags"</span></span><br><span class="line"><span class="meta">---</span></span><br></pre></td></tr></table></figure></li>
+<li>开启阅读全文<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Please use &lt;!-- more --&gt; in the post to control excerpt accurately.</span></span><br><span class="line"><span class="attr">auto_excerpt:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">length:</span> <span class="number">115</span></span><br></pre></td></tr></table></figure></li>
+<li>修改內链样式<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@antz ~]# vi /home/antz/hexoblog/themes/next/source/css/_custom/custom.styl</span><br><span class="line">// 文章内链接文本样式</span><br><span class="line"><span class="selector-class">.post-body</span> <span class="selector-tag">a</span>&#123;</span><br><span class="line">  <span class="attribute">color</span>: <span class="number">#0593d3</span>;</span><br><span class="line">  &amp;:hover &#123;</span><br><span class="line">    <span class="selector-tag">color</span>: <span class="selector-id">#fc6423</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>开启打赏<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Reward</span></span><br><span class="line"><span class="attr">reward_comment:</span> <span class="string">谢谢打赏～</span></span><br><span class="line"><span class="comment">#wechatpay: /images/wechatpay.jpg</span></span><br><span class="line"><span class="attr">alipay:</span> <span class="string">/images/alipay.jpg</span></span><br><span class="line"><span class="comment">#bitcoin: /images/bitcoin.png</span></span><br></pre></td></tr></table></figure></li>
+<li>开启社交<pre><code class="yml"><span class="attr">social:</span>
+<span class="attr">GitHub:</span> <span class="string">https://github.com/cnethan</span> <span class="string">||</span> <span class="string">github</span>
+<span class="attr">E-Mail:</span> <span class="string">mailto:cnfong@outlook.com</span> <span class="string">||</span> <span class="string">envelope</span>
+<span class="comment">#Google: https://plus.google.com/yourname || google</span>
+<span class="comment">#Twitter: https://twitter.com/yourname || twitter</span>
+<span class="comment">#FB Page: https://www.facebook.com/yourname || facebook</span>
+<span class="comment">#VK Group: https://vk.com/yourname || vk</span>
+<span class="comment">#StackOverflow: https://stackoverflow.com/yourname || stack-overflow</span>
+<span class="comment">#YouTube: https://youtube.com/yourname || youtube</span>
+<span class="comment">#Instagram: https://instagram.com/yourname || instagram</span>
+<span class="comment">#Skype: skype:yourname?call|chat || skype</span></code></pre>
+</li>
+</ul>
+
+  </div>
+</article>
+
+
+
+    </div>
+    
+      <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about">About</a></li>
+         
+          <li><a href="/archives">Archives</a></li>
+         
+          <li><a href="/review">Review</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-资源描述"><span class="toc-number">1.</span> <span class="toc-text">1. 资源描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-创建Github-Pages"><span class="toc-number">2.</span> <span class="toc-text">2. 创建Github Pages</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-Github配置"><span class="toc-number">3.</span> <span class="toc-text">3. Github配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-域名配置"><span class="toc-number">4.</span> <span class="toc-text">4. 域名配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-安装Node-js"><span class="toc-number">5.</span> <span class="toc-text">5. 安装Node.js</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-安装Hexo"><span class="toc-number">6.</span> <span class="toc-text">6. 安装Hexo</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-Hexo常用命令"><span class="toc-number">7.</span> <span class="toc-text">7. Hexo常用命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-七牛图床"><span class="toc-number">8.</span> <span class="toc-text">8. 七牛图床</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-配置主题"><span class="toc-number">9.</span> <span class="toc-text">9. 配置主题</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://falkon.cn/2020/03/10/ck7lwe6qq000djsr4gsqy1clw/" target="_blank" rel="noopener"><i class="fa fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://falkon.cn/2020/03/10/ck7lwe6qq000djsr4gsqy1clw/&text=Github+Hexo+Nodejs+Qiniu 搭建个人博客" target="_blank" rel="noopener"><i class="fa fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://falkon.cn/2020/03/10/ck7lwe6qq000djsr4gsqy1clw/&title=Github+Hexo+Nodejs+Qiniu 搭建个人博客" target="_blank" rel="noopener"><i class="fa fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://falkon.cn/2020/03/10/ck7lwe6qq000djsr4gsqy1clw/&is_video=false&description=Github+Hexo+Nodejs+Qiniu 搭建个人博客" target="_blank" rel="noopener"><i class="fa fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Github+Hexo+Nodejs+Qiniu 搭建个人博客&body=Check out this article: http://falkon.cn/2020/03/10/ck7lwe6qq000djsr4gsqy1clw/"><i class="fa fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://falkon.cn/2020/03/10/ck7lwe6qq000djsr4gsqy1clw/&title=Github+Hexo+Nodejs+Qiniu 搭建个人博客" target="_blank" rel="noopener"><i class="fa fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://falkon.cn/2020/03/10/ck7lwe6qq000djsr4gsqy1clw/&title=Github+Hexo+Nodejs+Qiniu 搭建个人博客" target="_blank" rel="noopener"><i class="fa fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://falkon.cn/2020/03/10/ck7lwe6qq000djsr4gsqy1clw/&title=Github+Hexo+Nodejs+Qiniu 搭建个人博客" target="_blank" rel="noopener"><i class="fa fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://falkon.cn/2020/03/10/ck7lwe6qq000djsr4gsqy1clw/&title=Github+Hexo+Nodejs+Qiniu 搭建个人博客" target="_blank" rel="noopener"><i class="fa fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://falkon.cn/2020/03/10/ck7lwe6qq000djsr4gsqy1clw/&name=Github+Hexo+Nodejs+Qiniu 搭建个人博客&description=" target="_blank" rel="noopener"><i class="fa fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+      <ul>
+        <li id="toc"><a class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa fa-list fa-lg" aria-hidden="true"></i> TOC</a></li>
+        <li id="share"><a class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa fa-share-alt fa-lg" aria-hidden="true"></i> Share</a></li>
+        <li id="top" style="display:none"><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a></li>
+        <li id="menu"><a class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa fa-bars fa-lg" aria-hidden="true"></i> Menu</a></li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+    
+    <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2020 Falkon
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about">About</a></li>
+         
+          <li><a href="/archives">Archives</a></li>
+         
+          <li><a href="/review">Review</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+</body>
+</html>
+<!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<link rel="stylesheet" href="/lib/meslo-LG/styles.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/justifiedGallery.min.css">
+
+
+<!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+
+<script src="/js/main.js"></script>
+
+
+
+    <!-- Google Analytics -->
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-37473492-6', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+
+
