@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="先看下官网对lsdg给出的各个列属性的说明    属性 描述    State State of the disk group. Values include BROKEN, CONNECTED, DISMOUNTED, MOUNTED, QUIESCING, and UNKNOWN.   Type Disk group redundancy (NORMAL, HIGH, EXTERNAL).">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ASM中的Req_mir_free_MB实验">
+<meta property="og:url" content="http://falkon.cn/2020/03/22/ck82y1k3i000ingr4b7c27545/index.html">
+<meta property="og:site_name" content="Falkon">
+<meta property="og:description" content="先看下官网对lsdg给出的各个列属性的说明    属性 描述    State State of the disk group. Values include BROKEN, CONNECTED, DISMOUNTED, MOUNTED, QUIESCING, and UNKNOWN.   Type Disk group redundancy (NORMAL, HIGH, EXTERNAL).">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-03-22T10:59:28.154Z">
+<meta property="article:modified_time" content="2020-03-22T11:46:04.508Z">
+<meta property="article:author" content="Falkon">
+<meta property="article:tag" content="Req_mir_free_MB">
+<meta property="article:tag" content="ASM">
+<meta name="twitter:card" content="summary">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="http://q6p62toq8.falkon.cn/favicon.png">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="http://q6p62toq8.falkon.cn/favicon.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="http://q6p62toq8.falkon.cn/favicon.png">
+          
+        
+    
+    <!-- title -->
+    <title>ASM中的Req_mir_free_MB实验</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fa fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fa fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about">About</a></li>
+         
+          <li><a href="/archives">Archives</a></li>
+         
+          <li><a href="/review">Review</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" href="/2020/03/21/ck82y1k3c0008ngr40dza2m91/"><i class="fa fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fa fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://falkon.cn/2020/03/22/ck82y1k3i000ingr4b7c27545/" target="_blank" rel="noopener"><i class="fa fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://falkon.cn/2020/03/22/ck82y1k3i000ingr4b7c27545/&text=ASM中的Req_mir_free_MB实验" target="_blank" rel="noopener"><i class="fa fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://falkon.cn/2020/03/22/ck82y1k3i000ingr4b7c27545/&title=ASM中的Req_mir_free_MB实验" target="_blank" rel="noopener"><i class="fa fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://falkon.cn/2020/03/22/ck82y1k3i000ingr4b7c27545/&is_video=false&description=ASM中的Req_mir_free_MB实验" target="_blank" rel="noopener"><i class="fa fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=ASM中的Req_mir_free_MB实验&body=Check out this article: http://falkon.cn/2020/03/22/ck82y1k3i000ingr4b7c27545/"><i class="fa fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://falkon.cn/2020/03/22/ck82y1k3i000ingr4b7c27545/&title=ASM中的Req_mir_free_MB实验" target="_blank" rel="noopener"><i class="fa fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://falkon.cn/2020/03/22/ck82y1k3i000ingr4b7c27545/&title=ASM中的Req_mir_free_MB实验" target="_blank" rel="noopener"><i class="fa fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://falkon.cn/2020/03/22/ck82y1k3i000ingr4b7c27545/&title=ASM中的Req_mir_free_MB实验" target="_blank" rel="noopener"><i class="fa fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://falkon.cn/2020/03/22/ck82y1k3i000ingr4b7c27545/&title=ASM中的Req_mir_free_MB实验" target="_blank" rel="noopener"><i class="fa fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://falkon.cn/2020/03/22/ck82y1k3i000ingr4b7c27545/&name=ASM中的Req_mir_free_MB实验&description=" target="_blank" rel="noopener"><i class="fa fa-tumblr " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index width mx-auto px2 my4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        ASM中的Req_mir_free_MB实验
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Falkon</span>
+      </span>
+      
+    <div class="postdate">
+        <time datetime="2020-03-22T10:59:28.154Z" itemprop="datePublished">2020-03-22</time>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/ASM/" rel="tag">ASM</a>, <a class="tag-link" href="/tags/Req-mir-free-MB/" rel="tag">Req_mir_free_MB</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <ul>
+<li><p>先看下官网对lsdg给出的各个列属性的说明</p>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>State</td>
+<td>State of the disk group. Values include BROKEN, CONNECTED, DISMOUNTED, MOUNTED, QUIESCING, and UNKNOWN.</td>
+</tr>
+<tr>
+<td>Type</td>
+<td>Disk group redundancy (NORMAL, HIGH, EXTERNAL).</td>
+</tr>
+<tr>
+<td>Rebal</td>
+<td>Y if a rebalance operation is in progress.</td>
+</tr>
+<tr>
+<td>Sector</td>
+<td>Sector size in bytes.</td>
+</tr>
+<tr>
+<td>Block</td>
+<td>Block size in bytes.</td>
+</tr>
+<tr>
+<td>AU</td>
+<td>Allocation unit size in bytes.</td>
+</tr>
+<tr>
+<td>Total_MB</td>
+<td>Size of the disk group in megabytes.</td>
+</tr>
+<tr>
+<td><strong>Free_MB</strong></td>
+<td><strong>Free space in the disk group in megabytes, without regard to redundancy. From the V$ASM_DISKGROUP view.</strong></td>
+</tr>
+<tr>
+<td><strong>Req_mir_free_MB</strong></td>
+<td><strong>Amount of space that must be available in the disk group to restore full redundancy after the most severe failure that can be tolerated by the disk group. This is the REQUIRED_MIRROR_FREE_MB column from the V$ASM_DISKGROUP view.</strong></td>
+</tr>
+<tr>
+<td><strong>Usable_file_MB</strong></td>
+<td><strong>Amount of free space, adjusted for mirroring, that is available for new files. From the V$ASM_DISKGROUP view.</strong></td>
+</tr>
+<tr>
+<td>Offline_disks</td>
+<td>Number of offline disks in the disk group. Offline disks are eventually dropped.</td>
+</tr>
+<tr>
+<td>Voting_files</td>
+<td>Specifies whether the disk group contains voting files (Y or N).</td>
+</tr>
+<tr>
+<td>Name</td>
+<td>Disk group name.</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>从描述上看：Free_MB是不考虑冗余度的空闲空间，从V$ASM_DISKGROUP视图和lsdg命令都可以获得相关容量，也就是说如果的你ASM磁盘组是基于External，那么磁盘组在未使用的情况下，TOTAL_MB约等于FREE_MB，少的空间为ASM元数据占用，FREE_MB等于USABLE_FILE_MB，REQUIRED_MIRROR_FREE_MB等于0，因为没有独立FAILGROUP，冗余是基于存储本身的RAID技术进行冗余</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">[grid@testdb12c01 ~]$ sqlplus / as sysasm</span><br><span class="line"></span><br><span class="line">SQL*Plus: Release 12.1.0.2.0 Production on Sun Mar 22 00:26:20 2020</span><br><span class="line"></span><br><span class="line">Copyright (c) 1982, 2014, Oracle.  All rights reserved.</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Connected to:</span><br><span class="line">Oracle Database 12c Enterprise Edition <span class="keyword">Release</span> <span class="number">12.1</span><span class="number">.0</span><span class="number">.2</span><span class="number">.0</span> - <span class="number">64</span><span class="built_in">bit</span> Production</span><br><span class="line"><span class="keyword">With</span> the <span class="built_in">Real</span> Application Clusters <span class="keyword">and</span> <span class="keyword">Automatic</span> <span class="keyword">Storage</span> <span class="keyword">Management</span> options</span><br><span class="line"></span><br><span class="line"><span class="keyword">SQL</span>&gt; <span class="keyword">create</span> <span class="keyword">diskgroup</span> GP_EXTERNAL <span class="keyword">external</span> redundancy disk <span class="string">'/dev/asmdisk/TESTDISK01'</span>;</span><br><span class="line"></span><br><span class="line">Diskgroup created.</span><br><span class="line"></span><br><span class="line">SQL&gt; col name for a20</span><br><span class="line">SQL&gt; set linesize 200</span><br><span class="line">SQL&gt; select group_number,name,type,state,total_mb,free_mb,required_mirror_free_mb,usable_file_mb from v$asm_diskgroup where name='GP_EXTERNAL';</span><br><span class="line"></span><br><span class="line">GROUP_NUMBER NAME          TYPE     STATE           TOTAL_MB    FREE_MB REQUIRED_MIRROR_FREE_MB USABLE_FILE_MB</span><br><span class="line"><span class="comment">------------ ------------- ------ -----------       ---------- -------- ----------------------- --------------</span></span><br><span class="line">       4     GP_EXTERNAL     EXTERN MOUNTED          1024        974             0               974</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查看FAILGROUP，发现FAILGROUP等于磁盘本身</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">SQL&gt; select group_number,name,failgroup from v$asm_disk where group_number=4;</span><br><span class="line"></span><br><span class="line">GROUP_NUMBER NAME          FAILGROUP</span><br><span class="line"><span class="comment">------------ -------------------- ------------------------------</span></span><br><span class="line">       4 GP_EXTERNAL_0000      GP_EXTERNAL_0000</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>创建一个表空间看看会发生什么，发现每个段只有1份，在0号磁盘上进行了复制，copy=1</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">SQL&gt; create tablespace ext_test datafile '+GP_EXTERNAL' size 1m;</span><br><span class="line"></span><br><span class="line">Tablespace created.</span><br><span class="line"></span><br><span class="line">SQL&gt; col tablespace_name for a15</span><br><span class="line">SQL&gt; col file_name for a100</span><br><span class="line">SQL&gt; set linesize 200</span><br><span class="line">SQL&gt; select tablespace_name,file_name from dba_data_files where tablespace_name='EXTER01';</span><br><span class="line"></span><br><span class="line">TABLESPACE_NAME FILE_NAME</span><br><span class="line"><span class="comment">--------------- ---------------------------------------------------------------------------------</span></span><br><span class="line">EXTER01     +GP_EXTERNAL/PRODDB/A14CD6FDD3B55795E0531570A8C04632/DATAFILE/exter01.256.1035685075</span><br><span class="line"></span><br><span class="line">SQL&gt; SELECT</span><br><span class="line">    disk_kffxp  disk<span class="comment">#,</span></span><br><span class="line">    xnum_kffxp  extent<span class="comment">#,</span></span><br><span class="line">    CASE lxn_kffxp</span><br><span class="line">        WHEN 0  THEN</span><br><span class="line">            'Primary Copy'</span><br><span class="line">        WHEN 1  THEN</span><br><span class="line">            'Mirrored Copy'</span><br><span class="line">        WHEN 2  THEN</span><br><span class="line">            '2nd Mirrored Copy or metadata'</span><br><span class="line">        ELSE</span><br><span class="line">            'Unknown'</span><br><span class="line">    <span class="keyword">END</span> <span class="keyword">type</span></span><br><span class="line"><span class="keyword">FROM</span></span><br><span class="line">    x$kffxp</span><br><span class="line"><span class="keyword">WHERE</span></span><br><span class="line">        number_kffxp = <span class="number">256</span></span><br><span class="line">    <span class="keyword">AND</span> group_kffxp = <span class="number">4</span></span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span></span><br><span class="line">    <span class="number">2</span>; </span><br><span class="line"></span><br><span class="line">     DISK<span class="comment">#    EXTENT# TYPE</span></span><br><span class="line"><span class="comment">---------- ---------- -----------------------------</span></span><br><span class="line">     0        0 Primary Copy</span><br><span class="line">     0        1 Primary Copy</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>基于normal，normal是双重数据镜像，至少要求有两块磁盘，按照最少要求两块磁盘创建，发现REQUIRED_MIRROR_FREE_MB依旧等于等于0</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">SQL&gt; create diskgroup GP_NORMAL normal redundancy disk '/dev/asmdisk/TESTDISK02','/dev/asmdisk/TESTDISK03';</span><br><span class="line"></span><br><span class="line">Diskgroup created.</span><br><span class="line">SQL&gt; select group_number,name,type,state,total_mb,free_mb,required_mirror_free_mb,usable_file_mb from v$asm_diskgroup where name='GP_NORMAL';</span><br><span class="line"></span><br><span class="line">GROUP_NUMBER NAME          TYPE     STATE           TOTAL_MB    FREE_MB REQUIRED_MIRROR_FREE_MB USABLE_FILE_MB</span><br><span class="line"><span class="comment">------------ ------------- ------ -----------       ---------- ---------- --------------------- --------------</span></span><br><span class="line">       5 GP_NORMAL          NORMAL MOUNTED            2048       1946             0              973</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查看FAILGROUP，发现FAILGROUP依旧等于等于磁盘本身，没有多余的磁盘来提供给Req_mir_free_MB使用</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">SQL&gt; select group_number,name,failgroup from v$asm_disk where group_number=5;</span><br><span class="line"></span><br><span class="line">GROUP_NUMBER NAME                FAILGROUP</span><br><span class="line"><span class="comment">------------ ------------------------------ ------------------------------</span></span><br><span class="line">       5 GP_NORMAL_0001            GP_NORMAL_0001</span><br><span class="line">       5 GP_NORMAL_0000            GP_NORMAL_0000</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>创建一个表空间看看会发生什么，发现每个段被分成了两份，在0号磁盘和1号磁盘上，copy=2</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">SQL&gt; create tablespace normal01 datafile '+GP_NORMAL' size 1m;</span><br><span class="line"></span><br><span class="line">Tablespace created.</span><br><span class="line"></span><br><span class="line">SQL&gt; select tablespace_name,file_name from dba_data_files where tablespace_name='NORMAL01';</span><br><span class="line"></span><br><span class="line">TABLESPACE_NAME FILE_NAME</span><br><span class="line"><span class="comment">--------------- --------------------------------------------------------------------------------</span></span><br><span class="line">NORMAL01    +GP_NORMAL/PRODDB/A14CD6FDD3B55795E0531570A8C04632/DATAFILE/normal01.256.1035685391</span><br><span class="line"></span><br><span class="line">SQL&gt; SELECT</span><br><span class="line">    disk_kffxp  disk<span class="comment">#,</span></span><br><span class="line">    xnum_kffxp  extent<span class="comment">#,</span></span><br><span class="line">    CASE lxn_kffxp</span><br><span class="line">        WHEN 0  THEN</span><br><span class="line">            'Primary Copy'</span><br><span class="line">        WHEN 1  THEN</span><br><span class="line">            'Mirrored Copy'</span><br><span class="line">        WHEN 2  THEN</span><br><span class="line">            '2nd Mirrored Copy or metadata'</span><br><span class="line">        ELSE</span><br><span class="line">            'Unknown'</span><br><span class="line">    <span class="keyword">END</span> <span class="keyword">type</span></span><br><span class="line"><span class="keyword">FROM</span></span><br><span class="line">    x$kffxp</span><br><span class="line"><span class="keyword">WHERE</span></span><br><span class="line">        number_kffxp = <span class="number">256</span></span><br><span class="line">    <span class="keyword">AND</span> group_kffxp = <span class="number">5</span></span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span></span><br><span class="line">    <span class="number">2</span>;</span><br><span class="line"></span><br><span class="line">     DISK<span class="comment">#    EXTENT# TYPE</span></span><br><span class="line"><span class="comment">---------- ---------- -----------------------------</span></span><br><span class="line">     1        0 Primary Copy</span><br><span class="line">     0        0 Mirrored Copy</span><br><span class="line">     0        1 Primary Copy</span><br><span class="line">     1        1 Mirrored Copy</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Req_mir_free_MB是在磁盘组出现故障之后，磁盘组组必须有足够的空间来重新定义冗余度，normal模式，使用三块磁盘创建磁盘组，创建完成后发现REQUIRED_MIRROR_FREE_MB的空间为1G，是一块物理磁盘大小，也就意味着如果在创建的磁盘组的时候，按照最小要求磁盘数（normal最小2块、high最小3块）去创建的话，磁盘组的冗余只能是基于磁盘本身，当超出最小磁盘组要求的磁盘数时，会取其中的一块（normal）或两块（high）做为REQUIRED_MIRROR_FREE_MB的空间</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">SQL&gt; create diskgroup GP_NORMAL01 normal redundancy disk '/dev/asmdisk/TESTDISK04','/dev/asmdisk/TESTDISK05','/dev/asmdisk/TESTDISK06';</span><br><span class="line"></span><br><span class="line">Diskgroup created.</span><br><span class="line"></span><br><span class="line">SQL&gt; select group_number,name,type,state,total_mb,free_mb,required_mirror_free_mb,usable_file_mb from v$asm_diskgroup where name='GP_NORMAL01';</span><br><span class="line"></span><br><span class="line">GROUP_NUMBER NAME          TYPE     STATE           TOTAL_MB    FREE_MB REQUIRED_MIRROR_FREE_MB USABLE_FILE_MB</span><br><span class="line"><span class="comment">------------ ----------   --------- ------          ---------- ---------- --------------------- --------------</span></span><br><span class="line">       6 GP_NORMAL01      NORMAL MOUNTED            3072        2919              1024           947</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查看FAILGROUP，发现FAILGROUP多出来一块磁盘，REQUIRED_MIRROR_FREE_MB空间等于多出来的那块磁盘</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">SQL&gt; select group_number,name,failgroup from v$asm_disk where group_number=6;</span><br><span class="line"></span><br><span class="line">GROUP_NUMBER NAME                FAILGROUP</span><br><span class="line"><span class="comment">------------ ------------------------------ ------------------------------</span></span><br><span class="line">       6 GP_NORMAL01_0002            GP_NORMAL01_0002</span><br><span class="line">       6 GP_NORMAL01_0001            GP_NORMAL01_0001</span><br><span class="line">       6 GP_NORMAL01_0000            GP_NORMAL01_0000</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在继续创建一个表空间，看看复制情况，发现每个段依旧被分成了两份，随机写入到0、1、2号磁盘，copy=2</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">SQL&gt; create tablespace normal02 datafile '+GP_NORMAL01' size 1m;</span><br><span class="line"></span><br><span class="line">Tablespace created.</span><br><span class="line"></span><br><span class="line">SQL&gt; select tablespace_name,file_name from dba_data_files where tablespace_name='NORMAL02';</span><br><span class="line"></span><br><span class="line">TABLESPACE_NAME FILE_NAME</span><br><span class="line"><span class="comment">--------------- ---------------------------------------------------------------------------------</span></span><br><span class="line">NORMAL02    +GP_NORMAL01/PRODDB/A14CD6FDD3B55795E0531570A8C04632/DATAFILE/normal02.256.1035689003</span><br><span class="line"></span><br><span class="line">SQL&gt; SELECT</span><br><span class="line">    disk_kffxp  disk<span class="comment">#,</span></span><br><span class="line">    xnum_kffxp  extent<span class="comment">#,</span></span><br><span class="line">    CASE lxn_kffxp</span><br><span class="line">        WHEN 0  THEN</span><br><span class="line">            'Primary Copy'</span><br><span class="line">        WHEN 1  THEN</span><br><span class="line">            'Mirrored Copy'</span><br><span class="line">        WHEN 2  THEN</span><br><span class="line">            '2nd Mirrored Copy or metadata'</span><br><span class="line">        ELSE</span><br><span class="line">            'Unknown'</span><br><span class="line">    <span class="keyword">END</span> <span class="keyword">type</span></span><br><span class="line"><span class="keyword">FROM</span></span><br><span class="line">    x$kffxp</span><br><span class="line"><span class="keyword">WHERE</span></span><br><span class="line">        number_kffxp = <span class="number">256</span></span><br><span class="line">    <span class="keyword">AND</span> group_kffxp = <span class="number">6</span></span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span></span><br><span class="line">    <span class="number">2</span>;</span><br><span class="line"></span><br><span class="line">     DISK<span class="comment">#    EXTENT# TYPE</span></span><br><span class="line"><span class="comment">---------- ---------- -----------------------------</span></span><br><span class="line">     0        0 Primary Copy</span><br><span class="line">     2        0 Mirrored Copy</span><br><span class="line">     1        1 Primary Copy</span><br><span class="line">     2        1 Mirrored Copy</span><br></pre></td></tr></table></figure></li>
+<li><p>第二次创建表空间，观察段写入情况</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">SQL&gt; create tablespace normal03 datafile '+GP_NORMAL01' size 1m;</span><br><span class="line"></span><br><span class="line">Tablespace created.</span><br><span class="line"></span><br><span class="line">SQL&gt; select tablespace_name,file_name from dba_data_files where tablespace_name='NORMAL03';</span><br><span class="line"></span><br><span class="line">TABLESPACE_NAME FILE_NAME</span><br><span class="line"><span class="comment">--------------- ---------------------------------------------------------------------------------</span></span><br><span class="line">NORMAL03    +GP_NORMAL01/PRODDB/A14CD6FDD3B55795E0531570A8C04632/DATAFILE/normal03.257.1035693469</span><br><span class="line"></span><br><span class="line">SQL&gt; SELECT</span><br><span class="line">    disk_kffxp  disk<span class="comment">#,</span></span><br><span class="line">    xnum_kffxp  extent<span class="comment">#,</span></span><br><span class="line">    CASE lxn_kffxp</span><br><span class="line">        WHEN 0  THEN</span><br><span class="line">            'Primary Copy'</span><br><span class="line">        WHEN 1  THEN</span><br><span class="line">            'Mirrored Copy'</span><br><span class="line">        WHEN 2  THEN</span><br><span class="line">            '2nd Mirrored Copy or metadata'</span><br><span class="line">        ELSE</span><br><span class="line">            'Unknown'</span><br><span class="line">    <span class="keyword">END</span> <span class="keyword">type</span></span><br><span class="line"><span class="keyword">FROM</span></span><br><span class="line">    x$kffxp</span><br><span class="line"><span class="keyword">WHERE</span></span><br><span class="line">        number_kffxp = <span class="number">257</span></span><br><span class="line">    <span class="keyword">AND</span> group_kffxp = <span class="number">6</span></span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span></span><br><span class="line">    <span class="number">2</span>; </span><br><span class="line"></span><br><span class="line">     DISK<span class="comment">#    EXTENT# TYPE</span></span><br><span class="line"><span class="comment">---------- ---------- -----------------------------</span></span><br><span class="line">     1        0 Primary Copy</span><br><span class="line">     0        0 Mirrored Copy</span><br><span class="line">     2        1 Primary Copy</span><br><span class="line">     0        1 Mirrored Copy</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Usable_file_MB是在满足了冗余度之后，还有多少剩余空间可使用，通过上面的实验发现，Usable_file_MB本身就是在满足冗余度之后，还有多少剩余空间可用，也可以使用（Free_MB - Req_mir_free_MB）/ 冗余度 = 剩余可用空间，尝试来计算下，在external模式下为：（974 - 0）/ 1 = 974，在normal模式下：（1946 - 0）/ 2 = 973，在normal模式带Req_mir_free_MB空间下：（2919 - 1024） / 2 = 947.5，因为是MB所以小数部分不显示</p>
+</li>
+</ul>
+
+  </div>
+</article>
+
+
+
+    </div>
+    
+      <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about">About</a></li>
+         
+          <li><a href="/archives">Archives</a></li>
+         
+          <li><a href="/review">Review</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://falkon.cn/2020/03/22/ck82y1k3i000ingr4b7c27545/" target="_blank" rel="noopener"><i class="fa fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://falkon.cn/2020/03/22/ck82y1k3i000ingr4b7c27545/&text=ASM中的Req_mir_free_MB实验" target="_blank" rel="noopener"><i class="fa fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://falkon.cn/2020/03/22/ck82y1k3i000ingr4b7c27545/&title=ASM中的Req_mir_free_MB实验" target="_blank" rel="noopener"><i class="fa fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://falkon.cn/2020/03/22/ck82y1k3i000ingr4b7c27545/&is_video=false&description=ASM中的Req_mir_free_MB实验" target="_blank" rel="noopener"><i class="fa fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=ASM中的Req_mir_free_MB实验&body=Check out this article: http://falkon.cn/2020/03/22/ck82y1k3i000ingr4b7c27545/"><i class="fa fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://falkon.cn/2020/03/22/ck82y1k3i000ingr4b7c27545/&title=ASM中的Req_mir_free_MB实验" target="_blank" rel="noopener"><i class="fa fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://falkon.cn/2020/03/22/ck82y1k3i000ingr4b7c27545/&title=ASM中的Req_mir_free_MB实验" target="_blank" rel="noopener"><i class="fa fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://falkon.cn/2020/03/22/ck82y1k3i000ingr4b7c27545/&title=ASM中的Req_mir_free_MB实验" target="_blank" rel="noopener"><i class="fa fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://falkon.cn/2020/03/22/ck82y1k3i000ingr4b7c27545/&title=ASM中的Req_mir_free_MB实验" target="_blank" rel="noopener"><i class="fa fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://falkon.cn/2020/03/22/ck82y1k3i000ingr4b7c27545/&name=ASM中的Req_mir_free_MB实验&description=" target="_blank" rel="noopener"><i class="fa fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+      <ul>
+        <li id="toc"><a class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa fa-list fa-lg" aria-hidden="true"></i> TOC</a></li>
+        <li id="share"><a class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa fa-share-alt fa-lg" aria-hidden="true"></i> Share</a></li>
+        <li id="top" style="display:none"><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a></li>
+        <li id="menu"><a class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa fa-bars fa-lg" aria-hidden="true"></i> Menu</a></li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+    
+    <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2020 Falkon
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about">About</a></li>
+         
+          <li><a href="/archives">Archives</a></li>
+         
+          <li><a href="/review">Review</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+</body>
+</html>
+<!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<link rel="stylesheet" href="/lib/meslo-LG/styles.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/justifiedGallery.min.css">
+
+
+<!-- jquery -->
+
+<script src="http://q6p62toq8.falkon.cn/jquery.min.js"></script>
+
+
+<script src="http://q6p62toq8.falkon.cn/jquery.justifiedGallery.min.js"></script>
+
+
+<script src="/js/main.js"></script>
+
+
+
+
+
