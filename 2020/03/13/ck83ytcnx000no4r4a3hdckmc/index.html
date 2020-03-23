@@ -9,7 +9,7 @@
     <meta name="description" content="关于数据泵(data pump)的说明，数据泵是exp&#x2F;imp的升级，exp&#x2F;imp是客户端程序，既可以在客户点使用，也可以在服务端使用，利用Oracle客户端工具，可以直接将服务器上的数据导入被本地电脑。expdp&#x2F;impdp是服务端工具，只能在服务端使用。两种工具也无法混用，就是说exp导出的数据无法使用impdp导入。对于小于GB的数据可以exp&#x2F;imp，对于大于GB的数据来说exp&#x2F;im">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Expdp&#x2F;Impdp">
-<meta property="og:url" content="http://falkon.cn/2020/03/13/ck82y1k3j000lngr45vnxdmcj/index.html">
+<meta property="og:url" content="http://falkon.cn/2020/03/13/ck83ytcnx000no4r4a3hdckmc/index.html">
 <meta property="og:site_name" content="Falkon">
 <meta property="og:description" content="关于数据泵(data pump)的说明，数据泵是exp&#x2F;imp的升级，exp&#x2F;imp是客户端程序，既可以在客户点使用，也可以在服务端使用，利用Oracle客户端工具，可以直接将服务器上的数据导入被本地电脑。expdp&#x2F;impdp是服务端工具，只能在服务端使用。两种工具也无法混用，就是说exp导出的数据无法使用impdp导入。对于小于GB的数据可以exp&#x2F;imp，对于大于GB的数据来说exp&#x2F;im">
 <meta property="og:locale" content="en_US">
@@ -72,10 +72,10 @@
     <span id="actions">
       <ul>
         
-        <li><a class="icon" href="/2020/03/13/ck82y1k3d0009ngr405qfgper/"><i class="fa fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        <li><a class="icon" href="/2020/03/13/ck83ytcnt000eo4r49a275i3q/"><i class="fa fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
         
         
-        <li><a class="icon" href="/2020/03/12/ck82y1k400022ngr49j12dpwu/"><i class="fa fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        <li><a class="icon" href="/2020/03/12/ck83ytcnz000uo4r4flctfjh2/"><i class="fa fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
         
         <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
         <li><a class="icon" href="#"><i class="fa fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
@@ -88,16 +88,16 @@
     <br/>
     <div id="share" style="display: none">
       <ul>
-  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://falkon.cn/2020/03/13/ck82y1k3j000lngr45vnxdmcj/" target="_blank" rel="noopener"><i class="fa fa-facebook " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="https://twitter.com/share?url=http://falkon.cn/2020/03/13/ck82y1k3j000lngr45vnxdmcj/&text=Expdp/Impdp" target="_blank" rel="noopener"><i class="fa fa-twitter " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://falkon.cn/2020/03/13/ck82y1k3j000lngr45vnxdmcj/&title=Expdp/Impdp" target="_blank" rel="noopener"><i class="fa fa-linkedin " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://falkon.cn/2020/03/13/ck82y1k3j000lngr45vnxdmcj/&is_video=false&description=Expdp/Impdp" target="_blank" rel="noopener"><i class="fa fa-pinterest " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="mailto:?subject=Expdp/Impdp&body=Check out this article: http://falkon.cn/2020/03/13/ck82y1k3j000lngr45vnxdmcj/"><i class="fa fa-envelope " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="https://getpocket.com/save?url=http://falkon.cn/2020/03/13/ck82y1k3j000lngr45vnxdmcj/&title=Expdp/Impdp" target="_blank" rel="noopener"><i class="fa fa-get-pocket " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://reddit.com/submit?url=http://falkon.cn/2020/03/13/ck82y1k3j000lngr45vnxdmcj/&title=Expdp/Impdp" target="_blank" rel="noopener"><i class="fa fa-reddit " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://falkon.cn/2020/03/13/ck82y1k3j000lngr45vnxdmcj/&title=Expdp/Impdp" target="_blank" rel="noopener"><i class="fa fa-stumbleupon " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://digg.com/submit?url=http://falkon.cn/2020/03/13/ck82y1k3j000lngr45vnxdmcj/&title=Expdp/Impdp" target="_blank" rel="noopener"><i class="fa fa-digg " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://falkon.cn/2020/03/13/ck82y1k3j000lngr45vnxdmcj/&name=Expdp/Impdp&description=" target="_blank" rel="noopener"><i class="fa fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://falkon.cn/2020/03/13/ck83ytcnx000no4r4a3hdckmc/" target="_blank" rel="noopener"><i class="fa fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://falkon.cn/2020/03/13/ck83ytcnx000no4r4a3hdckmc/&text=Expdp/Impdp" target="_blank" rel="noopener"><i class="fa fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://falkon.cn/2020/03/13/ck83ytcnx000no4r4a3hdckmc/&title=Expdp/Impdp" target="_blank" rel="noopener"><i class="fa fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://falkon.cn/2020/03/13/ck83ytcnx000no4r4a3hdckmc/&is_video=false&description=Expdp/Impdp" target="_blank" rel="noopener"><i class="fa fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Expdp/Impdp&body=Check out this article: http://falkon.cn/2020/03/13/ck83ytcnx000no4r4a3hdckmc/"><i class="fa fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://falkon.cn/2020/03/13/ck83ytcnx000no4r4a3hdckmc/&title=Expdp/Impdp" target="_blank" rel="noopener"><i class="fa fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://falkon.cn/2020/03/13/ck83ytcnx000no4r4a3hdckmc/&title=Expdp/Impdp" target="_blank" rel="noopener"><i class="fa fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://falkon.cn/2020/03/13/ck83ytcnx000no4r4a3hdckmc/&title=Expdp/Impdp" target="_blank" rel="noopener"><i class="fa fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://falkon.cn/2020/03/13/ck83ytcnx000no4r4a3hdckmc/&title=Expdp/Impdp" target="_blank" rel="noopener"><i class="fa fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://falkon.cn/2020/03/13/ck83ytcnx000no4r4a3hdckmc/&name=Expdp/Impdp&description=" target="_blank" rel="noopener"><i class="fa fa-tumblr " aria-hidden="true"></i></a></li>
 </ul>
 
     </div>
@@ -222,16 +222,16 @@
 
     <div id="share-footer" style="display: none">
       <ul>
-  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://falkon.cn/2020/03/13/ck82y1k3j000lngr45vnxdmcj/" target="_blank" rel="noopener"><i class="fa fa-facebook fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="https://twitter.com/share?url=http://falkon.cn/2020/03/13/ck82y1k3j000lngr45vnxdmcj/&text=Expdp/Impdp" target="_blank" rel="noopener"><i class="fa fa-twitter fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://falkon.cn/2020/03/13/ck82y1k3j000lngr45vnxdmcj/&title=Expdp/Impdp" target="_blank" rel="noopener"><i class="fa fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://falkon.cn/2020/03/13/ck82y1k3j000lngr45vnxdmcj/&is_video=false&description=Expdp/Impdp" target="_blank" rel="noopener"><i class="fa fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="mailto:?subject=Expdp/Impdp&body=Check out this article: http://falkon.cn/2020/03/13/ck82y1k3j000lngr45vnxdmcj/"><i class="fa fa-envelope fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="https://getpocket.com/save?url=http://falkon.cn/2020/03/13/ck82y1k3j000lngr45vnxdmcj/&title=Expdp/Impdp" target="_blank" rel="noopener"><i class="fa fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://reddit.com/submit?url=http://falkon.cn/2020/03/13/ck82y1k3j000lngr45vnxdmcj/&title=Expdp/Impdp" target="_blank" rel="noopener"><i class="fa fa-reddit fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://falkon.cn/2020/03/13/ck82y1k3j000lngr45vnxdmcj/&title=Expdp/Impdp" target="_blank" rel="noopener"><i class="fa fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://digg.com/submit?url=http://falkon.cn/2020/03/13/ck82y1k3j000lngr45vnxdmcj/&title=Expdp/Impdp" target="_blank" rel="noopener"><i class="fa fa-digg fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://falkon.cn/2020/03/13/ck82y1k3j000lngr45vnxdmcj/&name=Expdp/Impdp&description=" target="_blank" rel="noopener"><i class="fa fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://falkon.cn/2020/03/13/ck83ytcnx000no4r4a3hdckmc/" target="_blank" rel="noopener"><i class="fa fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://falkon.cn/2020/03/13/ck83ytcnx000no4r4a3hdckmc/&text=Expdp/Impdp" target="_blank" rel="noopener"><i class="fa fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://falkon.cn/2020/03/13/ck83ytcnx000no4r4a3hdckmc/&title=Expdp/Impdp" target="_blank" rel="noopener"><i class="fa fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://falkon.cn/2020/03/13/ck83ytcnx000no4r4a3hdckmc/&is_video=false&description=Expdp/Impdp" target="_blank" rel="noopener"><i class="fa fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Expdp/Impdp&body=Check out this article: http://falkon.cn/2020/03/13/ck83ytcnx000no4r4a3hdckmc/"><i class="fa fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://falkon.cn/2020/03/13/ck83ytcnx000no4r4a3hdckmc/&title=Expdp/Impdp" target="_blank" rel="noopener"><i class="fa fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://falkon.cn/2020/03/13/ck83ytcnx000no4r4a3hdckmc/&title=Expdp/Impdp" target="_blank" rel="noopener"><i class="fa fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://falkon.cn/2020/03/13/ck83ytcnx000no4r4a3hdckmc/&title=Expdp/Impdp" target="_blank" rel="noopener"><i class="fa fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://falkon.cn/2020/03/13/ck83ytcnx000no4r4a3hdckmc/&title=Expdp/Impdp" target="_blank" rel="noopener"><i class="fa fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://falkon.cn/2020/03/13/ck83ytcnx000no4r4a3hdckmc/&name=Expdp/Impdp&description=" target="_blank" rel="noopener"><i class="fa fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
 </ul>
 
     </div>
