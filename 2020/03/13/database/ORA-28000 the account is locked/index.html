@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="今天有个客户反应账户锁了，我给发了解锁账户的语句，过了一会告诉我解锁的语句不起作用，截图我看语句也执行成功了，有点没想明白，通过远程直接上手，下面是排查过程，这里隐去了客户的相关账户和监听日志信息  查看资源限制，用户的数据库是12.2.0.1 12345678SQL&gt; show parameter resourceNAME">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ORA-28000 the account is locked">
+<meta property="og:url" content="http://falkon.cn/2020/03/13/database/ORA-28000%20the%20account%20is%20locked/index.html">
+<meta property="og:site_name" content="Falkon">
+<meta property="og:description" content="今天有个客户反应账户锁了，我给发了解锁账户的语句，过了一会告诉我解锁的语句不起作用，截图我看语句也执行成功了，有点没想明白，通过远程直接上手，下面是排查过程，这里隐去了客户的相关账户和监听日志信息  查看资源限制，用户的数据库是12.2.0.1 12345678SQL&gt; show parameter resourceNAME">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-03-13T08:53:06.736Z">
+<meta property="article:modified_time" content="2020-03-13T09:23:22.439Z">
+<meta property="article:author" content="Falkon">
+<meta property="article:tag" content="ORA-28000">
+<meta name="twitter:card" content="summary">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="http://q6p62toq8.falkon.cn/favicon.png">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="http://q6p62toq8.falkon.cn/favicon.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="http://q6p62toq8.falkon.cn/favicon.png">
+          
+        
+    
+    <!-- title -->
+    <title>ORA-28000 the account is locked</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fa fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fa fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about">About</a></li>
+         
+          <li><a href="/archives">Archives</a></li>
+         
+          <li><a href="/review">Review</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2020/03/21/database/Oracle%2012c%20PDB%20Clone/"><i class="fa fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2020/03/13/database/exp_imp/"><i class="fa fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fa fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://falkon.cn/2020/03/13/database/ORA-28000%20the%20account%20is%20locked/" target="_blank" rel="noopener"><i class="fa fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://falkon.cn/2020/03/13/database/ORA-28000%20the%20account%20is%20locked/&text=ORA-28000 the account is locked" target="_blank" rel="noopener"><i class="fa fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://falkon.cn/2020/03/13/database/ORA-28000%20the%20account%20is%20locked/&title=ORA-28000 the account is locked" target="_blank" rel="noopener"><i class="fa fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://falkon.cn/2020/03/13/database/ORA-28000%20the%20account%20is%20locked/&is_video=false&description=ORA-28000 the account is locked" target="_blank" rel="noopener"><i class="fa fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=ORA-28000 the account is locked&body=Check out this article: http://falkon.cn/2020/03/13/database/ORA-28000%20the%20account%20is%20locked/"><i class="fa fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://falkon.cn/2020/03/13/database/ORA-28000%20the%20account%20is%20locked/&title=ORA-28000 the account is locked" target="_blank" rel="noopener"><i class="fa fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://falkon.cn/2020/03/13/database/ORA-28000%20the%20account%20is%20locked/&title=ORA-28000 the account is locked" target="_blank" rel="noopener"><i class="fa fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://falkon.cn/2020/03/13/database/ORA-28000%20the%20account%20is%20locked/&title=ORA-28000 the account is locked" target="_blank" rel="noopener"><i class="fa fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://falkon.cn/2020/03/13/database/ORA-28000%20the%20account%20is%20locked/&title=ORA-28000 the account is locked" target="_blank" rel="noopener"><i class="fa fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://falkon.cn/2020/03/13/database/ORA-28000%20the%20account%20is%20locked/&name=ORA-28000 the account is locked&description=" target="_blank" rel="noopener"><i class="fa fa-tumblr " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index width mx-auto px2 my4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        ORA-28000 the account is locked
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Falkon</span>
+      </span>
+      
+    <div class="postdate">
+        <time datetime="2020-03-13T08:53:06.736Z" itemprop="datePublished">2020-03-13</time>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/ORA-28000/" rel="tag">ORA-28000</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <ul>
+<li><p>今天有个客户反应账户锁了，我给发了解锁账户的语句，过了一会告诉我解锁的语句不起作用，截图我看语句也执行成功了，有点没想明白，通过远程直接上手，下面是排查过程，这里隐去了客户的相关账户和监听日志信息</p>
+</li>
+<li><p>查看资源限制，用户的数据库是12.2.0.1</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">SQL&gt; show parameter resource</span><br><span class="line"></span><br><span class="line">NAME                                 TYPE                              VALUE</span><br><span class="line"><span class="comment">------------------------------------ --------------------------------- ------------------------------</span></span><br><span class="line">resource_limit                       boolean                           TRUE</span><br><span class="line">resource_manage_goldengate           boolean                           FALSE</span><br><span class="line">resource_manager_cpu_allocation      integer                           8</span><br><span class="line">resource_manager_plan                string</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>资源限制启动了，查看默认资源限制的相关参数<br>看到连续登录失败FAILED_LOGIN_ATTEMPTS的参数是10，初步怀疑是使用不正确的密码连续登录造成的账户锁定</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">SQL&gt; col resource_name for a30</span><br><span class="line">SQL&gt; col limit for a15</span><br><span class="line">SQL&gt; </span><br><span class="line">SQL&gt; select resource_name,limit from dba_profiles where profile='DEFAULT';</span><br><span class="line"></span><br><span class="line">RESOURCE_NAME                  LIMIT</span><br><span class="line"><span class="comment">------------------------------ ---------------</span></span><br><span class="line">COMPOSITE_LIMIT                UNLIMITED</span><br><span class="line">SESSIONS_PER_USER              UNLIMITED</span><br><span class="line">CPU_PER_SESSION                UNLIMITED</span><br><span class="line">CPU_PER_CALL                   UNLIMITED</span><br><span class="line">LOGICAL_READS_PER_SESSION      UNLIMITED</span><br><span class="line">LOGICAL_READS_PER_CALL         UNLIMITED</span><br><span class="line">IDLE_TIME                      UNLIMITED</span><br><span class="line">CONNECT_TIME                   UNLIMITED</span><br><span class="line">PRIVATE_SGA                    UNLIMITED</span><br><span class="line">FAILED_LOGIN_ATTEMPTS          10</span><br><span class="line">PASSWORD_LIFE_TIME             180</span><br><span class="line"></span><br><span class="line">RESOURCE_NAME                  LIMIT</span><br><span class="line"><span class="comment">------------------------------ ---------------</span></span><br><span class="line">PASSWORD_REUSE_TIME            UNLIMITED</span><br><span class="line">PASSWORD_REUSE_MAX             UNLIMITED</span><br><span class="line">PASSWORD_VERIFY_FUNCTION       NULL</span><br><span class="line">PASSWORD_LOCK_TIME             1</span><br><span class="line">PASSWORD_GRACE_TIME            7</span><br><span class="line">INACTIVE_ACCOUNT_TIME          UNLIMITED</span><br><span class="line"></span><br><span class="line">17 rows selected.</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>重新解锁账户，查看user$视图中的连续登录次数，不到30s连续登录了14次</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">SQL&gt; alter user test account unlock;</span><br><span class="line"></span><br><span class="line">User altered.</span><br><span class="line"></span><br><span class="line">SQL&gt; select name, lcount from user$ where name='TEST';</span><br><span class="line"></span><br><span class="line">NAME           LCOUNT</span><br><span class="line"><span class="comment">---------- ----------</span></span><br><span class="line">TEST             14</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查找是哪个主机的应用在登录，查看listener.log</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">13-MAR-2020 06:02:41 * (CONNECT_DATA=(SID=ystdb)(CID=(PROGRAM=perl@ystdb11g)(HOST=ystdb11g)(USER=</span><br><span class="line">oracle))) * (ADDRESS=(PROTOCOL=tcp)(HOST=192.168.112.12)(PORT=29941)) * establish * ystdb * 0</span><br><span class="line">13-MAR-2020 06:02:41 * (CONNECT_DATA=(SID=ystdb)(CID=(PROGRAM=perl@ystdb11g)(HOST=ystdb11g)(USER=</span><br><span class="line">oracle))) * (ADDRESS=(PROTOCOL=tcp)(HOST=192.168.112.12)(PORT=29942)) * establish * ystdb * 0</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>找到这台主机后，联系应用的人把应用停掉，重新解锁账号，并让应用重新配置新的密码后问题解决</p>
+</li>
+</ul>
+
+  </div>
+</article>
+
+
+
+    </div>
+    
+      <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about">About</a></li>
+         
+          <li><a href="/archives">Archives</a></li>
+         
+          <li><a href="/review">Review</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://falkon.cn/2020/03/13/database/ORA-28000%20the%20account%20is%20locked/" target="_blank" rel="noopener"><i class="fa fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://falkon.cn/2020/03/13/database/ORA-28000%20the%20account%20is%20locked/&text=ORA-28000 the account is locked" target="_blank" rel="noopener"><i class="fa fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://falkon.cn/2020/03/13/database/ORA-28000%20the%20account%20is%20locked/&title=ORA-28000 the account is locked" target="_blank" rel="noopener"><i class="fa fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://falkon.cn/2020/03/13/database/ORA-28000%20the%20account%20is%20locked/&is_video=false&description=ORA-28000 the account is locked" target="_blank" rel="noopener"><i class="fa fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=ORA-28000 the account is locked&body=Check out this article: http://falkon.cn/2020/03/13/database/ORA-28000%20the%20account%20is%20locked/"><i class="fa fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://falkon.cn/2020/03/13/database/ORA-28000%20the%20account%20is%20locked/&title=ORA-28000 the account is locked" target="_blank" rel="noopener"><i class="fa fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://falkon.cn/2020/03/13/database/ORA-28000%20the%20account%20is%20locked/&title=ORA-28000 the account is locked" target="_blank" rel="noopener"><i class="fa fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://falkon.cn/2020/03/13/database/ORA-28000%20the%20account%20is%20locked/&title=ORA-28000 the account is locked" target="_blank" rel="noopener"><i class="fa fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://falkon.cn/2020/03/13/database/ORA-28000%20the%20account%20is%20locked/&title=ORA-28000 the account is locked" target="_blank" rel="noopener"><i class="fa fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://falkon.cn/2020/03/13/database/ORA-28000%20the%20account%20is%20locked/&name=ORA-28000 the account is locked&description=" target="_blank" rel="noopener"><i class="fa fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+      <ul>
+        <li id="toc"><a class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa fa-list fa-lg" aria-hidden="true"></i> TOC</a></li>
+        <li id="share"><a class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa fa-share-alt fa-lg" aria-hidden="true"></i> Share</a></li>
+        <li id="top" style="display:none"><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a></li>
+        <li id="menu"><a class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa fa-bars fa-lg" aria-hidden="true"></i> Menu</a></li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+    
+    <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2020 Falkon
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about">About</a></li>
+         
+          <li><a href="/archives">Archives</a></li>
+         
+          <li><a href="/review">Review</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+</body>
+</html>
+<!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<link rel="stylesheet" href="/lib/meslo-LG/styles.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/justifiedGallery.min.css">
+
+
+<!-- jquery -->
+
+<script src="http://q6p62toq8.falkon.cn/jquery.min.js"></script>
+
+
+<script src="http://q6p62toq8.falkon.cn/jquery.justifiedGallery.min.js"></script>
+
+
+<script src="/js/main.js"></script>
+
+
+
+
+

@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="登录官网链接http:&#x2F;&#x2F;www.oracle.com&#x2F;goto&#x2F;oda&#x2F;docs 点击Oracle Database Applicance Version Patchs前面的+号进入相关ODA一体机的补丁列表 点击相应的补丁号，如27604623进入不行下载页面 经测试ODA最新版本的补丁可以应用与较早的ODA一体机产品，如18.7的补丁可以应用早期的X6、X5以及X4，X3没有测试过">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ODA最新补丁文档和下载地址">
+<meta property="og:url" content="http://falkon.cn/2020/03/23/database/ODA%E6%9C%80%E6%96%B0%E8%A1%A5%E4%B8%81%E6%96%87%E6%A1%A3%E5%92%8C%E4%B8%8B%E8%BD%BD%E5%9C%B0%E5%9D%80/index.html">
+<meta property="og:site_name" content="Falkon">
+<meta property="og:description" content="登录官网链接http:&#x2F;&#x2F;www.oracle.com&#x2F;goto&#x2F;oda&#x2F;docs 点击Oracle Database Applicance Version Patchs前面的+号进入相关ODA一体机的补丁列表 点击相应的补丁号，如27604623进入不行下载页面 经测试ODA最新版本的补丁可以应用与较早的ODA一体机产品，如18.7的补丁可以应用早期的X6、X5以及X4，X3没有测试过">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://q6p62toq8.falkon.cn/static/images/oda-patch001.png">
+<meta property="og:image" content="http://q6p62toq8.falkon.cn/static/images/oda-patch002.png">
+<meta property="og:image" content="http://q6p62toq8.falkon.cn/static/images/oda-patch003.png">
+<meta property="article:published_time" content="2020-03-23T03:42:06.993Z">
+<meta property="article:modified_time" content="2020-03-23T04:33:14.626Z">
+<meta property="article:author" content="Falkon">
+<meta property="article:tag" content="ODA">
+<meta property="article:tag" content="Patch">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://q6p62toq8.falkon.cn/static/images/oda-patch001.png">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="http://q6p62toq8.falkon.cn/favicon.png">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="http://q6p62toq8.falkon.cn/favicon.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="http://q6p62toq8.falkon.cn/favicon.png">
+          
+        
+    
+    <!-- title -->
+    <title>ODA最新补丁文档和下载地址</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fa fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fa fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about">About</a></li>
+         
+          <li><a href="/archives">Archives</a></li>
+         
+          <li><a href="/review">Review</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/2020/03/23/linux/Openfiler%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/"><i class="fa fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/2020/03/22/database/ASM%E4%B8%AD%E7%9A%84Req_mir_free_MB%E5%AE%9E%E9%AA%8C/"><i class="fa fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fa fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://falkon.cn/2020/03/23/database/ODA%E6%9C%80%E6%96%B0%E8%A1%A5%E4%B8%81%E6%96%87%E6%A1%A3%E5%92%8C%E4%B8%8B%E8%BD%BD%E5%9C%B0%E5%9D%80/" target="_blank" rel="noopener"><i class="fa fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://falkon.cn/2020/03/23/database/ODA%E6%9C%80%E6%96%B0%E8%A1%A5%E4%B8%81%E6%96%87%E6%A1%A3%E5%92%8C%E4%B8%8B%E8%BD%BD%E5%9C%B0%E5%9D%80/&text=ODA最新补丁文档和下载地址" target="_blank" rel="noopener"><i class="fa fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://falkon.cn/2020/03/23/database/ODA%E6%9C%80%E6%96%B0%E8%A1%A5%E4%B8%81%E6%96%87%E6%A1%A3%E5%92%8C%E4%B8%8B%E8%BD%BD%E5%9C%B0%E5%9D%80/&title=ODA最新补丁文档和下载地址" target="_blank" rel="noopener"><i class="fa fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://falkon.cn/2020/03/23/database/ODA%E6%9C%80%E6%96%B0%E8%A1%A5%E4%B8%81%E6%96%87%E6%A1%A3%E5%92%8C%E4%B8%8B%E8%BD%BD%E5%9C%B0%E5%9D%80/&is_video=false&description=ODA最新补丁文档和下载地址" target="_blank" rel="noopener"><i class="fa fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=ODA最新补丁文档和下载地址&body=Check out this article: http://falkon.cn/2020/03/23/database/ODA%E6%9C%80%E6%96%B0%E8%A1%A5%E4%B8%81%E6%96%87%E6%A1%A3%E5%92%8C%E4%B8%8B%E8%BD%BD%E5%9C%B0%E5%9D%80/"><i class="fa fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://falkon.cn/2020/03/23/database/ODA%E6%9C%80%E6%96%B0%E8%A1%A5%E4%B8%81%E6%96%87%E6%A1%A3%E5%92%8C%E4%B8%8B%E8%BD%BD%E5%9C%B0%E5%9D%80/&title=ODA最新补丁文档和下载地址" target="_blank" rel="noopener"><i class="fa fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://falkon.cn/2020/03/23/database/ODA%E6%9C%80%E6%96%B0%E8%A1%A5%E4%B8%81%E6%96%87%E6%A1%A3%E5%92%8C%E4%B8%8B%E8%BD%BD%E5%9C%B0%E5%9D%80/&title=ODA最新补丁文档和下载地址" target="_blank" rel="noopener"><i class="fa fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://falkon.cn/2020/03/23/database/ODA%E6%9C%80%E6%96%B0%E8%A1%A5%E4%B8%81%E6%96%87%E6%A1%A3%E5%92%8C%E4%B8%8B%E8%BD%BD%E5%9C%B0%E5%9D%80/&title=ODA最新补丁文档和下载地址" target="_blank" rel="noopener"><i class="fa fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://falkon.cn/2020/03/23/database/ODA%E6%9C%80%E6%96%B0%E8%A1%A5%E4%B8%81%E6%96%87%E6%A1%A3%E5%92%8C%E4%B8%8B%E8%BD%BD%E5%9C%B0%E5%9D%80/&title=ODA最新补丁文档和下载地址" target="_blank" rel="noopener"><i class="fa fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://falkon.cn/2020/03/23/database/ODA%E6%9C%80%E6%96%B0%E8%A1%A5%E4%B8%81%E6%96%87%E6%A1%A3%E5%92%8C%E4%B8%8B%E8%BD%BD%E5%9C%B0%E5%9D%80/&name=ODA最新补丁文档和下载地址&description=" target="_blank" rel="noopener"><i class="fa fa-tumblr " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index width mx-auto px2 my4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        ODA最新补丁文档和下载地址
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Falkon</span>
+      </span>
+      
+    <div class="postdate">
+        <time datetime="2020-03-23T03:42:06.993Z" itemprop="datePublished">2020-03-23</time>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/ODA/" rel="tag">ODA</a>, <a class="tag-link" href="/tags/Patch/" rel="tag">Patch</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <ul>
+<li>登录官网链接<a href="http://www.oracle.com/goto/oda/docs" target="_blank" rel="noopener">http://www.oracle.com/goto/oda/docs</a><img src="http://q6p62toq8.falkon.cn/static/images/oda-patch001.png"></li>
+<li>点击Oracle Database Applicance Version Patchs前面的+号进入相关ODA一体机的补丁列表<img src="http://q6p62toq8.falkon.cn/static/images/oda-patch002.png"></li>
+<li>点击相应的补丁号，如27604623进入不行下载页面<img src="http://q6p62toq8.falkon.cn/static/images/oda-patch003.png"></li>
+<li><strong>经测试ODA最新版本的补丁可以应用与较早的ODA一体机产品，如18.7的补丁可以应用早期的X6、X5以及X4，X3没有测试过</strong></li>
+</ul>
+
+  </div>
+</article>
+
+
+
+    </div>
+    
+      <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about">About</a></li>
+         
+          <li><a href="/archives">Archives</a></li>
+         
+          <li><a href="/review">Review</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://falkon.cn/2020/03/23/database/ODA%E6%9C%80%E6%96%B0%E8%A1%A5%E4%B8%81%E6%96%87%E6%A1%A3%E5%92%8C%E4%B8%8B%E8%BD%BD%E5%9C%B0%E5%9D%80/" target="_blank" rel="noopener"><i class="fa fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://falkon.cn/2020/03/23/database/ODA%E6%9C%80%E6%96%B0%E8%A1%A5%E4%B8%81%E6%96%87%E6%A1%A3%E5%92%8C%E4%B8%8B%E8%BD%BD%E5%9C%B0%E5%9D%80/&text=ODA最新补丁文档和下载地址" target="_blank" rel="noopener"><i class="fa fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://falkon.cn/2020/03/23/database/ODA%E6%9C%80%E6%96%B0%E8%A1%A5%E4%B8%81%E6%96%87%E6%A1%A3%E5%92%8C%E4%B8%8B%E8%BD%BD%E5%9C%B0%E5%9D%80/&title=ODA最新补丁文档和下载地址" target="_blank" rel="noopener"><i class="fa fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://falkon.cn/2020/03/23/database/ODA%E6%9C%80%E6%96%B0%E8%A1%A5%E4%B8%81%E6%96%87%E6%A1%A3%E5%92%8C%E4%B8%8B%E8%BD%BD%E5%9C%B0%E5%9D%80/&is_video=false&description=ODA最新补丁文档和下载地址" target="_blank" rel="noopener"><i class="fa fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=ODA最新补丁文档和下载地址&body=Check out this article: http://falkon.cn/2020/03/23/database/ODA%E6%9C%80%E6%96%B0%E8%A1%A5%E4%B8%81%E6%96%87%E6%A1%A3%E5%92%8C%E4%B8%8B%E8%BD%BD%E5%9C%B0%E5%9D%80/"><i class="fa fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://falkon.cn/2020/03/23/database/ODA%E6%9C%80%E6%96%B0%E8%A1%A5%E4%B8%81%E6%96%87%E6%A1%A3%E5%92%8C%E4%B8%8B%E8%BD%BD%E5%9C%B0%E5%9D%80/&title=ODA最新补丁文档和下载地址" target="_blank" rel="noopener"><i class="fa fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://falkon.cn/2020/03/23/database/ODA%E6%9C%80%E6%96%B0%E8%A1%A5%E4%B8%81%E6%96%87%E6%A1%A3%E5%92%8C%E4%B8%8B%E8%BD%BD%E5%9C%B0%E5%9D%80/&title=ODA最新补丁文档和下载地址" target="_blank" rel="noopener"><i class="fa fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://falkon.cn/2020/03/23/database/ODA%E6%9C%80%E6%96%B0%E8%A1%A5%E4%B8%81%E6%96%87%E6%A1%A3%E5%92%8C%E4%B8%8B%E8%BD%BD%E5%9C%B0%E5%9D%80/&title=ODA最新补丁文档和下载地址" target="_blank" rel="noopener"><i class="fa fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://falkon.cn/2020/03/23/database/ODA%E6%9C%80%E6%96%B0%E8%A1%A5%E4%B8%81%E6%96%87%E6%A1%A3%E5%92%8C%E4%B8%8B%E8%BD%BD%E5%9C%B0%E5%9D%80/&title=ODA最新补丁文档和下载地址" target="_blank" rel="noopener"><i class="fa fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://falkon.cn/2020/03/23/database/ODA%E6%9C%80%E6%96%B0%E8%A1%A5%E4%B8%81%E6%96%87%E6%A1%A3%E5%92%8C%E4%B8%8B%E8%BD%BD%E5%9C%B0%E5%9D%80/&name=ODA最新补丁文档和下载地址&description=" target="_blank" rel="noopener"><i class="fa fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+      <ul>
+        <li id="toc"><a class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa fa-list fa-lg" aria-hidden="true"></i> TOC</a></li>
+        <li id="share"><a class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa fa-share-alt fa-lg" aria-hidden="true"></i> Share</a></li>
+        <li id="top" style="display:none"><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a></li>
+        <li id="menu"><a class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa fa-bars fa-lg" aria-hidden="true"></i> Menu</a></li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+    
+    <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2020 Falkon
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about">About</a></li>
+         
+          <li><a href="/archives">Archives</a></li>
+         
+          <li><a href="/review">Review</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+</body>
+</html>
+<!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<link rel="stylesheet" href="/lib/meslo-LG/styles.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/justifiedGallery.min.css">
+
+
+<!-- jquery -->
+
+<script src="http://q6p62toq8.falkon.cn/jquery.min.js"></script>
+
+
+<script src="http://q6p62toq8.falkon.cn/jquery.justifiedGallery.min.js"></script>
+
+
+<script src="/js/main.js"></script>
+
+
+
+
+
