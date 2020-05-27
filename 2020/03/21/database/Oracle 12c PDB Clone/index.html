@@ -1,154 +1,78 @@
-<!DOCTYPE html>
-<html lang=en>
+<!DOCTYPE HTML>
+<html lang="en">
 <head>
-    <!-- so meta -->
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="HandheldFriendly" content="True">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="本地克隆官方图示   本地克隆 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647[oracle@testdb12c01 ~]$ sqlplus &#x2F; as sysdbaSQL*Plus: Release 12.1.0.2.0 Production on Sat Mar 21 0">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Oracle 12c PDB克隆">
-<meta property="og:url" content="http://falkon.cn/2020/03/21/database/Oracle%2012c%20PDB%20Clone/index.html">
-<meta property="og:site_name" content="Falkon">
-<meta property="og:description" content="本地克隆官方图示   本地克隆 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647[oracle@testdb12c01 ~]$ sqlplus &#x2F; as sysdbaSQL*Plus: Release 12.1.0.2.0 Production on Sat Mar 21 0">
-<meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://q6p62toq8.falkon.cn/static/images/local_pdb_0911.png">
-<meta property="og:image" content="http://q6p62toq8.falkon.cn/static/images/remote-pdb.png">
-<meta property="article:published_time" content="2020-03-21T12:57:33.381Z">
-<meta property="article:modified_time" content="2020-03-21T13:23:53.756Z">
-<meta property="article:author" content="Falkon">
-<meta property="article:tag" content="12c">
-<meta property="article:tag" content="PDB">
-<meta property="article:tag" content="CLONE">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://q6p62toq8.falkon.cn/static/images/local_pdb_0911.png">
-    
-    
-        
-          
-              <link rel="shortcut icon" href="http://q6p62toq8.falkon.cn/favicon.png">
-          
-        
-        
-          
-            <link rel="icon" type="image/png" href="http://q6p62toq8.falkon.cn/favicon.png" sizes="192x192">
-          
-        
-        
-          
-            <link rel="apple-touch-icon" sizes="180x180" href="http://q6p62toq8.falkon.cn/favicon.png">
-          
-        
-    
-    <!-- title -->
-    <title>Oracle 12c PDB克隆</title>
-    <!-- styles -->
-    
-<link rel="stylesheet" href="/css/style.css">
+  <meta charset="utf-8">
+  
+  <title>Oracle 12c PDB克隆 | FALKON&#39;S TECH BLOG</title>
+  <meta name="author" content="Falkon">
+  
+  <meta name="description" content="本地克隆官方图示">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-    <!-- rss -->
-    
-    
-<meta name="generator" content="Hexo 4.2.0"></head>
+  <meta property="og:title" content="Oracle 12c PDB克隆"/>
+  <meta property="og:site_name" content="FALKON&#39;S TECH BLOG"/>
 
-<body>
-    
-      <div id="header-post">
-  <a id="menu-icon" href="#"><i class="fa fa-bars fa-lg"></i></a>
-  <a id="menu-icon-tablet" href="#"><i class="fa fa-bars fa-lg"></i></a>
-  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa fa-chevron-up fa-lg"></i></a>
-  <span id="menu">
-    <span id="nav">
-      <ul>
-         
-          <li><a href="/">Home</a></li>
-         
-          <li><a href="/about">About</a></li>
-         
-          <li><a href="/archives">Archives</a></li>
-         
-          <li><a href="/review">Review</a></li>
-        
-      </ul>
-    </span>
-    <br/>
-    <span id="actions">
-      <ul>
-        
-        <li><a class="icon" href="/2020/03/22/database/ASM%E4%B8%AD%E7%9A%84Req_mir_free_MB%E5%AE%9E%E9%AA%8C/"><i class="fa fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
-        
-        
-        <li><a class="icon" href="/2020/03/13/database/ORA-28000%20the%20account%20is%20locked/"><i class="fa fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
-        
-        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
-        <li><a class="icon" href="#"><i class="fa fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
-      </ul>
-      <span id="i-prev" class="info" style="display:none;">Previous post</span>
-      <span id="i-next" class="info" style="display:none;">Next post</span>
-      <span id="i-top" class="info" style="display:none;">Back to top</span>
-      <span id="i-share" class="info" style="display:none;">Share post</span>
-    </span>
-    <br/>
-    <div id="share" style="display: none">
-      <ul>
-  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://falkon.cn/2020/03/21/database/Oracle%2012c%20PDB%20Clone/" target="_blank" rel="noopener"><i class="fa fa-facebook " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="https://twitter.com/share?url=http://falkon.cn/2020/03/21/database/Oracle%2012c%20PDB%20Clone/&text=Oracle 12c PDB克隆" target="_blank" rel="noopener"><i class="fa fa-twitter " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://falkon.cn/2020/03/21/database/Oracle%2012c%20PDB%20Clone/&title=Oracle 12c PDB克隆" target="_blank" rel="noopener"><i class="fa fa-linkedin " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://falkon.cn/2020/03/21/database/Oracle%2012c%20PDB%20Clone/&is_video=false&description=Oracle 12c PDB克隆" target="_blank" rel="noopener"><i class="fa fa-pinterest " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="mailto:?subject=Oracle 12c PDB克隆&body=Check out this article: http://falkon.cn/2020/03/21/database/Oracle%2012c%20PDB%20Clone/"><i class="fa fa-envelope " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="https://getpocket.com/save?url=http://falkon.cn/2020/03/21/database/Oracle%2012c%20PDB%20Clone/&title=Oracle 12c PDB克隆" target="_blank" rel="noopener"><i class="fa fa-get-pocket " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://reddit.com/submit?url=http://falkon.cn/2020/03/21/database/Oracle%2012c%20PDB%20Clone/&title=Oracle 12c PDB克隆" target="_blank" rel="noopener"><i class="fa fa-reddit " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://falkon.cn/2020/03/21/database/Oracle%2012c%20PDB%20Clone/&title=Oracle 12c PDB克隆" target="_blank" rel="noopener"><i class="fa fa-stumbleupon " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://digg.com/submit?url=http://falkon.cn/2020/03/21/database/Oracle%2012c%20PDB%20Clone/&title=Oracle 12c PDB克隆" target="_blank" rel="noopener"><i class="fa fa-digg " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://falkon.cn/2020/03/21/database/Oracle%2012c%20PDB%20Clone/&name=Oracle 12c PDB克隆&description=" target="_blank" rel="noopener"><i class="fa fa-tumblr " aria-hidden="true"></i></a></li>
-</ul>
-
-    </div>
-    <div id="toc">
-      
-    </div>
-  </span>
-</div>
-
-    
-    <div class="content index width mx-auto px2 my4">
-        
-        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-  <header>
-    
-    <h1 class="posttitle" itemprop="name headline">
-        Oracle 12c PDB克隆
-    </h1>
-
-
-
-    <div class="meta">
-      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
-        <span itemprop="name">Falkon</span>
-      </span>
-      
-    <div class="postdate">
-        <time datetime="2020-03-21T12:57:33.381Z" itemprop="datePublished">2020-03-21</time>
-    </div>
-
-
-      
-    <div class="article-tag">
-        <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/12c/" rel="tag">12c</a>, <a class="tag-link" href="/tags/CLONE/" rel="tag">CLONE</a>, <a class="tag-link" href="/tags/PDB/" rel="tag">PDB</a>
-    </div>
-
-
-    </div>
-  </header>
+  
+    <meta property="og:image" content=""/>
   
 
-  <div class="content" itemprop="articleBody">
-    <ul>
-<li><p>本地克隆官方图示</p>
-<img src="http://q6p62toq8.falkon.cn/static/images/local_pdb_0911.png">
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="FALKON&#39;S TECH BLOG" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">FALKON&#39;S TECH BLOG</a></h1>
+  <h2><a href="/">Record life, record me.</a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+      <li><a href="/project">Project</a></li>
+    
+      <li><a href="/about">About</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article id="post-database/Oracle 12c PDB Clone" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-03-21T12:57:33.381Z"><a href="/2020/03/21/database/Oracle 12c PDB Clone/">2020-03-21</a></time>
+      
+      
+  
+    <h1 class="p-name title" itemprop="headline name">Oracle 12c PDB克隆</h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <ul>
+<li>本地克隆官方图示<img src="http://q6p62toq8.falkon.cn/static/images/local_pdb_0911.png">
+
 </li>
+</ul>
+<a id="more"></a>
+
+<ul>
 <li><p>本地克隆</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">[oracle@testdb12c01 ~]$ sqlplus / as sysdba</span><br><span class="line"></span><br><span class="line">SQL*Plus: Release 12.1.0.2.0 Production on Sat Mar 21 07:48:02 2020</span><br><span class="line"></span><br><span class="line">Copyright (c) 1982, 2014, Oracle.  All rights reserved.</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Connected to:</span><br><span class="line">Oracle Database 12c Enterprise Edition <span class="keyword">Release</span> <span class="number">12.1</span><span class="number">.0</span><span class="number">.2</span><span class="number">.0</span> - <span class="number">64</span><span class="built_in">bit</span> Production</span><br><span class="line"><span class="keyword">With</span> the Partitioning, <span class="built_in">Real</span> Application Clusters, <span class="keyword">Automatic</span> <span class="keyword">Storage</span> <span class="keyword">Management</span>, OLAP,</span><br><span class="line"><span class="keyword">Advanced</span> Analytics <span class="keyword">and</span> <span class="built_in">Real</span> Application Testing options</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 查看现有PDB</span></span><br><span class="line"><span class="keyword">SQL</span>&gt; <span class="keyword">show</span> pdbs</span><br><span class="line"></span><br><span class="line">    CON_ID CON_NAME              <span class="keyword">OPEN</span> <span class="keyword">MODE</span>  <span class="keyword">RESTRICTED</span></span><br><span class="line"><span class="comment">---------- ------------------------------ ---------- ----------</span></span><br><span class="line">     <span class="number">2</span> PDB$<span class="keyword">SEED</span>              <span class="keyword">READ</span> <span class="keyword">ONLY</span>  <span class="keyword">NO</span></span><br><span class="line">     <span class="number">3</span> PDB1                  <span class="keyword">READ</span> WRITE <span class="keyword">NO</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 从pdb1克隆pdb2</span></span><br><span class="line"><span class="keyword">SQL</span>&gt; <span class="keyword">create</span> <span class="keyword">pluggable</span> <span class="keyword">database</span> pdb2 <span class="keyword">from</span> pdb1;</span><br><span class="line"></span><br><span class="line">Pluggable database created.</span><br><span class="line"></span><br><span class="line">SQL&gt;</span><br><span class="line">SQL&gt;</span><br><span class="line">SQL&gt; show pdbs</span><br><span class="line"></span><br><span class="line">    CON_ID CON_NAME              OPEN MODE  RESTRICTED</span><br><span class="line"><span class="comment">---------- ------------------------------ ---------- ----------</span></span><br><span class="line">     2 PDB$SEED              READ ONLY  NO</span><br><span class="line">     3 PDB1                  READ WRITE NO</span><br><span class="line">     4 PDB2                  MOUNTED</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 打开已经克隆的PDB</span></span><br><span class="line">SQL&gt; alter pluggable database pdb2 open;</span><br><span class="line"></span><br><span class="line">Pluggable database altered.</span><br><span class="line"></span><br><span class="line">SQL&gt; show pdbs</span><br><span class="line"></span><br><span class="line">    CON_ID CON_NAME              OPEN MODE  RESTRICTED</span><br><span class="line"><span class="comment">---------- ------------------------------ ---------- ----------</span></span><br><span class="line">     2 PDB$SEED              READ ONLY  NO</span><br><span class="line">     3 PDB1                  READ WRITE NO</span><br><span class="line">     4 PDB2                  READ WRITE NO</span><br></pre></td></tr></table></figure>
 </li>
@@ -180,108 +104,163 @@
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">create pluggable database pdb1 from pdb1@clone_pdb_dblink;</span><br><span class="line">Sat Mar 21 20:44:11 2020</span><br><span class="line">****************************************************************</span><br><span class="line">Pluggable Database PDB1 with pdb id - 3 is created as UNUSABLE.</span><br><span class="line">If any errors are encountered before the pdb is marked as NEW,</span><br><span class="line"><span class="keyword">then</span> the pdb must be dropped</span><br><span class="line">****************************************************************</span><br><span class="line">This instance was first to open pluggable database PDB1 (container=3)</span><br><span class="line">Database Characterset <span class="keyword">for</span> PDB1 is AL32UTF8</span><br><span class="line">Deleting old file<span class="comment">#9 from file$</span></span><br><span class="line">Deleting old file<span class="comment">#10 from file$</span></span><br><span class="line">Deleting old file<span class="comment">#11 from file$</span></span><br><span class="line">Deleting old file<span class="comment">#12 from file$</span></span><br><span class="line">Deleting old file<span class="comment">#13 from file$</span></span><br><span class="line">Deleting old file<span class="comment">#14 from file$</span></span><br><span class="line">Adding new file<span class="comment">#8 to file$(old file#9)</span></span><br><span class="line">Adding new file<span class="comment">#9 to file$(old file#10)</span></span><br><span class="line">Adding new file<span class="comment">#10 to file$(old file#11)</span></span><br><span class="line">Adding new file<span class="comment">#11 to file$(old file#13)</span></span><br><span class="line">Adding new file<span class="comment">#12 to file$(old file#14)</span></span><br><span class="line">Successfully created internal service pdb1 at open</span><br><span class="line">ALTER SYSTEM: Flushing buffer cache inst=1 container=3 <span class="built_in">local</span></span><br><span class="line">****************************************************************</span><br><span class="line">Post plug operations are now complete.</span><br><span class="line">Pluggable database PDB1 with pdb id - 3 is now marked as NEW.</span><br><span class="line">****************************************************************</span><br><span class="line">Completed: create pluggable database pdb1 from pdb1@clone_pdb</span><br><span class="line">alter pluggable database open</span><br><span class="line">ORA-65000 signalled during: alter pluggable database open...</span><br><span class="line">alter pluggable database pdb1 open</span><br><span class="line">Sat Mar 21 20:44:43 2020</span><br><span class="line">This instance was first to open pluggable database PDB1 (container=3)</span><br><span class="line">Pluggable database PDB1 dictionary check beginning</span><br><span class="line">Pluggable Database PDB1 Dictionary check complete</span><br><span class="line">Database Characterset <span class="keyword">for</span> PDB1 is AL32UTF8</span><br><span class="line">Opening pdb PDB1 (3) with no Resource Manager plan active</span><br><span class="line">Pluggable database PDB1 opened <span class="built_in">read</span> write</span><br><span class="line">Completed: alter pluggable database pdb1 open</span><br></pre></td></tr></table></figure></li>
 </ul>
 
+      
+    </div>
+    <footer>
+      
+        
+  
+  <div class="categories">
+    <a href="/categories/Database/">Database</a>
+  </div>
+
+        
+  
+  <div class="tags">
+    <a href="/tags/12c/">12c</a>, <a href="/tags/PDB/">PDB</a>, <a href="/tags/CLONE/">CLONE</a>
+  </div>
+
+        
+  <div class="addthis addthis_toolbox addthis_default_style">
+    
+      <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+    
+    
+      <a class="addthis_button_tweet"></a>
+    
+    
+      <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+    
+    
+      <a class="addthis_button_pinterest_pinit" pi:pinit:layout="horizontal"></a>
+    
+    <a class="addthis_counter addthis_pill_style"></a>
+  </div>
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js"></script>
+
+      
+      <div class="clearfix"></div>
+    </footer>
   </div>
 </article>
 
 
+<section id="comment">
+  <h1 class="title">Comments</h1>
 
-    </div>
-    
-      <div id="footer-post-container">
-  <div id="footer-post">
+  
+</section>
 
-    <div id="nav-footer" style="display: none">
-      <ul>
-         
-          <li><a href="/">Home</a></li>
-         
-          <li><a href="/about">About</a></li>
-         
-          <li><a href="/archives">Archives</a></li>
-         
-          <li><a href="/review">Review</a></li>
-        
-      </ul>
-    </div>
-
-    <div id="toc-footer" style="display: none">
-      
-    </div>
-
-    <div id="share-footer" style="display: none">
-      <ul>
-  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://falkon.cn/2020/03/21/database/Oracle%2012c%20PDB%20Clone/" target="_blank" rel="noopener"><i class="fa fa-facebook fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="https://twitter.com/share?url=http://falkon.cn/2020/03/21/database/Oracle%2012c%20PDB%20Clone/&text=Oracle 12c PDB克隆" target="_blank" rel="noopener"><i class="fa fa-twitter fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://falkon.cn/2020/03/21/database/Oracle%2012c%20PDB%20Clone/&title=Oracle 12c PDB克隆" target="_blank" rel="noopener"><i class="fa fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://falkon.cn/2020/03/21/database/Oracle%2012c%20PDB%20Clone/&is_video=false&description=Oracle 12c PDB克隆" target="_blank" rel="noopener"><i class="fa fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="mailto:?subject=Oracle 12c PDB克隆&body=Check out this article: http://falkon.cn/2020/03/21/database/Oracle%2012c%20PDB%20Clone/"><i class="fa fa-envelope fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="https://getpocket.com/save?url=http://falkon.cn/2020/03/21/database/Oracle%2012c%20PDB%20Clone/&title=Oracle 12c PDB克隆" target="_blank" rel="noopener"><i class="fa fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://reddit.com/submit?url=http://falkon.cn/2020/03/21/database/Oracle%2012c%20PDB%20Clone/&title=Oracle 12c PDB克隆" target="_blank" rel="noopener"><i class="fa fa-reddit fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://falkon.cn/2020/03/21/database/Oracle%2012c%20PDB%20Clone/&title=Oracle 12c PDB克隆" target="_blank" rel="noopener"><i class="fa fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://digg.com/submit?url=http://falkon.cn/2020/03/21/database/Oracle%2012c%20PDB%20Clone/&title=Oracle 12c PDB克隆" target="_blank" rel="noopener"><i class="fa fa-digg fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://falkon.cn/2020/03/21/database/Oracle%2012c%20PDB%20Clone/&name=Oracle 12c PDB克隆&description=" target="_blank" rel="noopener"><i class="fa fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
-</ul>
-
-    </div>
-
-    <div id="actions-footer">
-      <ul>
-        <li id="toc"><a class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa fa-list fa-lg" aria-hidden="true"></i> TOC</a></li>
-        <li id="share"><a class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa fa-share-alt fa-lg" aria-hidden="true"></i> Share</a></li>
-        <li id="top" style="display:none"><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a></li>
-        <li id="menu"><a class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa fa-bars fa-lg" aria-hidden="true"></i> Menu</a></li>
-      </ul>
-    </div>
-
-  </div>
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="as_sitesearch" value="falkon.cn">
+  </form>
 </div>
 
-    
-    <footer id="footer">
-  <div class="footer-left">
-    Copyright &copy; 2020 Falkon
+
+  
+<div class="widget tag">
+  <h3 class="title">Categories</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/Database/">Database</a><small>17</small></li>
+  
+    <li><a href="/categories/Linux/">Linux</a><small>2</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/10G/">10G</a><small>1</small></li>
+  
+    <li><a href="/tags/11g/">11g</a><small>2</small></li>
+  
+    <li><a href="/tags/12c/">12c</a><small>3</small></li>
+  
+    <li><a href="/tags/AFD/">AFD</a><small>1</small></li>
+  
+    <li><a href="/tags/ASM/">ASM</a><small>1</small></li>
+  
+    <li><a href="/tags/Audit/">Audit</a><small>1</small></li>
+  
+    <li><a href="/tags/CLONE/">CLONE</a><small>1</small></li>
+  
+    <li><a href="/tags/GoldenGate/">GoldenGate</a><small>1</small></li>
+  
+    <li><a href="/tags/ODA/">ODA</a><small>1</small></li>
+  
+    <li><a href="/tags/ORA-01804/">ORA-01804</a><small>1</small></li>
+  
+    <li><a href="/tags/ORA-28000/">ORA-28000</a><small>1</small></li>
+  
+    <li><a href="/tags/ORA-600/">ORA-600</a><small>1</small></li>
+  
+    <li><a href="/tags/ORA-65500/">ORA-65500</a><small>1</small></li>
+  
+    <li><a href="/tags/Openfiler/">Openfiler</a><small>1</small></li>
+  
+    <li><a href="/tags/Oracle-11g/">Oracle 11g</a><small>1</small></li>
+  
+    <li><a href="/tags/PDB/">PDB</a><small>1</small></li>
+  
+    <li><a href="/tags/PSU/">PSU</a><small>1</small></li>
+  
+    <li><a href="/tags/Patch/">Patch</a><small>1</small></li>
+  
+    <li><a href="/tags/RAC/">RAC</a><small>3</small></li>
+  
+    <li><a href="/tags/Req-mir-free-MB/">Req_mir_free_MB</a><small>1</small></li>
+  
+    <li><a href="/tags/SWAP/">SWAP</a><small>1</small></li>
+  
+    <li><a href="/tags/Synonym/">Synonym</a><small>1</small></li>
+  
+    <li><a href="/tags/exp/">exp</a><small>1</small></li>
+  
+    <li><a href="/tags/expdp/">expdp</a><small>1</small></li>
+  
+    <li><a href="/tags/imp/">imp</a><small>1</small></li>
+  
+    <li><a href="/tags/impdp/">impdp</a><small>1</small></li>
+  
+    <li><a href="/tags/udev/">udev</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
   </div>
-  <div class="footer-right">
-    <nav>
-      <ul>
-         
-          <li><a href="/">Home</a></li>
-         
-          <li><a href="/about">About</a></li>
-         
-          <li><a href="/archives">Archives</a></li>
-         
-          <li><a href="/review">Review</a></li>
-        
-      </ul>
-    </nav>
-  </div>
-</footer>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2020 Falkon
+  
+</div>
+<div class="clearfix"></div></footer>
+  
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
 
 </body>
 </html>
-<!-- styles -->
-
-<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
-
-
-<link rel="stylesheet" href="/lib/meslo-LG/styles.css">
-
-
-<link rel="stylesheet" href="/lib/justified-gallery/justifiedGallery.min.css">
-
-
-<!-- jquery -->
-
-<script src="http://q6p62toq8.falkon.cn/jquery.min.js"></script>
-
-
-<script src="http://q6p62toq8.falkon.cn/jquery.justifiedGallery.min.js"></script>
-
-
-<script src="/js/main.js"></script>
-
-
-
-
-

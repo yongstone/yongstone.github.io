@@ -1,147 +1,75 @@
-<!DOCTYPE html>
-<html lang=en>
+<!DOCTYPE HTML>
+<html lang="en">
 <head>
-    <!-- so meta -->
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="HandheldFriendly" content="True">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="描述：单节点RAC，数据库版本12.2.0.1下载最新OPatch，补丁编号6880880,升级Grid和OracleHome的OPatch 123456789101112131415161718# 升级Grid的OPatch[root@auxsbdb12c grid]# mv OPatch&#x2F; OPatch.bak[root@auxsbdb12c home]# cp -r OPatch&#x2F; &#x2F;u01">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Oracle 单节点RAC安装PSU补丁程序">
-<meta property="og:url" content="http://falkon.cn/2020/03/09/database/Oracle%E5%8D%95%E8%8A%82%E7%82%B9RAC%E5%AE%89%E8%A3%85PSU%E8%A1%A5%E4%B8%81%E7%A8%8B%E5%BA%8F/index.html">
-<meta property="og:site_name" content="Falkon">
-<meta property="og:description" content="描述：单节点RAC，数据库版本12.2.0.1下载最新OPatch，补丁编号6880880,升级Grid和OracleHome的OPatch 123456789101112131415161718# 升级Grid的OPatch[root@auxsbdb12c grid]# mv OPatch&#x2F; OPatch.bak[root@auxsbdb12c home]# cp -r OPatch&#x2F; &#x2F;u01">
-<meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2020-03-08T17:25:31.025Z">
-<meta property="article:modified_time" content="2020-03-10T12:39:10.082Z">
-<meta property="article:author" content="Falkon">
-<meta property="article:tag" content="PSU">
-<meta name="twitter:card" content="summary">
-    
-    
-        
-          
-              <link rel="shortcut icon" href="http://q6p62toq8.falkon.cn/favicon.png">
-          
-        
-        
-          
-            <link rel="icon" type="image/png" href="http://q6p62toq8.falkon.cn/favicon.png" sizes="192x192">
-          
-        
-        
-          
-            <link rel="apple-touch-icon" sizes="180x180" href="http://q6p62toq8.falkon.cn/favicon.png">
-          
-        
-    
-    <!-- title -->
-    <title>Oracle 单节点RAC安装PSU补丁程序</title>
-    <!-- styles -->
-    
-<link rel="stylesheet" href="/css/style.css">
+  <meta charset="utf-8">
+  
+  <title>Oracle 单节点RAC安装PSU补丁程序 | FALKON&#39;S TECH BLOG</title>
+  <meta name="author" content="Falkon">
+  
+  <meta name="description" content="描述：单节点RAC，数据库版本12.2.0.1下载最新OPatch，补丁编号6880880,升级Grid和OracleHome的OPatch
+123456789101112131415161718# 升级Grid的OPatch[root@auxsbdb12c grid]# mv OPatch/ OPatch.bak[root@auxsbdb12c home]# cp -r OPatch/ /u01/app/12.2.0/grid/[root@auxsbdb12c grid]# chown -R grid:oinstall OPatch[grid@auxsbdb12c ~]$ opatch versionOPatch Version: 12.2.0.1.18OPatch succeeded.# 升级OracleHome的OPatch[oracle@auxsbdb12c dbhome_1]$ mv OPatch/ OPatch.bak[root@auxsbdb12c home]# cp -r OPatch/ /u01/app/oracle/product/12.2.0/dbhome_1/[root@auxsbdb12c dbhome_1]# chown -R oracle:oinstall OPatch[root@auxsbdb12c dbhome_1]# cd OPatch[root@auxsbdb12c OPatch]# ./opatch versionOPatch Version: 12.2.0.1.18OPatch succeeded.">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-    <!-- rss -->
-    
-    
-<meta name="generator" content="Hexo 4.2.0"></head>
+  <meta property="og:title" content="Oracle 单节点RAC安装PSU补丁程序"/>
+  <meta property="og:site_name" content="FALKON&#39;S TECH BLOG"/>
 
-<body>
-    
-      <div id="header-post">
-  <a id="menu-icon" href="#"><i class="fa fa-bars fa-lg"></i></a>
-  <a id="menu-icon-tablet" href="#"><i class="fa fa-bars fa-lg"></i></a>
-  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa fa-chevron-up fa-lg"></i></a>
-  <span id="menu">
-    <span id="nav">
-      <ul>
-         
-          <li><a href="/">Home</a></li>
-         
-          <li><a href="/about">About</a></li>
-         
-          <li><a href="/archives">Archives</a></li>
-         
-          <li><a href="/review">Review</a></li>
-        
-      </ul>
-    </span>
-    <br/>
-    <span id="actions">
-      <ul>
-        
-        <li><a class="icon" href="/2020/03/09/database/ORA-01804%20failure%20to%20initialize%20timezone%20information/"><i class="fa fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
-        
-        
-        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
-        <li><a class="icon" href="#"><i class="fa fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
-      </ul>
-      <span id="i-prev" class="info" style="display:none;">Previous post</span>
-      <span id="i-next" class="info" style="display:none;">Next post</span>
-      <span id="i-top" class="info" style="display:none;">Back to top</span>
-      <span id="i-share" class="info" style="display:none;">Share post</span>
-    </span>
-    <br/>
-    <div id="share" style="display: none">
-      <ul>
-  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://falkon.cn/2020/03/09/database/Oracle%E5%8D%95%E8%8A%82%E7%82%B9RAC%E5%AE%89%E8%A3%85PSU%E8%A1%A5%E4%B8%81%E7%A8%8B%E5%BA%8F/" target="_blank" rel="noopener"><i class="fa fa-facebook " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="https://twitter.com/share?url=http://falkon.cn/2020/03/09/database/Oracle%E5%8D%95%E8%8A%82%E7%82%B9RAC%E5%AE%89%E8%A3%85PSU%E8%A1%A5%E4%B8%81%E7%A8%8B%E5%BA%8F/&text=Oracle 单节点RAC安装PSU补丁程序" target="_blank" rel="noopener"><i class="fa fa-twitter " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://falkon.cn/2020/03/09/database/Oracle%E5%8D%95%E8%8A%82%E7%82%B9RAC%E5%AE%89%E8%A3%85PSU%E8%A1%A5%E4%B8%81%E7%A8%8B%E5%BA%8F/&title=Oracle 单节点RAC安装PSU补丁程序" target="_blank" rel="noopener"><i class="fa fa-linkedin " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://falkon.cn/2020/03/09/database/Oracle%E5%8D%95%E8%8A%82%E7%82%B9RAC%E5%AE%89%E8%A3%85PSU%E8%A1%A5%E4%B8%81%E7%A8%8B%E5%BA%8F/&is_video=false&description=Oracle 单节点RAC安装PSU补丁程序" target="_blank" rel="noopener"><i class="fa fa-pinterest " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="mailto:?subject=Oracle 单节点RAC安装PSU补丁程序&body=Check out this article: http://falkon.cn/2020/03/09/database/Oracle%E5%8D%95%E8%8A%82%E7%82%B9RAC%E5%AE%89%E8%A3%85PSU%E8%A1%A5%E4%B8%81%E7%A8%8B%E5%BA%8F/"><i class="fa fa-envelope " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="https://getpocket.com/save?url=http://falkon.cn/2020/03/09/database/Oracle%E5%8D%95%E8%8A%82%E7%82%B9RAC%E5%AE%89%E8%A3%85PSU%E8%A1%A5%E4%B8%81%E7%A8%8B%E5%BA%8F/&title=Oracle 单节点RAC安装PSU补丁程序" target="_blank" rel="noopener"><i class="fa fa-get-pocket " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://reddit.com/submit?url=http://falkon.cn/2020/03/09/database/Oracle%E5%8D%95%E8%8A%82%E7%82%B9RAC%E5%AE%89%E8%A3%85PSU%E8%A1%A5%E4%B8%81%E7%A8%8B%E5%BA%8F/&title=Oracle 单节点RAC安装PSU补丁程序" target="_blank" rel="noopener"><i class="fa fa-reddit " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://falkon.cn/2020/03/09/database/Oracle%E5%8D%95%E8%8A%82%E7%82%B9RAC%E5%AE%89%E8%A3%85PSU%E8%A1%A5%E4%B8%81%E7%A8%8B%E5%BA%8F/&title=Oracle 单节点RAC安装PSU补丁程序" target="_blank" rel="noopener"><i class="fa fa-stumbleupon " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://digg.com/submit?url=http://falkon.cn/2020/03/09/database/Oracle%E5%8D%95%E8%8A%82%E7%82%B9RAC%E5%AE%89%E8%A3%85PSU%E8%A1%A5%E4%B8%81%E7%A8%8B%E5%BA%8F/&title=Oracle 单节点RAC安装PSU补丁程序" target="_blank" rel="noopener"><i class="fa fa-digg " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://falkon.cn/2020/03/09/database/Oracle%E5%8D%95%E8%8A%82%E7%82%B9RAC%E5%AE%89%E8%A3%85PSU%E8%A1%A5%E4%B8%81%E7%A8%8B%E5%BA%8F/&name=Oracle 单节点RAC安装PSU补丁程序&description=" target="_blank" rel="noopener"><i class="fa fa-tumblr " aria-hidden="true"></i></a></li>
-</ul>
-
-    </div>
-    <div id="toc">
-      <ol class="toc"><li class="toc-item toc-level-5"><a class="toc-link" href="#描述：单节点RAC，数据库版本12-2-0-1"><span class="toc-number">1.</span> <span class="toc-text">描述：单节点RAC，数据库版本12.2.0.1</span></a></li></ol>
-    </div>
-  </span>
-</div>
-
-    
-    <div class="content index width mx-auto px2 my4">
-        
-        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-  <header>
-    
-    <h1 class="posttitle" itemprop="name headline">
-        Oracle 单节点RAC安装PSU补丁程序
-    </h1>
-
-
-
-    <div class="meta">
-      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
-        <span itemprop="name">Falkon</span>
-      </span>
-      
-    <div class="postdate">
-        <time datetime="2020-03-08T17:25:31.025Z" itemprop="datePublished">2020-03-09</time>
-    </div>
-
-
-      
-    <div class="article-tag">
-        <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/PSU/" rel="tag">PSU</a>
-    </div>
-
-
-    </div>
-  </header>
+  
+    <meta property="og:image" content=""/>
   
 
-  <div class="content" itemprop="articleBody">
-    <h5 id="描述：单节点RAC，数据库版本12-2-0-1"><a href="#描述：单节点RAC，数据库版本12-2-0-1" class="headerlink" title="描述：单节点RAC，数据库版本12.2.0.1"></a>描述：单节点RAC，数据库版本12.2.0.1</h5><p>下载最新OPatch，补丁编号6880880,升级Grid和OracleHome的OPatch</p>
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="FALKON&#39;S TECH BLOG" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">FALKON&#39;S TECH BLOG</a></h1>
+  <h2><a href="/">Record life, record me.</a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+      <li><a href="/project">Project</a></li>
+    
+      <li><a href="/about">About</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article id="post-database/Oracle单节点RAC安装PSU补丁程序" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-03-08T17:25:31.025Z"><a href="/2020/03/09/database/Oracle单节点RAC安装PSU补丁程序/">2020-03-09</a></time>
+      
+      
+  
+    <h1 class="p-name title" itemprop="headline name">Oracle 单节点RAC安装PSU补丁程序</h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h5 id="描述：单节点RAC，数据库版本12-2-0-1"><a href="#描述：单节点RAC，数据库版本12-2-0-1" class="headerlink" title="描述：单节点RAC，数据库版本12.2.0.1"></a>描述：单节点RAC，数据库版本12.2.0.1</h5><p>下载最新OPatch，补丁编号6880880,升级Grid和OracleHome的OPatch</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 升级Grid的OPatch</span></span><br><span class="line">[root@auxsbdb12c grid]<span class="comment"># mv OPatch/ OPatch.bak</span></span><br><span class="line">[root@auxsbdb12c home]<span class="comment"># cp -r OPatch/ /u01/app/12.2.0/grid/</span></span><br><span class="line">[root@auxsbdb12c grid]<span class="comment"># chown -R grid:oinstall OPatch</span></span><br><span class="line">[grid@auxsbdb12c ~]$ opatch version</span><br><span class="line">OPatch Version: 12.2.0.1.18</span><br><span class="line"></span><br><span class="line">OPatch succeeded.</span><br><span class="line"></span><br><span class="line"><span class="comment"># 升级OracleHome的OPatch</span></span><br><span class="line">[oracle@auxsbdb12c dbhome_1]$ mv OPatch/ OPatch.bak</span><br><span class="line">[root@auxsbdb12c home]<span class="comment"># cp -r OPatch/ /u01/app/oracle/product/12.2.0/dbhome_1/</span></span><br><span class="line">[root@auxsbdb12c dbhome_1]<span class="comment"># chown -R oracle:oinstall OPatch</span></span><br><span class="line">[root@auxsbdb12c dbhome_1]<span class="comment"># cd OPatch</span></span><br><span class="line">[root@auxsbdb12c OPatch]<span class="comment"># ./opatch version</span></span><br><span class="line">OPatch Version: 12.2.0.1.18</span><br><span class="line"></span><br><span class="line">OPatch succeeded.</span><br></pre></td></tr></table></figure>
 
-
+<a id="more"></a>
 
 <p>补丁冲突检测（视情况而定，需要配置OPath的环境变量）</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br></pre></td><td class="code"><pre><span class="line">[grid@auxsbdb12c ~]$ opatch prereq CheckConflictAgainstOHWithDetail -phBaseDir /home/29708720/29757449</span><br><span class="line">Oracle Interim Patch Installer version 12.2.0.1.18</span><br><span class="line">Copyright (c) 2019, Oracle Corporation.  All rights reserved.</span><br><span class="line"></span><br><span class="line">PREREQ session</span><br><span class="line"></span><br><span class="line">Oracle Home       : /u01/app/12.2.0/grid</span><br><span class="line">Central Inventory : /u01/app/oraInventory</span><br><span class="line">   from           : /u01/app/12.2.0/grid/oraInst.loc</span><br><span class="line">OPatch version    : 12.2.0.1.18</span><br><span class="line">OUI version       : 12.2.0.1.4</span><br><span class="line">Log file location : /u01/app/12.2.0/grid/cfgtoollogs/opatch/opatch2019-11-30_12-23-32PM_1.log</span><br><span class="line"></span><br><span class="line">Invoking prereq <span class="string">"checkconflictagainstohwithdetail"</span></span><br><span class="line"></span><br><span class="line">Prereq <span class="string">"checkConflictAgainstOHWithDetail"</span> passed.</span><br><span class="line"></span><br><span class="line">OPatch succeeded.</span><br><span class="line">[grid@auxsbdb12c ~]$ opatch prereq CheckConflictAgainstOHWithDetail -phBaseDir /home/29708720/26839277/</span><br><span class="line">Oracle Interim Patch Installer version 12.2.0.1.18</span><br><span class="line">Copyright (c) 2019, Oracle Corporation.  All rights reserved.</span><br><span class="line"></span><br><span class="line">PREREQ session</span><br><span class="line"></span><br><span class="line">Oracle Home       : /u01/app/12.2.0/grid</span><br><span class="line">Central Inventory : /u01/app/oraInventory</span><br><span class="line">   from           : /u01/app/12.2.0/grid/oraInst.loc</span><br><span class="line">OPatch version    : 12.2.0.1.18</span><br><span class="line">OUI version       : 12.2.0.1.4</span><br><span class="line">Log file location : /u01/app/12.2.0/grid/cfgtoollogs/opatch/opatch2019-11-30_12-24-38PM_1.log</span><br><span class="line"></span><br><span class="line">Invoking prereq <span class="string">"checkconflictagainstohwithdetail"</span></span><br><span class="line"></span><br><span class="line">Prereq <span class="string">"checkConflictAgainstOHWithDetail"</span> passed.</span><br><span class="line"></span><br><span class="line">OPatch succeeded.</span><br><span class="line">[grid@auxsbdb12c ~]$ opatch prereq CheckConflictAgainstOHWithDetail -phBaseDir /home/29708720/28566910/</span><br><span class="line">Oracle Interim Patch Installer version 12.2.0.1.18</span><br><span class="line">Copyright (c) 2019, Oracle Corporation.  All rights reserved.</span><br><span class="line"></span><br><span class="line">PREREQ session</span><br><span class="line"></span><br><span class="line">Oracle Home       : /u01/app/12.2.0/grid</span><br><span class="line">Central Inventory : /u01/app/oraInventory</span><br><span class="line">   from           : /u01/app/12.2.0/grid/oraInst.loc</span><br><span class="line">OPatch version    : 12.2.0.1.18</span><br><span class="line">OUI version       : 12.2.0.1.4</span><br><span class="line">Log file location : /u01/app/12.2.0/grid/cfgtoollogs/opatch/opatch2019-11-30_12-24-45PM_1.log</span><br><span class="line"></span><br><span class="line">Invoking prereq <span class="string">"checkconflictagainstohwithdetail"</span></span><br><span class="line"></span><br><span class="line">Prereq <span class="string">"checkConflictAgainstOHWithDetail"</span> passed.</span><br><span class="line"></span><br><span class="line">OPatch succeeded.</span><br><span class="line">[grid@auxsbdb12c ~]$ opatch prereq CheckConflictAgainstOHWithDetail -phBaseDir /home/29708720/29770040/</span><br><span class="line">Oracle Interim Patch Installer version 12.2.0.1.18</span><br><span class="line">Copyright (c) 2019, Oracle Corporation.  All rights reserved.</span><br><span class="line"></span><br><span class="line">PREREQ session</span><br><span class="line"></span><br><span class="line">Oracle Home       : /u01/app/12.2.0/grid</span><br><span class="line">Central Inventory : /u01/app/oraInventory</span><br><span class="line">   from           : /u01/app/12.2.0/grid/oraInst.loc</span><br><span class="line">OPatch version    : 12.2.0.1.18</span><br><span class="line">OUI version       : 12.2.0.1.4</span><br><span class="line">Log file location : /u01/app/12.2.0/grid/cfgtoollogs/opatch/opatch2019-11-30_12-24-55PM_1.log</span><br><span class="line"></span><br><span class="line">Invoking prereq <span class="string">"checkconflictagainstohwithdetail"</span></span><br><span class="line"></span><br><span class="line">Prereq <span class="string">"checkConflictAgainstOHWithDetail"</span> passed.</span><br><span class="line"></span><br><span class="line">OPatch succeeded.</span><br><span class="line">[grid@auxsbdb12c ~]$ opatch prereq CheckConflictAgainstOHWithDetail -phBaseDir /home/29708720/29770090/</span><br><span class="line">Oracle Interim Patch Installer version 12.2.0.1.18</span><br><span class="line">Copyright (c) 2019, Oracle Corporation.  All rights reserved.</span><br><span class="line"></span><br><span class="line">PREREQ session</span><br><span class="line"></span><br><span class="line">Oracle Home       : /u01/app/12.2.0/grid</span><br><span class="line">Central Inventory : /u01/app/oraInventory</span><br><span class="line">   from           : /u01/app/12.2.0/grid/oraInst.loc</span><br><span class="line">OPatch version    : 12.2.0.1.18</span><br><span class="line">OUI version       : 12.2.0.1.4</span><br><span class="line">Log file location : /u01/app/12.2.0/grid/cfgtoollogs/opatch/opatch2019-11-30_12-25-00PM_1.log</span><br><span class="line"></span><br><span class="line">Invoking prereq <span class="string">"checkconflictagainstohwithdetail"</span></span><br><span class="line"></span><br><span class="line">Prereq <span class="string">"checkConflictAgainstOHWithDetail"</span> passed.</span><br><span class="line"></span><br><span class="line">OPatch succeeded.</span><br></pre></td></tr></table></figure>
@@ -188,108 +116,163 @@
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[oracle@auxsbdb12c 29757449]$ sqlplus /nolog</span><br><span class="line"></span><br><span class="line">SQL*Plus: Release 12.2.0.1.0 Production on Sat Nov 30 16:15:58 2019</span><br><span class="line"></span><br><span class="line">Copyright (c) 1982, 2016, Oracle.  All rights reserved.</span><br><span class="line"></span><br><span class="line">SQL&gt; conn / as sysdba</span><br><span class="line">Connected.</span><br><span class="line">SQL&gt;</span><br><span class="line">SQL&gt;</span><br><span class="line">SQL&gt;</span><br><span class="line">SQL&gt; @?/rdbms/admin/utlrp</span><br></pre></td></tr></table></figure>
 
 
+      
+    </div>
+    <footer>
+      
+        
+  
+  <div class="categories">
+    <a href="/categories/Database/">Database</a>
+  </div>
+
+        
+  
+  <div class="tags">
+    <a href="/tags/PSU/">PSU</a>
+  </div>
+
+        
+  <div class="addthis addthis_toolbox addthis_default_style">
+    
+      <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+    
+    
+      <a class="addthis_button_tweet"></a>
+    
+    
+      <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+    
+    
+      <a class="addthis_button_pinterest_pinit" pi:pinit:layout="horizontal"></a>
+    
+    <a class="addthis_counter addthis_pill_style"></a>
+  </div>
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js"></script>
+
+      
+      <div class="clearfix"></div>
+    </footer>
   </div>
 </article>
 
 
+<section id="comment">
+  <h1 class="title">Comments</h1>
 
-    </div>
-    
-      <div id="footer-post-container">
-  <div id="footer-post">
+  
+</section>
 
-    <div id="nav-footer" style="display: none">
-      <ul>
-         
-          <li><a href="/">Home</a></li>
-         
-          <li><a href="/about">About</a></li>
-         
-          <li><a href="/archives">Archives</a></li>
-         
-          <li><a href="/review">Review</a></li>
-        
-      </ul>
-    </div>
-
-    <div id="toc-footer" style="display: none">
-      <ol class="toc"><li class="toc-item toc-level-5"><a class="toc-link" href="#描述：单节点RAC，数据库版本12-2-0-1"><span class="toc-number">1.</span> <span class="toc-text">描述：单节点RAC，数据库版本12.2.0.1</span></a></li></ol>
-    </div>
-
-    <div id="share-footer" style="display: none">
-      <ul>
-  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://falkon.cn/2020/03/09/database/Oracle%E5%8D%95%E8%8A%82%E7%82%B9RAC%E5%AE%89%E8%A3%85PSU%E8%A1%A5%E4%B8%81%E7%A8%8B%E5%BA%8F/" target="_blank" rel="noopener"><i class="fa fa-facebook fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="https://twitter.com/share?url=http://falkon.cn/2020/03/09/database/Oracle%E5%8D%95%E8%8A%82%E7%82%B9RAC%E5%AE%89%E8%A3%85PSU%E8%A1%A5%E4%B8%81%E7%A8%8B%E5%BA%8F/&text=Oracle 单节点RAC安装PSU补丁程序" target="_blank" rel="noopener"><i class="fa fa-twitter fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://falkon.cn/2020/03/09/database/Oracle%E5%8D%95%E8%8A%82%E7%82%B9RAC%E5%AE%89%E8%A3%85PSU%E8%A1%A5%E4%B8%81%E7%A8%8B%E5%BA%8F/&title=Oracle 单节点RAC安装PSU补丁程序" target="_blank" rel="noopener"><i class="fa fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://falkon.cn/2020/03/09/database/Oracle%E5%8D%95%E8%8A%82%E7%82%B9RAC%E5%AE%89%E8%A3%85PSU%E8%A1%A5%E4%B8%81%E7%A8%8B%E5%BA%8F/&is_video=false&description=Oracle 单节点RAC安装PSU补丁程序" target="_blank" rel="noopener"><i class="fa fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="mailto:?subject=Oracle 单节点RAC安装PSU补丁程序&body=Check out this article: http://falkon.cn/2020/03/09/database/Oracle%E5%8D%95%E8%8A%82%E7%82%B9RAC%E5%AE%89%E8%A3%85PSU%E8%A1%A5%E4%B8%81%E7%A8%8B%E5%BA%8F/"><i class="fa fa-envelope fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="https://getpocket.com/save?url=http://falkon.cn/2020/03/09/database/Oracle%E5%8D%95%E8%8A%82%E7%82%B9RAC%E5%AE%89%E8%A3%85PSU%E8%A1%A5%E4%B8%81%E7%A8%8B%E5%BA%8F/&title=Oracle 单节点RAC安装PSU补丁程序" target="_blank" rel="noopener"><i class="fa fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://reddit.com/submit?url=http://falkon.cn/2020/03/09/database/Oracle%E5%8D%95%E8%8A%82%E7%82%B9RAC%E5%AE%89%E8%A3%85PSU%E8%A1%A5%E4%B8%81%E7%A8%8B%E5%BA%8F/&title=Oracle 单节点RAC安装PSU补丁程序" target="_blank" rel="noopener"><i class="fa fa-reddit fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://falkon.cn/2020/03/09/database/Oracle%E5%8D%95%E8%8A%82%E7%82%B9RAC%E5%AE%89%E8%A3%85PSU%E8%A1%A5%E4%B8%81%E7%A8%8B%E5%BA%8F/&title=Oracle 单节点RAC安装PSU补丁程序" target="_blank" rel="noopener"><i class="fa fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://digg.com/submit?url=http://falkon.cn/2020/03/09/database/Oracle%E5%8D%95%E8%8A%82%E7%82%B9RAC%E5%AE%89%E8%A3%85PSU%E8%A1%A5%E4%B8%81%E7%A8%8B%E5%BA%8F/&title=Oracle 单节点RAC安装PSU补丁程序" target="_blank" rel="noopener"><i class="fa fa-digg fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://falkon.cn/2020/03/09/database/Oracle%E5%8D%95%E8%8A%82%E7%82%B9RAC%E5%AE%89%E8%A3%85PSU%E8%A1%A5%E4%B8%81%E7%A8%8B%E5%BA%8F/&name=Oracle 单节点RAC安装PSU补丁程序&description=" target="_blank" rel="noopener"><i class="fa fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
-</ul>
-
-    </div>
-
-    <div id="actions-footer">
-      <ul>
-        <li id="toc"><a class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa fa-list fa-lg" aria-hidden="true"></i> TOC</a></li>
-        <li id="share"><a class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa fa-share-alt fa-lg" aria-hidden="true"></i> Share</a></li>
-        <li id="top" style="display:none"><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a></li>
-        <li id="menu"><a class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa fa-bars fa-lg" aria-hidden="true"></i> Menu</a></li>
-      </ul>
-    </div>
-
-  </div>
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="as_sitesearch" value="falkon.cn">
+  </form>
 </div>
 
-    
-    <footer id="footer">
-  <div class="footer-left">
-    Copyright &copy; 2020 Falkon
+
+  
+<div class="widget tag">
+  <h3 class="title">Categories</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/Database/">Database</a><small>17</small></li>
+  
+    <li><a href="/categories/Linux/">Linux</a><small>2</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/10G/">10G</a><small>1</small></li>
+  
+    <li><a href="/tags/11g/">11g</a><small>2</small></li>
+  
+    <li><a href="/tags/12c/">12c</a><small>3</small></li>
+  
+    <li><a href="/tags/AFD/">AFD</a><small>1</small></li>
+  
+    <li><a href="/tags/ASM/">ASM</a><small>1</small></li>
+  
+    <li><a href="/tags/Audit/">Audit</a><small>1</small></li>
+  
+    <li><a href="/tags/CLONE/">CLONE</a><small>1</small></li>
+  
+    <li><a href="/tags/GoldenGate/">GoldenGate</a><small>1</small></li>
+  
+    <li><a href="/tags/ODA/">ODA</a><small>1</small></li>
+  
+    <li><a href="/tags/ORA-01804/">ORA-01804</a><small>1</small></li>
+  
+    <li><a href="/tags/ORA-28000/">ORA-28000</a><small>1</small></li>
+  
+    <li><a href="/tags/ORA-600/">ORA-600</a><small>1</small></li>
+  
+    <li><a href="/tags/ORA-65500/">ORA-65500</a><small>1</small></li>
+  
+    <li><a href="/tags/Openfiler/">Openfiler</a><small>1</small></li>
+  
+    <li><a href="/tags/Oracle-11g/">Oracle 11g</a><small>1</small></li>
+  
+    <li><a href="/tags/PDB/">PDB</a><small>1</small></li>
+  
+    <li><a href="/tags/PSU/">PSU</a><small>1</small></li>
+  
+    <li><a href="/tags/Patch/">Patch</a><small>1</small></li>
+  
+    <li><a href="/tags/RAC/">RAC</a><small>3</small></li>
+  
+    <li><a href="/tags/Req-mir-free-MB/">Req_mir_free_MB</a><small>1</small></li>
+  
+    <li><a href="/tags/SWAP/">SWAP</a><small>1</small></li>
+  
+    <li><a href="/tags/Synonym/">Synonym</a><small>1</small></li>
+  
+    <li><a href="/tags/exp/">exp</a><small>1</small></li>
+  
+    <li><a href="/tags/expdp/">expdp</a><small>1</small></li>
+  
+    <li><a href="/tags/imp/">imp</a><small>1</small></li>
+  
+    <li><a href="/tags/impdp/">impdp</a><small>1</small></li>
+  
+    <li><a href="/tags/udev/">udev</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
   </div>
-  <div class="footer-right">
-    <nav>
-      <ul>
-         
-          <li><a href="/">Home</a></li>
-         
-          <li><a href="/about">About</a></li>
-         
-          <li><a href="/archives">Archives</a></li>
-         
-          <li><a href="/review">Review</a></li>
-        
-      </ul>
-    </nav>
-  </div>
-</footer>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2020 Falkon
+  
+</div>
+<div class="clearfix"></div></footer>
+  
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
 
 </body>
 </html>
-<!-- styles -->
-
-<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
-
-
-<link rel="stylesheet" href="/lib/meslo-LG/styles.css">
-
-
-<link rel="stylesheet" href="/lib/justified-gallery/justifiedGallery.min.css">
-
-
-<!-- jquery -->
-
-<script src="http://q6p62toq8.falkon.cn/jquery.min.js"></script>
-
-
-<script src="http://q6p62toq8.falkon.cn/jquery.justifiedGallery.min.js"></script>
-
-
-<script src="/js/main.js"></script>
-
-
-
-
-
