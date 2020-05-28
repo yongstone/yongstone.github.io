@@ -1,0 +1,648 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  
+  <title>FALKON&#39;S TECH BLOG</title>
+  <meta name="author" content="Falkon">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+  <meta property="og:site_name" content="FALKON&#39;S TECH BLOG"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="FALKON&#39;S TECH BLOG" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">FALKON&#39;S TECH BLOG</a></h1>
+  <h2><a href="/">Record life, record me.</a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+      <li><a href="/project">Project</a></li>
+    
+      <li><a href="/about">About</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper">
+  <article id="post-database/ORA-00600 内部错误代码 参数 [4511]" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-04-29T01:53:50.046Z"><a href="/2020/04/29/database/ORA-00600 内部错误代码 参数 [4511]/">2020-04-29</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/04/29/database/ORA-00600 内部错误代码 参数 [4511]/">ORA-00600 内部错误代码 参数 [4511]</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <ul>
+<li><p>平台：AIX 5.3</p>
+</li>
+<li><p>数据库：10.2.0.1.0</p>
+</li>
+<li><p>客户反映告警日志增长过快，发现告警日志中有大量的600错误，由于保密原因，一些敏感信息将被替换或者删除</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Tue Apr 28 17:09:14 2020</span><br><span class="line">Errors <span class="keyword">in</span> file /oracle/admin/racdb/udump/racdb2_ora_1581514.trc:</span><br><span class="line">ORA-00600: 内部错误代码, 参数: [4511], [], [], [], [], [], [], []</span><br><span class="line">Tue Apr 28 17:09:44 2020</span><br><span class="line">Errors <span class="keyword">in</span> file /oracle/admin/racdb/udump/racdb2_ora_496078.trc:</span><br><span class="line">ORA-00600: 内部错误代码, 参数: [4511], [], [], [], [], [], [], []</span><br><span class="line">Tue Apr 28 17:09:45 2020</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2020/04/29/database/ORA-00600 内部错误代码 参数 [4511]/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article id="post-database/ORA-00980 synonym translation is no longer valid" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-04-07T09:56:23.104Z"><a href="/2020/04/07/database/ORA-00980 synonym translation is no longer valid/">2020-04-07</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/04/07/database/ORA-00980 synonym translation is no longer valid/">ORA-00980 synonym translation is no longer valid</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <ul>
+<li>同义词创建时，不会去检查内容的准确性，即使表不存在，也可以创建该表的同义词，但是select的时候会报ORA-00980 synonym translation is no longer valid的错误</li>
+</ul>
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2020/04/07/database/ORA-00980 synonym translation is no longer valid/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article id="post-database/Oracle Audit目录中文件的内容以及是否可以删除" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-04-03T01:29:32.990Z"><a href="/2020/04/03/database/Oracle Audit目录中文件的内容以及是否可以删除/">2020-04-03</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/04/03/database/Oracle Audit目录中文件的内容以及是否可以删除/">Oracle Audit目录中文件的内容以及是否可以删除</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <ul>
+<li>先看下官方文档的说明<table>
+<thead>
+<tr>
+<th align="left">Property</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>Parameter type</strong></td>
+<td align="left">String</td>
+</tr>
+<tr>
+<td align="left"><strong>Syntax</strong></td>
+<td align="left">`AUDIT_TRAIL = { none</td>
+</tr>
+<tr>
+<td align="left"><strong>Default value</strong></td>
+<td align="left"><code>none</code></td>
+</tr>
+<tr>
+<td align="left"><strong>Modifiable</strong></td>
+<td align="left">No</td>
+</tr>
+<tr>
+<td align="left"><strong>Basic</strong></td>
+<td align="left">No</td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2020/04/03/database/Oracle Audit目录中文件的内容以及是否可以删除/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article id="post-linux/Openfiler安装配置" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-03-23T05:36:47.497Z"><a href="/2020/03/23/linux/Openfiler安装配置/">2020-03-23</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/03/23/linux/Openfiler安装配置/">Openfiler安装配置</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <ul>
+<li>在workstation或者virtual box中创建一个内核为其他内核2.6x 64位的虚拟机，添加两块网卡，使用两块网卡来模拟磁盘多路径聚合，两块大小分别为10g和50g的硬盘，10g做为openfiler系统的安装磁盘，50g用来做LUN</li>
+</ul>
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2020/03/23/linux/Openfiler安装配置/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article id="post-database/ODA最新补丁文档和下载地址" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-03-23T03:42:06.993Z"><a href="/2020/03/23/database/ODA最新补丁文档和下载地址/">2020-03-23</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/03/23/database/ODA最新补丁文档和下载地址/">ODA最新补丁文档和下载地址</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <ul>
+<li><h3 id="登录官网链接"><a href="#登录官网链接" class="headerlink" title="登录官网链接"></a><a href="http://www.oracle.com/goto/oda/docs" target="_blank" rel="noopener">登录官网链接</a></h3></li>
+</ul>
+<img src="http://q6p62toq8.falkon.cn/static/images/oda-patch001.png">
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2020/03/23/database/ODA最新补丁文档和下载地址/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article id="post-database/ASM中的Req_mir_free_MB实验" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-03-22T10:59:28.154Z"><a href="/2020/03/22/database/ASM中的Req_mir_free_MB实验/">2020-03-22</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/03/22/database/ASM中的Req_mir_free_MB实验/">ASM中的Req_mir_free_MB实验</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <ul>
+<li><p>先看下官网对lsdg给出的各个列属性的说明</p>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>State</td>
+<td>State of the disk group. Values include BROKEN, CONNECTED, DISMOUNTED, MOUNTED, QUIESCING, and UNKNOWN.</td>
+</tr>
+<tr>
+<td>Type</td>
+<td>Disk group redundancy (NORMAL, HIGH, EXTERNAL).</td>
+</tr>
+<tr>
+<td>Rebal</td>
+<td>Y if a rebalance operation is in progress.</td>
+</tr>
+<tr>
+<td>Sector</td>
+<td>Sector size in bytes.</td>
+</tr>
+<tr>
+<td>Block</td>
+<td>Block size in bytes.</td>
+</tr>
+<tr>
+<td>AU</td>
+<td>Allocation unit size in bytes.</td>
+</tr>
+<tr>
+<td>Total_MB</td>
+<td>Size of the disk group in megabytes.</td>
+</tr>
+<tr>
+<td><strong>Free_MB</strong></td>
+<td><strong>Free space in the disk group in megabytes, without regard to redundancy. From the V$ASM_DISKGROUP view.</strong></td>
+</tr>
+<tr>
+<td><strong>Req_mir_free_MB</strong></td>
+<td><strong>Amount of space that must be available in the disk group to restore full redundancy after the most severe failure that can be tolerated by the disk group. This is the REQUIRED_MIRROR_FREE_MB column from the V$ASM_DISKGROUP view.</strong></td>
+</tr>
+<tr>
+<td><strong>Usable_file_MB</strong></td>
+<td><strong>Amount of free space, adjusted for mirroring, that is available for new files. From the V$ASM_DISKGROUP view.</strong></td>
+</tr>
+<tr>
+<td>Offline_disks</td>
+<td>Number of offline disks in the disk group. Offline disks are eventually dropped.</td>
+</tr>
+<tr>
+<td>Voting_files</td>
+<td>Specifies whether the disk group contains voting files (Y or N).</td>
+</tr>
+<tr>
+<td>Name</td>
+<td>Disk group name.</td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2020/03/22/database/ASM中的Req_mir_free_MB实验/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article id="post-database/Oracle 12c PDB Clone" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-03-21T12:57:33.381Z"><a href="/2020/03/21/database/Oracle 12c PDB Clone/">2020-03-21</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/03/21/database/Oracle 12c PDB Clone/">Oracle 12c PDB克隆</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <ul>
+<li>本地克隆官方图示<img src="http://q6p62toq8.falkon.cn/static/images/local_pdb_0911.png">
+
+</li>
+</ul>
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2020/03/21/database/Oracle 12c PDB Clone/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article id="post-database/ORA-28000 the account is locked" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-03-13T08:53:06.736Z"><a href="/2020/03/13/database/ORA-28000 the account is locked/">2020-03-13</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/03/13/database/ORA-28000 the account is locked/">ORA-28000 the account is locked</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <ul>
+<li>今天有个客户反应账户锁了，我给发了解锁账户的语句，过了一会告诉我解锁的语句不起作用，截图我看语句也执行成功了，有点没想明白，通过远程直接上手，下面是排查过程，这里隐去了客户的相关账户和监听日志信息</li>
+</ul>
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2020/03/13/database/ORA-28000 the account is locked/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article id="post-database/exp_imp" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-03-13T06:23:32.610Z"><a href="/2020/03/13/database/exp_imp/">2020-03-13</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/03/13/database/exp_imp/">Exp/Imp</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <ul>
+<li><p>exp/imp的使用方法主要有三种方式（完全、用户、表），需要dba权限</p>
+</li>
+<li><p>EXP 完全</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[oracle@ystdb11g ~]$ exp system@ystdb file=/backups/full_exp_20200313.dmp </span><br><span class="line"><span class="built_in">log</span>=/backups/full_exp_20200313.log full=y</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2020/03/13/database/exp_imp/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article id="post-database/expdp_impdp" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-03-13T06:22:43.482Z"><a href="/2020/03/13/database/expdp_impdp/">2020-03-13</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/03/13/database/expdp_impdp/">Expdp/Impdp</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <ul>
+<li>关于数据泵(data pump)的说明，数据泵是exp/imp的升级，exp/imp是客户端程序，既可以在客户点使用，也可以在服务端使用，利用Oracle客户端工具，可以直接将服务器上的数据导入被本地电脑。expdp/impdp是服务端工具，只能在服务端使用。两种工具也无法混用，就是说exp导出的数据无法使用impdp导入。对于小于GB的数据可以exp/imp，对于大于GB的数据来说exp/imp的效率较为低下，建议对于Oracle 11g以上版本的数据库都采用expdp/impdp</li>
+</ul>
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2020/03/13/database/expdp_impdp/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+
+<nav id="pagination">
+  
+  
+    <a href="/page/2/" class="alignright next">Next</a>
+  
+  <div class="clearfix"></div>
+</nav></div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="as_sitesearch" value="falkon.cn">
+  </form>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Categories</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/Database/">Database</a><small>17</small></li>
+  
+    <li><a href="/categories/Linux/">Linux</a><small>2</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/10G/">10G</a><small>1</small></li>
+  
+    <li><a href="/tags/11g/">11g</a><small>2</small></li>
+  
+    <li><a href="/tags/12c/">12c</a><small>3</small></li>
+  
+    <li><a href="/tags/AFD/">AFD</a><small>1</small></li>
+  
+    <li><a href="/tags/ASM/">ASM</a><small>1</small></li>
+  
+    <li><a href="/tags/Audit/">Audit</a><small>1</small></li>
+  
+    <li><a href="/tags/CLONE/">CLONE</a><small>1</small></li>
+  
+    <li><a href="/tags/GoldenGate/">GoldenGate</a><small>1</small></li>
+  
+    <li><a href="/tags/ODA/">ODA</a><small>1</small></li>
+  
+    <li><a href="/tags/ORA-01804/">ORA-01804</a><small>1</small></li>
+  
+    <li><a href="/tags/ORA-28000/">ORA-28000</a><small>1</small></li>
+  
+    <li><a href="/tags/ORA-600/">ORA-600</a><small>1</small></li>
+  
+    <li><a href="/tags/ORA-65500/">ORA-65500</a><small>1</small></li>
+  
+    <li><a href="/tags/Openfiler/">Openfiler</a><small>1</small></li>
+  
+    <li><a href="/tags/Oracle-11g/">Oracle 11g</a><small>1</small></li>
+  
+    <li><a href="/tags/PDB/">PDB</a><small>1</small></li>
+  
+    <li><a href="/tags/PSU/">PSU</a><small>1</small></li>
+  
+    <li><a href="/tags/Patch/">Patch</a><small>1</small></li>
+  
+    <li><a href="/tags/RAC/">RAC</a><small>3</small></li>
+  
+    <li><a href="/tags/Req-mir-free-MB/">Req_mir_free_MB</a><small>1</small></li>
+  
+    <li><a href="/tags/SWAP/">SWAP</a><small>1</small></li>
+  
+    <li><a href="/tags/Synonym/">Synonym</a><small>1</small></li>
+  
+    <li><a href="/tags/exp/">exp</a><small>1</small></li>
+  
+    <li><a href="/tags/expdp/">expdp</a><small>1</small></li>
+  
+    <li><a href="/tags/imp/">imp</a><small>1</small></li>
+  
+    <li><a href="/tags/impdp/">impdp</a><small>1</small></li>
+  
+    <li><a href="/tags/udev/">udev</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2020 Falkon
+  
+</div>
+<div class="clearfix"></div></footer>
+  
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

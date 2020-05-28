@@ -1,0 +1,280 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  
+  <title>Oracle 12c PDB克隆 | FALKON&#39;S TECH BLOG</title>
+  <meta name="author" content="Falkon">
+  
+  <meta name="description" content="本地克隆官方图示">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="Oracle 12c PDB克隆"/>
+  <meta property="og:site_name" content="FALKON&#39;S TECH BLOG"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="FALKON&#39;S TECH BLOG" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">FALKON&#39;S TECH BLOG</a></h1>
+  <h2><a href="/">Record life, record me.</a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+      <li><a href="/project">Project</a></li>
+    
+      <li><a href="/about">About</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article id="post-database/Oracle 12c PDB Clone" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-03-21T12:57:33.381Z"><a href="/2020/03/21/database/Oracle 12c PDB Clone/">2020-03-21</a></time>
+      
+      
+  
+    <h1 class="p-name title" itemprop="headline name">Oracle 12c PDB克隆</h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <ul>
+<li>本地克隆官方图示<img src="http://q6p62toq8.falkon.cn/static/images/local_pdb_0911.png">
+
+</li>
+</ul>
+<a id="more"></a>
+
+<ul>
+<li><p>本地克隆</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">[oracle@testdb12c01 ~]$ sqlplus / as sysdba</span><br><span class="line"></span><br><span class="line">SQL*Plus: Release 12.1.0.2.0 Production on Sat Mar 21 07:48:02 2020</span><br><span class="line"></span><br><span class="line">Copyright (c) 1982, 2014, Oracle.  All rights reserved.</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Connected to:</span><br><span class="line">Oracle Database 12c Enterprise Edition <span class="keyword">Release</span> <span class="number">12.1</span><span class="number">.0</span><span class="number">.2</span><span class="number">.0</span> - <span class="number">64</span><span class="built_in">bit</span> Production</span><br><span class="line"><span class="keyword">With</span> the Partitioning, <span class="built_in">Real</span> Application Clusters, <span class="keyword">Automatic</span> <span class="keyword">Storage</span> <span class="keyword">Management</span>, OLAP,</span><br><span class="line"><span class="keyword">Advanced</span> Analytics <span class="keyword">and</span> <span class="built_in">Real</span> Application Testing options</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 查看现有PDB</span></span><br><span class="line"><span class="keyword">SQL</span>&gt; <span class="keyword">show</span> pdbs</span><br><span class="line"></span><br><span class="line">    CON_ID CON_NAME              <span class="keyword">OPEN</span> <span class="keyword">MODE</span>  <span class="keyword">RESTRICTED</span></span><br><span class="line"><span class="comment">---------- ------------------------------ ---------- ----------</span></span><br><span class="line">     <span class="number">2</span> PDB$<span class="keyword">SEED</span>              <span class="keyword">READ</span> <span class="keyword">ONLY</span>  <span class="keyword">NO</span></span><br><span class="line">     <span class="number">3</span> PDB1                  <span class="keyword">READ</span> WRITE <span class="keyword">NO</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 从pdb1克隆pdb2</span></span><br><span class="line"><span class="keyword">SQL</span>&gt; <span class="keyword">create</span> <span class="keyword">pluggable</span> <span class="keyword">database</span> pdb2 <span class="keyword">from</span> pdb1;</span><br><span class="line"></span><br><span class="line">Pluggable database created.</span><br><span class="line"></span><br><span class="line">SQL&gt;</span><br><span class="line">SQL&gt;</span><br><span class="line">SQL&gt; show pdbs</span><br><span class="line"></span><br><span class="line">    CON_ID CON_NAME              OPEN MODE  RESTRICTED</span><br><span class="line"><span class="comment">---------- ------------------------------ ---------- ----------</span></span><br><span class="line">     2 PDB$SEED              READ ONLY  NO</span><br><span class="line">     3 PDB1                  READ WRITE NO</span><br><span class="line">     4 PDB2                  MOUNTED</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 打开已经克隆的PDB</span></span><br><span class="line">SQL&gt; alter pluggable database pdb2 open;</span><br><span class="line"></span><br><span class="line">Pluggable database altered.</span><br><span class="line"></span><br><span class="line">SQL&gt; show pdbs</span><br><span class="line"></span><br><span class="line">    CON_ID CON_NAME              OPEN MODE  RESTRICTED</span><br><span class="line"><span class="comment">---------- ------------------------------ ---------- ----------</span></span><br><span class="line">     2 PDB$SEED              READ ONLY  NO</span><br><span class="line">     3 PDB1                  READ WRITE NO</span><br><span class="line">     4 PDB2                  READ WRITE NO</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>远端克隆官方图示</p>
+<img src="http://q6p62toq8.falkon.cn/static/images/remote-pdb.png">
+</li>
+<li><p>远端克隆，配置TNSNAMES，源端pdb的监听和目标端一致</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">PDB1 =</span><br><span class="line">  (DESCRIPTION =</span><br><span class="line">    (ADDRESS = (PROTOCOL = TCP)(HOST = testdb12c-scan)(PORT = 1521))</span><br><span class="line">    (CONNECT_DATA =</span><br><span class="line">      (SERVER = DEDICATED)</span><br><span class="line">      (SERVICE_NAME = pdb1)</span><br><span class="line">    )</span><br><span class="line">  )</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>源端启用pdbadmin用户</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">SQL&gt; alter session set container=pdb1;</span><br><span class="line"></span><br><span class="line">Session altered.</span><br><span class="line"></span><br><span class="line">SQL&gt; alter user pdbadmin identified by pdbadmin;</span><br><span class="line"></span><br><span class="line">User altered.</span><br><span class="line"></span><br><span class="line">SQL&gt; grant dba to pdbadmin;</span><br><span class="line"></span><br><span class="line"><span class="keyword">Grant</span> succeeded.</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>目标端现有PDB（我在安装的时候开启了CDB，但没有创建PDB所有只有PDB$SEED）</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">SQL&gt; show pdbs</span><br><span class="line"></span><br><span class="line">    CON_ID CON_NAME              OPEN MODE  RESTRICTED</span><br><span class="line"><span class="comment">---------- ------------------------------ ---------- ----------</span></span><br><span class="line">     2 PDB$SEED              READ ONLY  NO</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>目标端创建dblink</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SQL&gt; create public database link clone_pdb_dblink connect to pdbadmin identified by pdbadmin using 'PDB1';</span><br><span class="line"></span><br><span class="line">Database link created.</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>目标端验证dblink</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">SQL&gt; select * from dual@clone_pdb_dblink;</span><br><span class="line"></span><br><span class="line">D</span><br><span class="line">-</span><br><span class="line">X</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>目标端开始远程克隆</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SQL&gt; create pluggable database pdb1 from pdb1@clone_pdb_dblink;</span><br><span class="line"></span><br><span class="line">Pluggable database created.</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>目标端检查克隆后的PDB</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">SQL&gt; show pdbs</span><br><span class="line"></span><br><span class="line">    CON_ID CON_NAME              OPEN MODE  RESTRICTED</span><br><span class="line"><span class="comment">---------- ------------------------------ ---------- ----------</span></span><br><span class="line">     2 PDB$SEED              READ ONLY  NO</span><br><span class="line">     3 PDB1                  MOUNTED</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在克隆期间注意观察alert日志</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">create pluggable database pdb1 from pdb1@clone_pdb_dblink;</span><br><span class="line">Sat Mar 21 20:44:11 2020</span><br><span class="line">****************************************************************</span><br><span class="line">Pluggable Database PDB1 with pdb id - 3 is created as UNUSABLE.</span><br><span class="line">If any errors are encountered before the pdb is marked as NEW,</span><br><span class="line"><span class="keyword">then</span> the pdb must be dropped</span><br><span class="line">****************************************************************</span><br><span class="line">This instance was first to open pluggable database PDB1 (container=3)</span><br><span class="line">Database Characterset <span class="keyword">for</span> PDB1 is AL32UTF8</span><br><span class="line">Deleting old file<span class="comment">#9 from file$</span></span><br><span class="line">Deleting old file<span class="comment">#10 from file$</span></span><br><span class="line">Deleting old file<span class="comment">#11 from file$</span></span><br><span class="line">Deleting old file<span class="comment">#12 from file$</span></span><br><span class="line">Deleting old file<span class="comment">#13 from file$</span></span><br><span class="line">Deleting old file<span class="comment">#14 from file$</span></span><br><span class="line">Adding new file<span class="comment">#8 to file$(old file#9)</span></span><br><span class="line">Adding new file<span class="comment">#9 to file$(old file#10)</span></span><br><span class="line">Adding new file<span class="comment">#10 to file$(old file#11)</span></span><br><span class="line">Adding new file<span class="comment">#11 to file$(old file#13)</span></span><br><span class="line">Adding new file<span class="comment">#12 to file$(old file#14)</span></span><br><span class="line">Successfully created internal service pdb1 at open</span><br><span class="line">ALTER SYSTEM: Flushing buffer cache inst=1 container=3 <span class="built_in">local</span></span><br><span class="line">****************************************************************</span><br><span class="line">Post plug operations are now complete.</span><br><span class="line">Pluggable database PDB1 with pdb id - 3 is now marked as NEW.</span><br><span class="line">****************************************************************</span><br><span class="line">Completed: create pluggable database pdb1 from pdb1@clone_pdb</span><br><span class="line">alter pluggable database open</span><br><span class="line">ORA-65000 signalled during: alter pluggable database open...</span><br><span class="line">alter pluggable database pdb1 open</span><br><span class="line">Sat Mar 21 20:44:43 2020</span><br><span class="line">This instance was first to open pluggable database PDB1 (container=3)</span><br><span class="line">Pluggable database PDB1 dictionary check beginning</span><br><span class="line">Pluggable Database PDB1 Dictionary check complete</span><br><span class="line">Database Characterset <span class="keyword">for</span> PDB1 is AL32UTF8</span><br><span class="line">Opening pdb PDB1 (3) with no Resource Manager plan active</span><br><span class="line">Pluggable database PDB1 opened <span class="built_in">read</span> write</span><br><span class="line">Completed: alter pluggable database pdb1 open</span><br></pre></td></tr></table></figure></li>
+</ul>
+
+      
+    </div>
+    <footer>
+      
+        
+  
+  <div class="categories">
+    <a href="/categories/Database/">Database</a>
+  </div>
+
+        
+  
+  <div class="tags">
+    <a href="/tags/12c/">12c</a>, <a href="/tags/PDB/">PDB</a>, <a href="/tags/CLONE/">CLONE</a>
+  </div>
+
+        
+  <div class="addthis addthis_toolbox addthis_default_style">
+    
+      <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+    
+    
+      <a class="addthis_button_tweet"></a>
+    
+    
+      <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+    
+    
+      <a class="addthis_button_pinterest_pinit" pi:pinit:layout="horizontal"></a>
+    
+    <a class="addthis_counter addthis_pill_style"></a>
+  </div>
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js"></script>
+
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">Comments</h1>
+
+  
+      <div id="fb-root"></div>
+<script>
+  (function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=123456789012345";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+</script>
+
+<div class="fb-comments" data-href="http://falkon.cn/2020/03/21/database/Oracle%2012c%20PDB%20Clone/index.html" data-num-posts="5" data-width="840" data-colorscheme="light"></div>
+      
+  
+</section>
+
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="as_sitesearch" value="falkon.cn">
+  </form>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Categories</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/Database/">Database</a><small>17</small></li>
+  
+    <li><a href="/categories/Linux/">Linux</a><small>2</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/10G/">10G</a><small>1</small></li>
+  
+    <li><a href="/tags/11g/">11g</a><small>2</small></li>
+  
+    <li><a href="/tags/12c/">12c</a><small>3</small></li>
+  
+    <li><a href="/tags/AFD/">AFD</a><small>1</small></li>
+  
+    <li><a href="/tags/ASM/">ASM</a><small>1</small></li>
+  
+    <li><a href="/tags/Audit/">Audit</a><small>1</small></li>
+  
+    <li><a href="/tags/CLONE/">CLONE</a><small>1</small></li>
+  
+    <li><a href="/tags/GoldenGate/">GoldenGate</a><small>1</small></li>
+  
+    <li><a href="/tags/ODA/">ODA</a><small>1</small></li>
+  
+    <li><a href="/tags/ORA-01804/">ORA-01804</a><small>1</small></li>
+  
+    <li><a href="/tags/ORA-28000/">ORA-28000</a><small>1</small></li>
+  
+    <li><a href="/tags/ORA-600/">ORA-600</a><small>1</small></li>
+  
+    <li><a href="/tags/ORA-65500/">ORA-65500</a><small>1</small></li>
+  
+    <li><a href="/tags/Openfiler/">Openfiler</a><small>1</small></li>
+  
+    <li><a href="/tags/Oracle-11g/">Oracle 11g</a><small>1</small></li>
+  
+    <li><a href="/tags/PDB/">PDB</a><small>1</small></li>
+  
+    <li><a href="/tags/PSU/">PSU</a><small>1</small></li>
+  
+    <li><a href="/tags/Patch/">Patch</a><small>1</small></li>
+  
+    <li><a href="/tags/RAC/">RAC</a><small>3</small></li>
+  
+    <li><a href="/tags/Req-mir-free-MB/">Req_mir_free_MB</a><small>1</small></li>
+  
+    <li><a href="/tags/SWAP/">SWAP</a><small>1</small></li>
+  
+    <li><a href="/tags/Synonym/">Synonym</a><small>1</small></li>
+  
+    <li><a href="/tags/exp/">exp</a><small>1</small></li>
+  
+    <li><a href="/tags/expdp/">expdp</a><small>1</small></li>
+  
+    <li><a href="/tags/imp/">imp</a><small>1</small></li>
+  
+    <li><a href="/tags/impdp/">impdp</a><small>1</small></li>
+  
+    <li><a href="/tags/udev/">udev</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2020 Falkon
+  
+</div>
+<div class="clearfix"></div></footer>
+  
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

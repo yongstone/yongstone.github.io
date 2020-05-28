@@ -1,0 +1,353 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  
+  <title>Oracle Audit目录中文件的内容以及是否可以删除 | FALKON&#39;S TECH BLOG</title>
+  <meta name="author" content="Falkon">
+  
+  <meta name="description" content="先看下官方文档的说明
+
+
+Property
+Description
+
+
+
+Parameter type
+String
+
+
+Syntax
+`AUDIT_TRAIL = { none
+
+
+Default value
+none
+
+
+Modifiable
+No
+
+
+Basic
+No">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="Oracle Audit目录中文件的内容以及是否可以删除"/>
+  <meta property="og:site_name" content="FALKON&#39;S TECH BLOG"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="FALKON&#39;S TECH BLOG" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">FALKON&#39;S TECH BLOG</a></h1>
+  <h2><a href="/">Record life, record me.</a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+      <li><a href="/project">Project</a></li>
+    
+      <li><a href="/about">About</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article id="post-database/Oracle Audit目录中文件的内容以及是否可以删除" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-04-03T01:29:32.990Z"><a href="/2020/04/03/database/Oracle Audit目录中文件的内容以及是否可以删除/">2020-04-03</a></time>
+      
+      
+  
+    <h1 class="p-name title" itemprop="headline name">Oracle Audit目录中文件的内容以及是否可以删除</h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <ul>
+<li>先看下官方文档的说明<table>
+<thead>
+<tr>
+<th align="left">Property</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>Parameter type</strong></td>
+<td align="left">String</td>
+</tr>
+<tr>
+<td align="left"><strong>Syntax</strong></td>
+<td align="left">`AUDIT_TRAIL = { none</td>
+</tr>
+<tr>
+<td align="left"><strong>Default value</strong></td>
+<td align="left"><code>none</code></td>
+</tr>
+<tr>
+<td align="left"><strong>Modifiable</strong></td>
+<td align="left">No</td>
+</tr>
+<tr>
+<td align="left"><strong>Basic</strong></td>
+<td align="left">No</td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+<a id="more"></a>
+
+<ul>
+<li><p>详细的AUDIT_TRAIL可设置选项描述</p>
+</li>
+<li><p><code>none</code></p>
+<p>Disables database auditing.</p>
+</li>
+<li><p><code>os</code></p>
+<p>Enables database auditing and directs all audit records to the operating system’s audit trail.</p>
+</li>
+<li><p><code>db</code></p>
+<p>Enables database auditing and directs all audit records to the database audit trail (the <code>SYS.AUD$</code> table).</p>
+</li>
+<li><p><code>db,extended</code></p>
+<p>Enables database auditing and directs all audit records to the database audit trail (the <code>SYS.AUD$</code> table). In addition, populates the <code>SQLBIND</code> and <code>SQLTEXT</code> CLOB columns of the <code>SYS.AUD$</code> table.</p>
+</li>
+<li><p><code>xml</code></p>
+<p>Enables database auditing and writes all audit records to XML format OS files.</p>
+</li>
+<li><p><code>xml``,extended</code></p>
+<p>Enables database auditing and prints all columns of the audit trail, including SqlText and SqlBind values.</p>
+</li>
+<li><p>这里使用的数据库版本是11.2.0.4，可以看到默认的审计模式为DB</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">SQL&gt; show parameter audit</span><br><span class="line"></span><br><span class="line">NAME				     TYPE	 VALUE</span><br><span class="line"><span class="comment">------------------------------------ ----------- ----------------------------------</span></span><br><span class="line">audit_file_dest 		     string	 /u01/app/oracle/admin/ystdb/adump</span><br><span class="line">audit_sys_operations		     boolean	 FALSE</span><br><span class="line">audit_syslog_level		     string</span><br><span class="line">audit_trail			     string	 DB</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>清空/u01/app/oracle/admin/ystdb/adump下面的文件，然后关闭数据库看看会产生什么？</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[oracle@ystdb11g adump]$ ll</span><br><span class="line">total 4</span><br><span class="line">-rw-r----- 1 oracle oinstall 1019 Mar 29 00:50 ystdb_ora_40351_20200329005008204591143795.aud</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>关闭数据库后，adump目录下产生一个实例名开头的.aud的文件，文件内容描述的是进行了数据库关闭操作的相关信息</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">[oracle@ystdb11g adump]$ cat ystdb_ora_40351_20200329005008204591143795.aud </span><br><span class="line">Audit file /u01/app/oracle/admin/ystdb/adump/ystdb_ora_40351_20200329005008204591143795.aud</span><br><span class="line">Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production</span><br><span class="line">With the Partitioning, OLAP, Data Mining and Real Application Testing options</span><br><span class="line">ORACLE_HOME = /u01/app/oracle/product/11.2.0/dbhome_1</span><br><span class="line">System name:	Linux</span><br><span class="line">Node name:	ystdb11g</span><br><span class="line">Release:	4.1.12-124.16.4.el6uek.x86_64</span><br><span class="line">Version:	<span class="comment">#2 SMP Thu Jun 14 18:55:52 PDT 2018</span></span><br><span class="line">Machine:	x86_64</span><br><span class="line">VM name:	VMWare Version: 6</span><br><span class="line">Instance name: ystdb</span><br><span class="line">Redo thread mounted by this instance: 1</span><br><span class="line">Oracle process number: 29</span><br><span class="line">Unix process pid: 40351, image: oracle@ystdb11g (TNS V1-V3)</span><br><span class="line"></span><br><span class="line">Sun Mar 29 00:50:08 2020 +08:00</span><br><span class="line">LENGTH : <span class="string">'160'</span></span><br><span class="line">ACTION :[7] <span class="string">'CONNECT'</span></span><br><span class="line">DATABASE USER:[1] <span class="string">'/'</span></span><br><span class="line">PRIVILEGE :[6] <span class="string">'SYSDBA'</span></span><br><span class="line">CLIENT USER:[6] <span class="string">'oracle'</span></span><br><span class="line">CLIENT TERMINAL:[5] <span class="string">'pts/0'</span></span><br><span class="line">STATUS:[1] <span class="string">'0'</span></span><br><span class="line">DBID:[10] <span class="string">'1907125504'</span></span><br><span class="line"></span><br><span class="line">Sun Mar 29 00:50:45 2020 +08:00</span><br><span class="line">LENGTH : <span class="string">'150'</span></span><br><span class="line">ACTION :[8] <span class="string">'SHUTDOWN'</span></span><br><span class="line">DATABASE USER:[1] <span class="string">'/'</span></span><br><span class="line">PRIVILEGE :[6] <span class="string">'SYSDBA'</span></span><br><span class="line">CLIENT USER:[6] <span class="string">'oracle'</span></span><br><span class="line">CLIENT TERMINAL:[5] <span class="string">'pts/0'</span></span><br><span class="line">STATUS:[1] <span class="string">'0'</span></span><br><span class="line">DBID:[0] <span class="string">''</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>启动数据库后，产生了五个.aud的文件，前4个文件内容都差不多，最后一个文件内容记录了较为详细的信息，client user显示为我的笔记本用户，aud的文件内容可以做为查找依据的基本方式，每次以 SYS用户登录都会生成一个.aud的审计文件，普通用户则不产生.aud的文件，普通的用户的登录被记录到了SYS.AUD$表中，开启基于用户的审计后，并不会记录sqltext和sqlbind信息</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># .aud审计文件中的内容</span></span><br><span class="line">[oracle@ystdb11g adump]$ cat ystdb_ora_40438_20200329005627295922143795.aud</span><br><span class="line">Audit file /u01/app/oracle/admin/ystdb/adump/ystdb_ora_40438_20200329005627295922143795.aud</span><br><span class="line">Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production</span><br><span class="line">With the Partitioning, OLAP, Data Mining and Real Application Testing options</span><br><span class="line">ORACLE_HOME = /u01/app/oracle/product/11.2.0/dbhome_1</span><br><span class="line">System name:	Linux</span><br><span class="line">Node name:	ystdb11g</span><br><span class="line">Release:	4.1.12-124.16.4.el6uek.x86_64</span><br><span class="line">Version:	<span class="comment">#2 SMP Thu Jun 14 18:55:52 PDT 2018</span></span><br><span class="line">Machine:	x86_64</span><br><span class="line">VM name:	VMWare Version: 6</span><br><span class="line">Instance name: ystdb</span><br><span class="line">Redo thread mounted by this instance: 1</span><br><span class="line">Oracle process number: 25</span><br><span class="line">Unix process pid: 40438, image: oracle@ystdb11g</span><br><span class="line"></span><br><span class="line">Sun Mar 29 00:56:27 2020 +08:00</span><br><span class="line">LENGTH : <span class="string">'164'</span></span><br><span class="line">ACTION :[7] <span class="string">'CONNECT'</span></span><br><span class="line">DATABASE USER:[3] <span class="string">'SYS'</span></span><br><span class="line">PRIVILEGE :[6] <span class="string">'SYSDBA'</span></span><br><span class="line">CLIENT USER:[6] <span class="string">'Falkon'</span></span><br><span class="line">CLIENT TERMINAL:[7] <span class="string">'unknown'</span></span><br><span class="line">STATUS:[1] <span class="string">'0'</span></span><br><span class="line">DBID:[10] <span class="string">'1907125504'</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 对表进行操作</span></span><br><span class="line">SQL&gt; create table audit_test (id number);</span><br><span class="line"></span><br><span class="line">Table created.</span><br><span class="line"></span><br><span class="line">SQL&gt; insert into audit_test values(1);</span><br><span class="line"></span><br><span class="line">1 row created.</span><br><span class="line"></span><br><span class="line">SQL&gt; commit;</span><br><span class="line"></span><br><span class="line">Commit complete.</span><br><span class="line"></span><br><span class="line">SQL&gt; select * from audit_test;</span><br><span class="line"></span><br><span class="line">	ID</span><br><span class="line">----------</span><br><span class="line">	 1</span><br><span class="line"></span><br><span class="line">SQL&gt; drop table audit_test;</span><br><span class="line"></span><br><span class="line">Table dropped.</span><br><span class="line"></span><br><span class="line"><span class="comment"># 审计内容</span></span><br><span class="line">SQL&gt; select userid,userhost,terminal,sqltext,sqlbind from sys.aud$ <span class="built_in">where</span> obj<span class="variable">$name</span>=<span class="string">'AUDIT_TEST'</span>;</span><br><span class="line"></span><br><span class="line">USERID	   USERHOST   TERMINAL	      SQLTEXT				       SQLBIND</span><br><span class="line">---------- ---------- --------------- ---------------------------------------- ----------</span><br><span class="line">SH	   ystdb11g   pts/1</span><br><span class="line">SH	   ystdb11g   pts/1</span><br><span class="line">SH	   ystdb11g   pts/1</span><br><span class="line">SH	   ystdb11g   pts/1</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>下面分别实验其他几种审计模式所记录的内容，修改数据库的审计模式为NONE</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">SQL&gt; alter system set audit_trail="NONE" scope=spfile;</span><br><span class="line"><span class="comment"># 设置为none之后按照官方文档的说法应该是关闭了审计，这里说的关闭是指关闭了SYS.AUD$表中的记录，</span></span><br><span class="line"><span class="comment"># DB模式普通用户登录的时候，登录的信息被记录到了SYS.AUD$表中，设置为NONE后，使用普通用户登录，</span></span><br><span class="line"><span class="comment"># SYS.AUD$表中不记录普通用户的行为</span></span><br><span class="line"></span><br><span class="line">SQL&gt; select userid,userhost,terminal from sys.aud$;</span><br><span class="line"></span><br><span class="line">USERID	   USERHOST   TERMINAL</span><br><span class="line"><span class="comment">---------- ---------- ---------------</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>修改数据库的审计模式为OS，使用普通用户登录，信息被记录在了.aud文件中</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">[oracle@ystdb11g adump]$ cat ystdb_ora_42397_20200329031721325427143795.aud</span><br><span class="line">Audit file /u01/app/oracle/admin/ystdb/adump/ystdb_ora_42397_20200329031721325427143795.aud</span><br><span class="line">Oracle Database 11g Enterprise Edition <span class="keyword">Release</span> <span class="number">11.2</span><span class="number">.0</span><span class="number">.4</span><span class="number">.0</span> - <span class="number">64</span><span class="built_in">bit</span> Production</span><br><span class="line"><span class="keyword">With</span> the Partitioning, OLAP, <span class="keyword">Data</span> <span class="keyword">Mining</span> <span class="keyword">and</span> <span class="built_in">Real</span> Application Testing options</span><br><span class="line">ORACLE_HOME = /u01/app/<span class="keyword">oracle</span>/product/<span class="number">11.2</span><span class="number">.0</span>/dbhome_1</span><br><span class="line"><span class="keyword">System</span> <span class="keyword">name</span>:	Linux</span><br><span class="line">Node <span class="keyword">name</span>:	ystdb11g</span><br><span class="line"><span class="keyword">Release</span>:	<span class="number">4.1</span><span class="number">.12</span><span class="number">-124.16</span><span class="number">.4</span>.el6uek.x86_64</span><br><span class="line"><span class="keyword">Version</span>:	<span class="comment">#2 SMP Thu Jun 14 18:55:52 PDT 2018</span></span><br><span class="line">Machine:	x86_64</span><br><span class="line">VM <span class="keyword">name</span>:	VMWare <span class="keyword">Version</span>: <span class="number">6</span></span><br><span class="line"><span class="keyword">Instance</span> <span class="keyword">name</span>: ystdb</span><br><span class="line"><span class="keyword">Redo</span> <span class="keyword">thread</span> mounted <span class="keyword">by</span> this <span class="keyword">instance</span>: <span class="number">1</span></span><br><span class="line"><span class="keyword">Oracle</span> process <span class="built_in">number</span>: <span class="number">26</span></span><br><span class="line">Unix process pid: <span class="number">42397</span>, image: <span class="keyword">oracle</span>@ystdb11g (TNS V1-V3)</span><br><span class="line"></span><br><span class="line">Sun Mar <span class="number">29</span> <span class="number">03</span>:<span class="number">17</span>:<span class="number">21</span> <span class="number">2020</span> +<span class="number">08</span>:<span class="number">00</span></span><br><span class="line"><span class="keyword">LENGTH</span>: <span class="string">"269"</span></span><br><span class="line">SESSIONID:[<span class="number">7</span>] <span class="string">"3120213"</span> ENTRYID:[<span class="number">1</span>] <span class="string">"1"</span> <span class="keyword">STATEMENT</span>:[<span class="number">1</span>] <span class="string">"1"</span> USERID:[<span class="number">4</span>] <span class="string">"TEST"</span> USERHOST:[<span class="number">8</span>] <span class="string">"ystdb11g"</span> TERMINAL:[<span class="number">5</span>] <span class="string">"pts/1"</span> <span class="keyword">ACTION</span>:[<span class="number">3</span>] <span class="string">"100"</span> RETURNCODE:[<span class="number">1</span>] <span class="string">"0"</span> <span class="keyword">COMMENT</span>$<span class="built_in">TEXT</span>:[<span class="number">26</span>] <span class="string">"Authenticated by: DATABASE"</span> OS$USERID:[<span class="number">6</span>] <span class="string">"oracle"</span> DBID:[<span class="number">10</span>] <span class="string">"1907125504"</span> PRIV$USED:[<span class="number">1</span>] <span class="string">"5"</span></span><br><span class="line"></span><br><span class="line">Sun Mar <span class="number">29</span> <span class="number">03</span>:<span class="number">17</span>:<span class="number">23</span> <span class="number">2020</span> +<span class="number">08</span>:<span class="number">00</span></span><br><span class="line"><span class="keyword">LENGTH</span>: <span class="string">"222"</span></span><br><span class="line">SESSIONID:[<span class="number">7</span>] <span class="string">"3120213"</span> ENTRYID:[<span class="number">1</span>] <span class="string">"1"</span> USERID:[<span class="number">4</span>] <span class="string">"TEST"</span> <span class="keyword">ACTION</span>:[<span class="number">3</span>] <span class="string">"101"</span> RETURNCODE:[<span class="number">1</span>] <span class="string">"0"</span> <span class="keyword">LOGOFF</span>$PREAD:[<span class="number">1</span>] <span class="string">"0"</span> <span class="keyword">LOGOFF</span>$LREAD:[<span class="number">2</span>] <span class="string">"57"</span> <span class="keyword">LOGOFF</span>$LWRITE:[<span class="number">1</span>] <span class="string">"0"</span> <span class="keyword">LOGOFF</span>$DEAD:[<span class="number">1</span>] <span class="string">"0"</span> DBID:[<span class="number">10</span>] <span class="string">"1907125504"</span> SESSIONCPU:[<span class="number">1</span>] <span class="string">"0"</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>修改数据库的审计模式为XML，记录格式变成XML格式，普通用户的登录也会被记录XML文件中</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">[oracle@ystdb11g adump]$ ll</span><br><span class="line">total 20</span><br><span class="line">-rw-r----- 1 oracle oinstall  778 Mar 29 03:27 ystdb_ora_42529_20200329032710062346143795.aud</span><br><span class="line">-rw-r----- 1 oracle oinstall  812 Mar 29 03:27 ystdb_ora_42529_20200329032713467937143795.aud</span><br><span class="line">-rw-r----- 1 oracle oinstall  709 Mar 29 03:27 ystdb_ora_42570_20200329032713493144044040.xml</span><br><span class="line">-rw-r----- 1 oracle oinstall  732 Mar 29 03:27 ystdb_ora_42575_20200329032717564695928477.xml</span><br><span class="line">-rw-r----- 1 oracle oinstall 1288 Mar 29 03:28 ystdb_ora_42604_20200329032812912408263719.xml</span><br><span class="line">[oracle@ystdb11g adump]$ cat ystdb_ora_42604_20200329032812912408263719.xml</span><br><span class="line">&lt;?xml version=<span class="string">"1.0"</span> encoding=<span class="string">"UTF-8"</span>?&gt;</span><br><span class="line">  &lt;Audit xmlns=<span class="string">"http://xmlns.oracle.com/oracleas/schema/dbserver_audittrail-11_2.xsd"</span></span><br><span class="line">   xmlns:xsi=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span></span><br><span class="line">   xsi:schemaLocation=<span class="string">"http://xmlns.oracle.com/oracleas/schema/dbserver_audittrail-11_2.xsd"</span>&gt;</span><br><span class="line">   &lt;Version&gt;11.2&lt;/Version&gt;</span><br><span class="line">&lt;AuditRecord&gt;&lt;Audit_Type&gt;1&lt;/Audit_Type&gt;&lt;Session_Id&gt;3130220&lt;/Session_Id&gt;&lt;StatementId&gt;1&lt;/StatementId&gt;&lt;EntryId&gt;1&lt;/EntryId&gt;&lt;Extended_Timestamp&gt;2020-03-28T19:28:12.912688Z&lt;/Extended_Timestamp&gt;&lt;DB_User&gt;SH&lt;/DB_User&gt;&lt;OS_User&gt;oracle&lt;/OS_User&gt;&lt;Userhost&gt;ystdb11g&lt;/Userhost&gt;&lt;OS_Process&gt;42604&lt;/OS_Process&gt;&lt;Terminal&gt;pts/1&lt;/Terminal&gt;&lt;Instance_Number&gt;0&lt;/Instance_Number&gt;&lt;Action&gt;100&lt;/Action&gt;&lt;TransactionId&gt;0000000000000000&lt;/TransactionId&gt;&lt;Returncode&gt;0&lt;/Returncode&gt;&lt;Comment_Text&gt;Authenticated by: DATABASE&lt;/Comment_Text&gt;&lt;Priv_Used&gt;5&lt;/Priv_Used&gt;&lt;DBID&gt;1907125504&lt;/DBID&gt;</span><br><span class="line">&lt;/AuditRecord&gt;</span><br><span class="line">&lt;AuditRecord&gt;&lt;Audit_Type&gt;1&lt;/Audit_Type&gt;&lt;Session_Id&gt;3130220&lt;/Session_Id&gt;&lt;EntryId&gt;2&lt;/EntryId&gt;&lt;Extended_Timestamp&gt;2020-03-28T19:28:14.163803Z&lt;/Extended_Timestamp&gt;&lt;DB_User&gt;SH&lt;/DB_User&gt;&lt;OS_User&gt;oracle&lt;/OS_User&gt;&lt;Userhost&gt;ystdb11g&lt;/Userhost&gt;&lt;OS_Process&gt;42604&lt;/OS_Process&gt;&lt;Terminal&gt;pts/1&lt;/Terminal&gt;&lt;Instance_Number&gt;0&lt;/Instance_Number&gt;&lt;Action&gt;101&lt;/Action&gt;&lt;Returncode&gt;0&lt;/Returncode&gt;&lt;DBID&gt;1907125504&lt;/DBID&gt;</span><br><span class="line">&lt;/AuditRecord&gt;</span><br><span class="line">&lt;/Audit&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>修改数据库的审计模式为db,extended</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">SQL&gt; alter system set audit_trail="DB_EXTENDED" scope=spfile;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 开启基于用户的审计</span></span><br><span class="line">SQL&gt; audit all by sh by access;</span><br><span class="line"></span><br><span class="line">Audit succeeded.</span><br><span class="line"></span><br><span class="line">SQL&gt; audit select table,update table,insert table,delete table by access;</span><br><span class="line"></span><br><span class="line">Audit succeeded.</span><br><span class="line"></span><br><span class="line"><span class="comment"># 对表进行操作</span></span><br><span class="line">SQL&gt; create table audit_test (id number);</span><br><span class="line"></span><br><span class="line">Table created.</span><br><span class="line"></span><br><span class="line">SQL&gt; insert into audit_test values(1);</span><br><span class="line"></span><br><span class="line">1 row created.</span><br><span class="line"></span><br><span class="line">SQL&gt; commit;</span><br><span class="line"></span><br><span class="line"><span class="keyword">Commit</span> complete.</span><br><span class="line"></span><br><span class="line"><span class="keyword">SQL</span>&gt; </span><br><span class="line"><span class="keyword">SQL</span>&gt; <span class="keyword">select</span> * <span class="keyword">from</span> audit_test;</span><br><span class="line"></span><br><span class="line">	ID</span><br><span class="line"><span class="comment">----------</span></span><br><span class="line">	 1</span><br><span class="line"></span><br><span class="line">SQL&gt; </span><br><span class="line">SQL&gt; </span><br><span class="line">SQL&gt; drop table audit_test;</span><br><span class="line"></span><br><span class="line">Table dropped.</span><br><span class="line"></span><br><span class="line"><span class="comment"># 审计信息</span></span><br><span class="line">SQL&gt; select userid,userhost,terminal,sqltext,sqlbind from sys.aud$ where obj$name='AUDIT_TEST';</span><br><span class="line"></span><br><span class="line">USERID	   USERHOST   TERMINAL	      SQLTEXT				       SQLBIND</span><br><span class="line"><span class="comment">---------- ---------- --------------- ---------------------------------------- ----------</span></span><br><span class="line">SH	   ystdb11g   pts/1	      <span class="keyword">create</span> <span class="keyword">table</span> audit_test (<span class="keyword">id</span> <span class="built_in">number</span>)</span><br><span class="line">SH	   ystdb11g   pts/<span class="number">1</span>	      <span class="keyword">insert</span> <span class="keyword">into</span> audit_test <span class="keyword">values</span>(<span class="number">1</span>)</span><br><span class="line">SH	   ystdb11g   pts/<span class="number">1</span>	      <span class="keyword">select</span> * <span class="keyword">from</span> audit_test</span><br><span class="line">SH	   ystdb11g   pts/<span class="number">1</span>	      <span class="keyword">drop</span> <span class="keyword">table</span> audit_test</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查看SYS.AUD$属于那个表空间</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">SQL&gt; select table_name,tablespace_name from dba_tables where table_name='AUD$';</span><br><span class="line"></span><br><span class="line">TABLE_NAME		       TABLESPACE_NAME</span><br><span class="line"><span class="comment">------------------------------ ------------------------------</span></span><br><span class="line">AUD$			       SYSTEM</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>总结：SYS用户的审计信息会被记录在audit_file_dest所对应的目录下，DB、DB_EXTENDED会把普通用户的审计信息记录在SYS.AUD$表中，OS、XML、XML_EXTENDED会把普通用户的审计信息记录在audit_file_dest所对应的审计目录下，XML和XML_EXTENDED的格式都是XML格式，NONE不会将普通用户的审计信息记录在SYS.AUD$表中，SYS.AUD$属于SYSTEM表空间，如果数据库的审计模式是DB或者DB_EXTENDED模式，将有可能导致SYSTEM表空间很大的情况出现，如果是OS或者XML模式，将有可能会导致admp目录过大的情况出现，在默认或者手动开启其他模式的情况下，需要定期检查和清理adump目录下的审计文件和SYS.AUD$表中的内容</p>
+</li>
+<li><p>如果较长时间没有关注adump和SYS.AUD$的空间，造成adump下生成了大量的审计文件的情况下，直接使用rm命令无法删除，会提示”Argument list too long“，需要使用<code>ls | xargs -n 10 rm -rf</code> 进行删除，其中的10是指以10个文件为一组进行删除，这个参数可以自行调整。对于SYS.AUD$表过大的情况，可以直接<code>truncate</code> SYS.AUD$表，在可能的情况下，尽量定期进行审计目录进行压缩备份和清理</p>
+</li>
+</ul>
+
+      
+    </div>
+    <footer>
+      
+        
+  
+  <div class="categories">
+    <a href="/categories/Database/">Database</a>
+  </div>
+
+        
+  
+  <div class="tags">
+    <a href="/tags/11g/">11g</a>, <a href="/tags/Audit/">Audit</a>
+  </div>
+
+        
+  <div class="addthis addthis_toolbox addthis_default_style">
+    
+      <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+    
+    
+      <a class="addthis_button_tweet"></a>
+    
+    
+      <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+    
+    
+      <a class="addthis_button_pinterest_pinit" pi:pinit:layout="horizontal"></a>
+    
+    <a class="addthis_counter addthis_pill_style"></a>
+  </div>
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js"></script>
+
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">Comments</h1>
+
+  
+      <div id="fb-root"></div>
+<script>
+  (function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=123456789012345";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+</script>
+
+<div class="fb-comments" data-href="http://falkon.cn/2020/04/03/database/Oracle%20Audit%E7%9B%AE%E5%BD%95%E4%B8%AD%E6%96%87%E4%BB%B6%E7%9A%84%E5%86%85%E5%AE%B9%E4%BB%A5%E5%8F%8A%E6%98%AF%E5%90%A6%E5%8F%AF%E4%BB%A5%E5%88%A0%E9%99%A4/index.html" data-num-posts="5" data-width="840" data-colorscheme="light"></div>
+      
+  
+</section>
+
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="as_sitesearch" value="falkon.cn">
+  </form>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Categories</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/Database/">Database</a><small>17</small></li>
+  
+    <li><a href="/categories/Linux/">Linux</a><small>2</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/10G/">10G</a><small>1</small></li>
+  
+    <li><a href="/tags/11g/">11g</a><small>2</small></li>
+  
+    <li><a href="/tags/12c/">12c</a><small>3</small></li>
+  
+    <li><a href="/tags/AFD/">AFD</a><small>1</small></li>
+  
+    <li><a href="/tags/ASM/">ASM</a><small>1</small></li>
+  
+    <li><a href="/tags/Audit/">Audit</a><small>1</small></li>
+  
+    <li><a href="/tags/CLONE/">CLONE</a><small>1</small></li>
+  
+    <li><a href="/tags/GoldenGate/">GoldenGate</a><small>1</small></li>
+  
+    <li><a href="/tags/ODA/">ODA</a><small>1</small></li>
+  
+    <li><a href="/tags/ORA-01804/">ORA-01804</a><small>1</small></li>
+  
+    <li><a href="/tags/ORA-28000/">ORA-28000</a><small>1</small></li>
+  
+    <li><a href="/tags/ORA-600/">ORA-600</a><small>1</small></li>
+  
+    <li><a href="/tags/ORA-65500/">ORA-65500</a><small>1</small></li>
+  
+    <li><a href="/tags/Openfiler/">Openfiler</a><small>1</small></li>
+  
+    <li><a href="/tags/Oracle-11g/">Oracle 11g</a><small>1</small></li>
+  
+    <li><a href="/tags/PDB/">PDB</a><small>1</small></li>
+  
+    <li><a href="/tags/PSU/">PSU</a><small>1</small></li>
+  
+    <li><a href="/tags/Patch/">Patch</a><small>1</small></li>
+  
+    <li><a href="/tags/RAC/">RAC</a><small>3</small></li>
+  
+    <li><a href="/tags/Req-mir-free-MB/">Req_mir_free_MB</a><small>1</small></li>
+  
+    <li><a href="/tags/SWAP/">SWAP</a><small>1</small></li>
+  
+    <li><a href="/tags/Synonym/">Synonym</a><small>1</small></li>
+  
+    <li><a href="/tags/exp/">exp</a><small>1</small></li>
+  
+    <li><a href="/tags/expdp/">expdp</a><small>1</small></li>
+  
+    <li><a href="/tags/imp/">imp</a><small>1</small></li>
+  
+    <li><a href="/tags/impdp/">impdp</a><small>1</small></li>
+  
+    <li><a href="/tags/udev/">udev</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2020 Falkon
+  
+</div>
+<div class="clearfix"></div></footer>
+  
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

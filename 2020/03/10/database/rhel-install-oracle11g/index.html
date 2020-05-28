@@ -1,0 +1,443 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  
+  <title>Linux Installation Oracle 11g | FALKON&#39;S TECH BLOG</title>
+  <meta name="author" content="Falkon">
+  
+  <meta name="description" content="1. 资源描述
+CentOS 6.10 操作系统可选择6.x系列其他的版本
+Oracle 11.2.0.4 我使用的数据库版本需要MOS才能下载，可选择11.2.0.1版本
+Virtual Box 5.2.22 虚拟机软件可选择最新版，建议使用5系列，比较稳定
+VNC Viewer 6.18 远程桌面工具，可选用最新版
+Xshell 5 远程终端工具5系列官网已经不提供下载了，可选择6系列，有使用限制，单个窗口最大可开4个标签，可选择其他终端工具比如Putty，MobaXterm等">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="Linux Installation Oracle 11g"/>
+  <meta property="og:site_name" content="FALKON&#39;S TECH BLOG"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="FALKON&#39;S TECH BLOG" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">FALKON&#39;S TECH BLOG</a></h1>
+  <h2><a href="/">Record life, record me.</a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+      <li><a href="/project">Project</a></li>
+    
+      <li><a href="/about">About</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article id="post-database/rhel-install-oracle11g" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-03-10T06:09:24.099Z"><a href="/2020/03/10/database/rhel-install-oracle11g/">2020-03-10</a></time>
+      
+      
+  
+    <h1 class="p-name title" itemprop="headline name">Linux Installation Oracle 11g</h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h3 id="1-资源描述"><a href="#1-资源描述" class="headerlink" title="1. 资源描述"></a>1. 资源描述</h3><ul>
+<li><a href="https://wiki.centos.org/Download" target="_blank" rel="noopener">CentOS 6.10</a> 操作系统可选择6.x系列其他的版本</li>
+<li><a href="https://www.oracle.com/technetwork/database/enterprise-edition/downloads/index.html" target="_blank" rel="noopener">Oracle 11.2.0.4</a> 我使用的数据库版本需要MOS才能下载，可选择11.2.0.1版本</li>
+<li><a href="https://www.virtualbox.org/" target="_blank" rel="noopener">Virtual Box 5.2.22</a> 虚拟机软件可选择最新版，建议使用5系列，比较稳定</li>
+<li><a href="https://www.realvnc.com/en/connect/download/viewer/" target="_blank" rel="noopener">VNC Viewer 6.18</a> 远程桌面工具，可选用最新版</li>
+<li><a href="https://www.netsarang.com/en/xshell/" target="_blank" rel="noopener">Xshell 5</a> 远程终端工具5系列官网已经不提供下载了，可选择6系列，有使用限制，单个窗口最大可开4个标签，可选择其他终端工具比如<a href="https://putty.org/" target="_blank" rel="noopener">Putty</a>，<a href="https://mobaxterm.mobatek.net/" target="_blank" rel="noopener">MobaXterm</a>等</li>
+</ul>
+<a id="more"></a>
+
+<h3 id="2-操作系统检查与配置"><a href="#2-操作系统检查与配置" class="headerlink" title="2. 操作系统检查与配置"></a>2. 操作系统检查与配置</h3><ul>
+<li><p>查看操作系统版本</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># cat /etc/redhat-release </span></span><br><span class="line">CentOS release 6.10 (Final)</span><br></pre></td></tr></table></figure></li>
+<li><p>查看内存，swap</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 内存建议1G以上，swap建议4G以上否则在安装检查的时候会报错</span></span><br><span class="line">[root@localhost ~]<span class="comment"># free -m</span></span><br><span class="line">             total       used       free     shared    buffers     cached</span><br><span class="line">Mem:          1878        702       1175          2         52        378</span><br><span class="line">-/+ buffers/cache:        270       1607</span><br><span class="line">Swap:         4095          0       4095</span><br></pre></td></tr></table></figure></li>
+<li><p>调整swap大小</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建分区，位置可自定，bs参数为块大小，count参数为个数</span></span><br><span class="line">[root@localhost ~]<span class="comment"># dd if=/dev/zero of=/home/swap bs=1M count=2048</span></span><br><span class="line">2048+0 records <span class="keyword">in</span></span><br><span class="line">2048+0 records out</span><br><span class="line">2147483648 bytes (2.1 GB) copied, 2.72688 s, 788 MB/s</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将分区变成swap分区</span></span><br><span class="line">[root@localhost ~]<span class="comment"># mkswap /home/swap</span></span><br><span class="line">mkswap: /home/swap: warning: don<span class="string">'t erase bootbits sectors</span></span><br><span class="line"><span class="string">        on whole disk. Use -f to force.</span></span><br><span class="line"><span class="string">Setting up swapspace version 1, size = 2097148 KiB</span></span><br><span class="line"><span class="string">no label, UUID=21751eac-33ad-4fe0-8b13-3bccc34973b9</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"># 使分区生效</span></span><br><span class="line"><span class="string">[root@localhost ~]# swapon /home/swap</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"># 修改fstab添加开机启动</span></span><br><span class="line"><span class="string">[root@localhost ~]# vi /etc/fstab</span></span><br><span class="line"><span class="string">/home/swap              swap                    swap    defaults        0 0</span></span><br></pre></td></tr></table></figure></li>
+<li><p>查看磁盘空间</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Oracle安装目录的可用空间建议15G以上，安装操作系统磁盘建议32G以上</span></span><br><span class="line">[root@localhost ~]<span class="comment"># df -h</span></span><br><span class="line">Filesystem            Size  Used Avail Use% Mounted on</span><br><span class="line">/dev/mapper/VolGroup-LogVol00</span><br><span class="line">                       28G  7.3G   19G  29% /</span><br><span class="line">tmpfs                 940M   76K  939M   1% /dev/shm</span><br><span class="line">/dev/sda1             190M   40M  141M  22% /boot</span><br></pre></td></tr></table></figure></li>
+<li><p>配置IP地址</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 编辑ifcfg-eth0</span></span><br><span class="line">[root@localhost ~]<span class="comment"># vi /etc/sysconfig/network-scripts/ifcfg-eth0</span></span><br><span class="line"><span class="comment"># 参照下列示例修改后六行，Virtual Box的虚拟网关为192.168.56.1</span></span><br><span class="line"><span class="comment"># 在host-only模式下你的IP地址需要在192.168.56这个网段</span></span><br><span class="line"><span class="comment"># 在生产环境下，数据库是和交换机连在一起的，具体的IP需要和应用在同</span></span><br><span class="line"><span class="comment"># 一个网段或者VLAN中</span></span><br><span class="line">DEVICE=eth0</span><br><span class="line">HWADDR=08:00:27:7F:BA:FD</span><br><span class="line">TYPE=Ethernet</span><br><span class="line">UUID=0948b812-ae70-4159-9564-bde690e7befa</span><br><span class="line">ONBOOT=yes</span><br><span class="line">NM_CONTROLLED=yes</span><br><span class="line">BOOTPROTO=static</span><br><span class="line">IPADDR=192.168.56.103</span><br><span class="line">NETMASK=255.255.255.0</span><br><span class="line">GATEWAY=192.168.56.1</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>修改network</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 修改主机名，一般建议为：应用-类型版本的模式，这样方便的终端登陆时候，</span></span><br><span class="line"><span class="comment"># 看到主机名就知道这台服务器的作用，以及为哪个应用提供服务，如果上面有</span></span><br><span class="line"><span class="comment"># 多个库，建议为mpp(Multi Application)-类型版本的模式</span></span><br><span class="line"><span class="comment"># 编辑network配置文件</span></span><br><span class="line">[root@localhost ~]<span class="comment"># vi /etc/sysconfig/network</span></span><br><span class="line"><span class="comment"># 将localhost.localdomain修改为自定的主机名</span></span><br><span class="line">NETWORKING=yes</span><br><span class="line">HOSTNAME=app-db11g</span><br></pre></td></tr></table></figure></li>
+<li><p>修改hosts</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># vi /etc/hosts</span></span><br><span class="line">192.168.56.103  app-db11g</span><br></pre></td></tr></table></figure></li>
+<li><p>修改防火墙</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 关闭防火墙</span></span><br><span class="line">[root@localhost ~]<span class="comment"># service iptables stop</span></span><br><span class="line"><span class="comment"># 禁止开机启动防火墙</span></span><br><span class="line">[root@localhost ~]<span class="comment"># chkconfig iptables off</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>修改selinux</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 关闭Linux增强，编辑selinx配置文件</span></span><br><span class="line">[root@localhost ~]<span class="comment"># vi /etc/sysconfig/selinux</span></span><br><span class="line"><span class="comment"># 将SELINUX=enforcing修改SELINUX=disabled</span></span><br><span class="line"><span class="comment"># This file controls the state of SELinux on the system.</span></span><br><span class="line"><span class="comment"># SELINUX= can take one of these three values:</span></span><br><span class="line"><span class="comment">#     enforcing - SELinux security policy is enforced.</span></span><br><span class="line"><span class="comment">#     permissive - SELinux prints warnings instead of enforcing.</span></span><br><span class="line"><span class="comment">#     disabled - No SELinux policy is loaded.</span></span><br><span class="line">SELINUX=disabled</span><br><span class="line"><span class="comment"># SELINUXTYPE= can take one of these two values:</span></span><br><span class="line"><span class="comment">#     targeted - Targeted processes are protected,</span></span><br><span class="line"><span class="comment">#     mls - Multi Level Security protection.</span></span><br><span class="line">SELINUXTYPE=targeted</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h3 id="3-创建用户组及用户"><a href="#3-创建用户组及用户" class="headerlink" title="3. 创建用户组及用户"></a>3. 创建用户组及用户</h3><ul>
+<li>创建用户组<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@app-db11g ~]<span class="comment"># groupadd oinstall</span></span><br><span class="line">[root@app-db11g ~]<span class="comment"># groupadd dba</span></span><br><span class="line">[root@app-db11g ~]<span class="comment"># groupadd oper</span></span><br></pre></td></tr></table></figure></li>
+<li>创建用户并设置密码<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@app-db11g ~]<span class="comment"># useradd -g oinstall -G dba,oper oracle</span></span><br><span class="line">[root@app-db11g ~]<span class="comment"># passwd oracle</span></span><br><span class="line">Changing password <span class="keyword">for</span> user oracle.</span><br><span class="line">New password: </span><br><span class="line">BAD PASSWORD: it is based on a dictionary word</span><br><span class="line">BAD PASSWORD: is too simple</span><br><span class="line">Retype new password: </span><br><span class="line">passwd: all authentication tokens updated successfully.</span><br></pre></td></tr></table></figure></li>
+<li>检查用户组及用户<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@app-db11g ~]<span class="comment"># su - oracle</span></span><br><span class="line">[oracle@app-db11g ~]$ id</span><br><span class="line">uid=500(oracle) gid=500(oinstall) groups=500(oinstall),501(dba),502(oper)</span><br></pre></td></tr></table></figure>
+<h3 id="4-创建安装目录"><a href="#4-创建安装目录" class="headerlink" title="4. 创建安装目录"></a>4. 创建安装目录</h3></li>
+<li>创建Oracle软件安装目录<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@app-db11g ~]<span class="comment"># mkdir -p /u01/app/oracle</span></span><br></pre></td></tr></table></figure></li>
+<li>更改属组并授权<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@app-db11g ~]<span class="comment"># chown -R oracle:oinstall /u01/</span></span><br><span class="line">[root@app-db11g ~]<span class="comment"># chmod -R 775 /u01/app/oracle/</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h3 id="5-修改资源限制"><a href="#5-修改资源限制" class="headerlink" title="5. 修改资源限制"></a>5. 修改资源限制</h3><ul>
+<li>修改sysctl.conf<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[root@app-db11g ~]<span class="comment"># vi /etc/sysctl.conf</span></span><br><span class="line">fs.aio-max-nr = 1048576</span><br><span class="line">fs.file-max = 6815744</span><br><span class="line">kernel.shmall = 2097152</span><br><span class="line">kernel.shmmax = 536870912</span><br><span class="line">kernel.shmmni = 4096</span><br><span class="line">kernel.sem = 250 32000 100 128</span><br><span class="line">net.ipv4.ip_local_port_range = 9000 65500</span><br><span class="line">net.core.rmem_default = 262144</span><br><span class="line">net.core.rmem_max = 4194304</span><br><span class="line">net.core.wmem_default = 262144</span><br><span class="line">net.core.wmem_max = 1048576</span><br></pre></td></tr></table></figure></li>
+<li>修改limets.conf<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">[root@app-db11g ~]<span class="comment"># vi /etc/security/limits.conf</span></span><br><span class="line">oracle          soft    nproc           2047</span><br><span class="line">oracle          hard    nproc           16384</span><br><span class="line">oracle          soft    nofile          4096</span><br><span class="line">oracle          hard    nofile          65536</span><br><span class="line">oracle          soft    stack           10240</span><br><span class="line">oracle		hard	stack		32768</span><br><span class="line"><span class="comment"># 修改完成后验证参数，需要重启</span></span><br><span class="line">[oracle@app-db11g ~]$ <span class="built_in">ulimit</span> -Sn</span><br><span class="line">4096</span><br><span class="line">[oracle@app-db11g ~]$ <span class="built_in">ulimit</span> -Hn</span><br><span class="line">65536</span><br><span class="line">[oracle@app-db11g ~]$ <span class="built_in">ulimit</span> -Su</span><br><span class="line">2047</span><br><span class="line">[oracle@app-db11g ~]$ <span class="built_in">ulimit</span> -Hu</span><br><span class="line">16384</span><br><span class="line">[oracle@app-db11g ~]$ <span class="built_in">ulimit</span> -Ss</span><br><span class="line">10240</span><br><span class="line">[oracle@app-db11g ~]$ <span class="built_in">ulimit</span> -Hs</span><br><span class="line">32768</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h3 id="6-安装依赖包"><a href="#6-安装依赖包" class="headerlink" title="6. 安装依赖包"></a>6. 安装依赖包</h3><ul>
+<li><p>查看<a href="https://docs.oracle.com/cd/E11882_01/install.112/e24326/toc.htm#BHCFACHG" target="_blank" rel="noopener">官方文档</a>中所需的依赖包</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">binutils-2.20.51.0.2-5.11.el6 (x86_64)</span><br><span class="line">compat-libcap1-1.10-1 (x86_64)</span><br><span class="line">compat-libstdc++-33-3.2.3-69.el6 (x86_64)</span><br><span class="line">compat-libstdc++-33-3.2.3-69.el6.i686</span><br><span class="line">ksh</span><br><span class="line">gcc-4.4.4-13.el6 (x86_64)</span><br><span class="line">gcc-c++-4.4.4-13.el6 (x86_64)</span><br><span class="line">glibc-2.12-1.7.el6 (i686)</span><br><span class="line">glibc-2.12-1.7.el6 (x86_64)</span><br><span class="line">glibc-devel-2.12-1.7.el6 (x86_64)</span><br><span class="line">glibc-devel-2.12-1.7.el6.i686</span><br><span class="line">libgcc-4.4.4-13.el6 (i686)</span><br><span class="line">libgcc-4.4.4-13.el6 (x86_64)</span><br><span class="line">libstdc++-4.4.4-13.el6 (x86_64)</span><br><span class="line">libstdc++-4.4.4-13.el6.i686</span><br><span class="line">libstdc++-devel-4.4.4-13.el6 (x86_64)</span><br><span class="line">libstdc++-devel-4.4.4-13.el6.i686</span><br><span class="line">libaio-0.3.107-10.el6 (x86_64)</span><br><span class="line">libaio-0.3.107-10.el6.i686</span><br><span class="line">libaio-devel-0.3.107-10.el6 (x86_64)</span><br><span class="line">libaio-devel-0.3.107-10.el6.i686</span><br><span class="line">make-3.81-19.el6</span><br><span class="line">sysstat-9.0.4-11.el6 (x86_64)</span><br><span class="line">unixODBC-2.2.14-11.el6 (x86_64)</span><br><span class="line">unixODBC-2.2.14-11.el6.i686</span><br><span class="line">unixODBC-devel-2.2.14-11.el6 (x86_64)</span><br><span class="line">unixODBC-devel-2.2.14-11.el6.i686</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>配置yum源</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@app-db11g ~]<span class="comment"># vi /etc/yum.repos.d/CentOS-Base.repo</span></span><br><span class="line">[base]</span><br><span class="line">name=CentOS-<span class="variable">$releasever</span> - Base</span><br><span class="line">baseurl=file:///media</span><br><span class="line"><span class="built_in">enable</span>=1</span><br><span class="line">gpgcheck=1</span><br><span class="line">gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-6</span><br></pre></td></tr></table></figure></li>
+<li><p>安装依赖</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在虚拟机中添加操作系统镜像并挂载</span></span><br><span class="line">[root@app-db11g media]<span class="comment"># mount /dev/cdrom /media/</span></span><br><span class="line">mount: block device /dev/sr0 is write-protected, mounting <span class="built_in">read</span>-only</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用yum install命令安装依赖包</span></span><br><span class="line">[root@app-db11g ~]<span class="comment"># yum install -y compat-libcap1 compat-libstdc++-33 </span></span><br><span class="line">compat-libstdc++-33 gcc gcc-c++ glibc glibc-devel ksh libgcc libstdc++ </span><br><span class="line">libstdc++-devel libaio libaio-devel make sysstat unixODBC unixODBC-devel</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h3 id="7-安装数据库软件"><a href="#7-安装数据库软件" class="headerlink" title="7. 安装数据库软件"></a>7. 安装数据库软件</h3><ul>
+<li>配置oracle用户的bash_profile<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[oracle@app-db11g ~]$ vi ~/.bash_profile</span><br><span class="line"><span class="built_in">export</span> ORACLE_SID=prod1</span><br><span class="line"><span class="built_in">export</span> ORACLE_BASE=/u01/app/oracle</span><br><span class="line"><span class="built_in">export</span> ORACLE_HOME=<span class="variable">$ORACLE_BASE</span>/product/11.2.0/dbhome_1</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$ORACLE_HOME</span>/bin:<span class="variable">$PATH</span></span><br></pre></td></tr></table></figure></li>
+<li>上用sftp上传安装包到服务器，完成后使用unzip命令解压<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@app-db11g ~]<span class="comment"># ls /home/</span></span><br><span class="line">p13390677_112040_Linux-x86-64_1of7.zip</span><br><span class="line">p13390677_112040_Linux-x86-64_2of7.zip</span><br></pre></td></tr></table></figure></li>
+<li>处理缺少elfultils-libelf-devel-0.97和pdksh-5.2.14依赖包问题<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 备份cvu_config</span></span><br><span class="line">[root@app-db11g admin]<span class="comment"># cp /home/database/stage/cvu/cv/admin/cvu_config /home/database/stage/cvu/cv/admin/cvu_config.bak</span></span><br><span class="line"><span class="comment"># 修改cvu_config中的CV_ASSUME_DISTID=OEL4为CV_ASSUME_DISTID=OEL6</span></span><br><span class="line"><span class="comment"># Fallback to this distribution id</span></span><br><span class="line">CV_ASSUME_DISTID=OEL6</span><br></pre></td></tr></table></figure></li>
+<li>重启虚拟机<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@app-db11g ~]<span class="comment"># reboot</span></span><br></pre></td></tr></table></figure></li>
+<li>配置VNC Server<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@app-db11g ~]<span class="comment"># vi /etc/sysconfig/vncservers</span></span><br><span class="line">VNCSERVERS=<span class="string">"2:root"</span></span><br><span class="line">VNCSERVERARGS[2]=<span class="string">"-geometry 1024x768"</span></span><br></pre></td></tr></table></figure></li>
+<li>设置或者重置vnc密码<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@app-db11g ~]<span class="comment"># vncpasswd</span></span><br><span class="line">Password:</span><br><span class="line">Verify:</span><br></pre></td></tr></table></figure></li>
+<li>启动VNC Server<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[root@app-db11g ~]<span class="comment"># service vncserver start</span></span><br><span class="line">Starting VNC server: 2:root xauth:  file /root/.Xauthority does not exist</span><br><span class="line">xauth: (stdin):1:  bad display name <span class="string">"app-db11g:2"</span> <span class="keyword">in</span> <span class="string">"add"</span> <span class="built_in">command</span></span><br><span class="line"></span><br><span class="line">New <span class="string">'app-db11g:2 (root)'</span> desktop is app-db11g:2</span><br><span class="line"></span><br><span class="line">Creating default startup script /root/.vnc/xstartup</span><br><span class="line">Starting applications specified <span class="keyword">in</span> /root/.vnc/xstartup</span><br><span class="line">Log file is /root/.vnc/app-db11g:2.log</span><br><span class="line"></span><br><span class="line">                                                           [  OK  ]</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<ul>
+<li><p>使用VNC Viewer连接<br>由于我的操作系统是Fedora 29，所以使用的Remmina远程桌面工具，其实连接方式是一样的注意IP地址后面的冒号，在连接上远程桌面后在终端root用户和oracle都要执行<code>xhost +</code>命令，然后<code>cd /home/database</code>执行<code>./runInstaller</code></p>
+<img src="http://q6p62toq8.falkon.cn/static/images/remmina.png?imageMogr2/auto-orient/thumbnail/700x/blur/1x0/quality/100|imageslim">                                      
+</li>
+<li><p>不执行安全更新</p>
+<img src="http://q6p62toq8.falkon.cn/static/images/ora-11g-inst-01.png?imageMogr2/auto-orient/thumbnail/700x/blur/1x0/quality/100|imageslim">
+</li>
+<li><p>跳过软件更新</p>
+<img src="http://q6p62toq8.falkon.cn/static/images/ora-11g-inst-02.png?imageMogr2/auto-orient/thumbnail/700x/blur/1x0/quality/100|imageslim">
+</li>
+<li><p>只安装数据库软件</p>
+<img src="http://q6p62toq8.falkon.cn/static/images/ora-11g-inst-03.png?imageMogr2/auto-orient/thumbnail/700x/blur/1x0/quality/100|imageslim">
+</li>
+<li><p>选择单实例安装</p>
+<img src="http://q6p62toq8.falkon.cn/static/images/ora-11g-inst-04.png?imageMogr2/auto-orient/thumbnail/700x/blur/1x0/quality/100|imageslim">
+</li>
+<li><p>选择语言</p>
+<img src="http://q6p62toq8.falkon.cn/static/images/ora-11g-inst-05.png?imageMogr2/auto-orient/thumbnail/700x/blur/1x0/quality/100|imageslim">
+</li>
+<li><p>选择企业版</p>
+<img src="http://q6p62toq8.falkon.cn/static/images/ora-11g-inst-06.png?imageMogr2/auto-orient/thumbnail/700x/blur/1x0/quality/100|imageslim">
+</li>
+<li><p>指定安装路径</p>
+<img src="http://q6p62toq8.falkon.cn/static/images/ora-11g-inst-07.png?imageMogr2/auto-orient/thumbnail/700x/blur/1x0/quality/100|imageslim">
+</li>
+<li><p>创建Inventoy</p>
+<img src="http://q6p62toq8.falkon.cn/static/images/ora-11g-inst-08.png?imageMogr2/auto-orient/thumbnail/700x/blur/1x0/quality/100|imageslim">
+</li>
+<li><p>指定用户组</p>
+<img src="http://q6p62toq8.falkon.cn/static/images/ora-11g-inst-09.png?imageMogr2/auto-orient/thumbnail/700x/blur/1x0/quality/100|imageslim">
+</li>
+<li><p>汇总信息</p>
+<img src="http://q6p62toq8.falkon.cn/static/images/ora-11g-inst-10.png?imageMogr2/auto-orient/thumbnail/700x/blur/1x0/quality/100|imageslim">
+</li>
+<li><p>安装进度</p>
+<img src="http://q6p62toq8.falkon.cn/static/images/ora-11g-inst-11.png?imageMogr2/auto-orient/thumbnail/700x/blur/1x0/quality/100|imageslim">
+</li>
+<li><p>执行root脚本</p>
+<img src="http://q6p62toq8.falkon.cn/static/images/ora-11g-inst-12.png?imageMogr2/auto-orient/thumbnail/700x/blur/1x0/quality/100|imageslim">
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">[root@app-db11g ~]<span class="comment"># /u01/app/oraInventory/orainstRoot.sh </span></span><br><span class="line">Changing permissions of /u01/app/oraInventory.</span><br><span class="line">Adding <span class="built_in">read</span>,write permissions <span class="keyword">for</span> group.</span><br><span class="line">Removing <span class="built_in">read</span>,write,execute permissions <span class="keyword">for</span> world.</span><br><span class="line"></span><br><span class="line">Changing groupname of /u01/app/oraInventory to oinstall.</span><br><span class="line">The execution of the script is complete.</span><br><span class="line">[root@app-db11g ~]<span class="comment"># /u01/app/oracle/product/11.2.0/dbhome_1/root.sh </span></span><br><span class="line">Performing root user operation <span class="keyword">for</span> Oracle 11g </span><br><span class="line"></span><br><span class="line">The following environment variables are <span class="built_in">set</span> as:</span><br><span class="line">    ORACLE_OWNER= oracle</span><br><span class="line">    ORACLE_HOME=  /u01/app/oracle/product/11.2.0/dbhome_1</span><br><span class="line"></span><br><span class="line">Enter the full pathname of the <span class="built_in">local</span> bin directory: [/usr/<span class="built_in">local</span>/bin]: </span><br><span class="line">   Copying dbhome to /usr/<span class="built_in">local</span>/bin ...</span><br><span class="line">   Copying oraenv to /usr/<span class="built_in">local</span>/bin ...</span><br><span class="line">   Copying coraenv to /usr/<span class="built_in">local</span>/bin ...</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Creating /etc/oratab file...</span><br><span class="line">Entries will be added to the /etc/oratab file as needed by</span><br><span class="line">Database Configuration Assistant when a database is created</span><br><span class="line">Finished running generic part of root script.</span><br><span class="line">Now product-specific root actions will be performed.</span><br><span class="line">Finished product-specific root actions.</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装完成 </p>
+<img src="http://q6p62toq8.falkon.cn/static/images/ora-11g-inst-13.png?imageMogr2/auto-orient/thumbnail/700x/blur/1x0/quality/100|imageslim">
+
+</li>
+</ul>
+<h3 id="8-配置监听"><a href="#8-配置监听" class="headerlink" title="8. 配置监听"></a>8. 配置监听</h3><ul>
+<li><p>执行netca配置监听</p>
+<img src="http://q6p62toq8.falkon.cn/static/images/ora-11g-netca-01.png?imageMogr2/auto-orient/thumbnail/700x/blur/1x0/quality/100|imageslim">
+</li>
+<li><p>选择增加</p>
+<img src="http://q6p62toq8.falkon.cn/static/images/ora-11g-netca-02.png?imageMogr2/auto-orient/thumbnail/700x/blur/1x0/quality/100|imageslim">
+</li>
+<li><p>监听名称</p>
+<img src="http://q6p62toq8.falkon.cn/static/images/ora-11g-netca-03.png?imageMogr2/auto-orient/thumbnail/700x/blur/1x0/quality/100|imageslim">
+</li>
+<li><p>监听协议</p>
+<img src="http://q6p62toq8.falkon.cn/static/images/ora-11g-netca-04.png?imageMogr2/auto-orient/thumbnail/700x/blur/1x0/quality/100|imageslim">
+</li>
+<li><p>监听端口</p>
+<img src="http://q6p62toq8.falkon.cn/static/images/ora-11g-netca-05.png?imageMogr2/auto-orient/thumbnail/700x/blur/1x0/quality/100|imageslim">
+</li>
+<li><p>不配置另一个监听</p>
+<img src="http://q6p62toq8.falkon.cn/static/images/ora-11g-netca-06.png?imageMogr2/auto-orient/thumbnail/700x/blur/1x0/quality/100|imageslim">
+</li>
+<li><p>监听配置完成</p>
+<img src="http://q6p62toq8.falkon.cn/static/images/ora-11g-netca-07.png?imageMogr2/auto-orient/thumbnail/700x/blur/1x0/quality/100|imageslim">
+
+</li>
+</ul>
+<h3 id="9-创建数据库"><a href="#9-创建数据库" class="headerlink" title="9. 创建数据库"></a>9. 创建数据库</h3><ul>
+<li><p>dbca配置助手欢迎页面</p>
+<img src="http://q6p62toq8.falkon.cn/static/images/ora-11g-dbca-01.png?imageMogr2/auto-orient/thumbnail/700x/blur/1x0/quality/100|imageslim">
+</li>
+<li><p>选择创建操作</p>
+<img src="http://q6p62toq8.falkon.cn/static/images/ora-11g-dbca-02.png?imageMogr2/auto-orient/thumbnail/700x/blur/1x0/quality/100|imageslim">
+</li>
+<li><p>选择创建数据库的类型<br>类型有通用或事务、数据仓库和自定义，我们选择通用或事务，也就是常说的OLTP</p>
+<img src="http://q6p62toq8.falkon.cn/static/images/ora-11g-dbca-03.png?imageMogr2/auto-orient/thumbnail/700x/blur/1x0/quality/100|imageslim">
+</li>
+<li><p>填写SID<br>Global Database Name和SID一致</p>
+<img src="http://q6p62toq8.falkon.cn/static/images/ora-11g-dbca-04.png?imageMogr2/auto-orient/thumbnail/700x/blur/1x0/quality/100|imageslim">
+</li>
+<li><p>开启EM<br>EM是Oracle的企业管理器，启动后可以在Web Console对数据库进行监控和操作</p>
+<img src="http://q6p62toq8.falkon.cn/static/images/ora-11g-dbca-05.png?imageMogr2/auto-orient/thumbnail/700x/blur/1x0/quality/100|imageslim">
+</li>
+<li><p>设置统一密码</p>
+<img src="http://q6p62toq8.falkon.cn/static/images/ora-11g-dbca-06.png?imageMogr2/auto-orient/thumbnail/700x/blur/1x0/quality/100|imageslim">
+</li>
+<li><p>选择文件系统</p>
+<img src="http://q6p62toq8.falkon.cn/static/images/ora-11g-dbca-07.png?imageMogr2/auto-orient/thumbnail/700x/blur/1x0/quality/100|imageslim">
+</li>
+<li><p>开启闪回区</p>
+<img src="http://q6p62toq8.falkon.cn/static/images/ora-11g-dbca-08.png?imageMogr2/auto-orient/thumbnail/700x/blur/1x0/quality/100|imageslim">
+</li>
+<li><p>不勾选示例</p>
+<img src="http://q6p62toq8.falkon.cn/static/images/ora-11g-dbca-09.png?imageMogr2/auto-orient/thumbnail/700x/blur/1x0/quality/100|imageslim">
+</li>
+<li><p>设置内存、进程、字符集、连接模式<br>内存设置为自动管理，进程默认150就可以，正式环境很具使用情况进行调整，连接模式选择专用服务器</p>
+<img src="http://q6p62toq8.falkon.cn/static/images/ora-11g-dbca-10.png?imageMogr2/auto-orient/thumbnail/700x/blur/1x0/quality/100|imageslim">
+</li>
+<li><p>字符集选用AL32UTF8或者ZHS16GBK，根据应用需求，这里我们选择ZHS16GBK</p>
+<img src="http://q6p62toq8.falkon.cn/static/images/ora-11g-dbca-11.png?imageMogr2/auto-orient/thumbnail/700x/blur/1x0/quality/100|imageslim">
+</li>
+<li><p>Database Storage<br>这里可以查看和增加控制文件、数据文件以及REDO日志组</p>
+<img src="http://q6p62toq8.falkon.cn/static/images/ora-11g-dbca-12.png?imageMogr2/auto-orient/thumbnail/700x/blur/1x0/quality/100|imageslim">
+</li>
+<li><p>创建数据库</p>
+<img src="http://q6p62toq8.falkon.cn/static/images/ora-11g-dbca-13.png?imageMogr2/auto-orient/thumbnail/700x/blur/1x0/quality/100|imageslim">
+</li>
+<li><p>创建过程<br>等待创建完成，约30分钟左右</p>
+<img src="http://q6p62toq8.falkon.cn/static/images/ora-11g-dbca-14.png?imageMogr2/auto-orient/thumbnail/700x/blur/1x0/quality/100|imageslim">
+
+</li>
+</ul>
+<h3 id="10-数据库测试"><a href="#10-数据库测试" class="headerlink" title="10. 数据库测试"></a>10. 数据库测试</h3><ul>
+<li><p>以sysdba登陆数据库</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[oracle@app-db11g ~]$ sqlplus / as sysdba</span><br><span class="line"></span><br><span class="line">SQL*Plus: Release 11.2.0.4.0 Production on Sun Feb 24 15:05:01 2019</span><br><span class="line"></span><br><span class="line">Copyright (c) 1982, 2013, Oracle.  All rights reserved.</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Connected to:</span><br><span class="line">Oracle Database 11g Enterprise Edition <span class="keyword">Release</span> <span class="number">11.2</span><span class="number">.0</span><span class="number">.4</span><span class="number">.0</span> - <span class="number">64</span><span class="built_in">bit</span> Production</span><br><span class="line"><span class="keyword">With</span> the Partitioning, OLAP, <span class="keyword">Data</span> <span class="keyword">Mining</span> <span class="keyword">and</span> <span class="built_in">Real</span> Application Testing options</span><br><span class="line"></span><br><span class="line"><span class="keyword">SQL</span>&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查看数据库状态</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">SQL&gt; select instance_name,status from v$instance;</span><br><span class="line"></span><br><span class="line">INSTANCE_NAME	 STATUS</span><br><span class="line"><span class="comment">---------------- ------------</span></span><br><span class="line">prod1		 OPEN</span><br></pre></td></tr></table></figure></li>
+<li><p>查看数据文件</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">SQL&gt; select name from v$datafile;</span><br><span class="line"></span><br><span class="line">NAME</span><br><span class="line"><span class="comment">--------------------------------------------------</span></span><br><span class="line">/u01/app/oracle/oradata/prod1/system01.dbf</span><br><span class="line">/u01/app/oracle/oradata/prod1/sysaux01.dbf</span><br><span class="line">/u01/app/oracle/oradata/prod1/undotbs01.dbf</span><br><span class="line">/u01/app/oracle/oradata/prod1/users01.dbf</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+
+      
+    </div>
+    <footer>
+      
+        
+  
+  <div class="categories">
+    <a href="/categories/Database/">Database</a>
+  </div>
+
+        
+  
+  <div class="tags">
+    <a href="/tags/Oracle-11g/">Oracle 11g</a>
+  </div>
+
+        
+  <div class="addthis addthis_toolbox addthis_default_style">
+    
+      <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+    
+    
+      <a class="addthis_button_tweet"></a>
+    
+    
+      <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+    
+    
+      <a class="addthis_button_pinterest_pinit" pi:pinit:layout="horizontal"></a>
+    
+    <a class="addthis_counter addthis_pill_style"></a>
+  </div>
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js"></script>
+
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">Comments</h1>
+
+  
+      <div id="fb-root"></div>
+<script>
+  (function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=123456789012345";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+</script>
+
+<div class="fb-comments" data-href="http://falkon.cn/2020/03/10/database/rhel-install-oracle11g/index.html" data-num-posts="5" data-width="840" data-colorscheme="light"></div>
+      
+  
+</section>
+
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="as_sitesearch" value="falkon.cn">
+  </form>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Categories</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/Database/">Database</a><small>17</small></li>
+  
+    <li><a href="/categories/Linux/">Linux</a><small>2</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/10G/">10G</a><small>1</small></li>
+  
+    <li><a href="/tags/11g/">11g</a><small>2</small></li>
+  
+    <li><a href="/tags/12c/">12c</a><small>3</small></li>
+  
+    <li><a href="/tags/AFD/">AFD</a><small>1</small></li>
+  
+    <li><a href="/tags/ASM/">ASM</a><small>1</small></li>
+  
+    <li><a href="/tags/Audit/">Audit</a><small>1</small></li>
+  
+    <li><a href="/tags/CLONE/">CLONE</a><small>1</small></li>
+  
+    <li><a href="/tags/GoldenGate/">GoldenGate</a><small>1</small></li>
+  
+    <li><a href="/tags/ODA/">ODA</a><small>1</small></li>
+  
+    <li><a href="/tags/ORA-01804/">ORA-01804</a><small>1</small></li>
+  
+    <li><a href="/tags/ORA-28000/">ORA-28000</a><small>1</small></li>
+  
+    <li><a href="/tags/ORA-600/">ORA-600</a><small>1</small></li>
+  
+    <li><a href="/tags/ORA-65500/">ORA-65500</a><small>1</small></li>
+  
+    <li><a href="/tags/Openfiler/">Openfiler</a><small>1</small></li>
+  
+    <li><a href="/tags/Oracle-11g/">Oracle 11g</a><small>1</small></li>
+  
+    <li><a href="/tags/PDB/">PDB</a><small>1</small></li>
+  
+    <li><a href="/tags/PSU/">PSU</a><small>1</small></li>
+  
+    <li><a href="/tags/Patch/">Patch</a><small>1</small></li>
+  
+    <li><a href="/tags/RAC/">RAC</a><small>3</small></li>
+  
+    <li><a href="/tags/Req-mir-free-MB/">Req_mir_free_MB</a><small>1</small></li>
+  
+    <li><a href="/tags/SWAP/">SWAP</a><small>1</small></li>
+  
+    <li><a href="/tags/Synonym/">Synonym</a><small>1</small></li>
+  
+    <li><a href="/tags/exp/">exp</a><small>1</small></li>
+  
+    <li><a href="/tags/expdp/">expdp</a><small>1</small></li>
+  
+    <li><a href="/tags/imp/">imp</a><small>1</small></li>
+  
+    <li><a href="/tags/impdp/">impdp</a><small>1</small></li>
+  
+    <li><a href="/tags/udev/">udev</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2020 Falkon
+  
+</div>
+<div class="clearfix"></div></footer>
+  
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

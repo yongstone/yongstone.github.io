@@ -1,0 +1,259 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  
+  <title>ORA-65500 could not modify DB_UNIQUE_NAME, resource exists | FALKON&#39;S TECH BLOG</title>
+  <meta name="author" content="Falkon">
+  
+  <meta name="description" content="描述：单节点RAC，数据库版本12.2.0.112345678910111213141516171819202122232425262728SQL&amp;gt; show parameter db_uniqNAME				     TYPE	 VALUE------------------------------------ ----------- ------------------------------db_unique_name			     string	 auxdbSQL&amp;gt; alter system set db_unique_name=auxsbdb scope=spfile;alter system set db_unique_name=auxsbdb scope=spfile*ERROR at line 1:ORA-32017: failure in updating SPFILEORA-65500: could not modify DB_UNIQUE_NAME, resource exists[oracle@auxsbdb12c ~]$ srvctl remove database -d auxdb -f[oracle@auxsbdb12c ~]$ sqlplus / as sysdbaSQL*Plus: Release 12.2.0.1.0 Production on Wed Dec 4 15:46:07 2019Copyright (c) 1982, 2016, Oracle.  All rights reserved.Connected to:Oracle Database 12c Enterprise Edition Release 12.2.0.1.0 - 64bit ProductionSQL&amp;gt; alter system set db_unique_name=&#39;auxsbdb&#39; scope=spfile;System altered.">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="ORA-65500 could not modify DB_UNIQUE_NAME, resource exists"/>
+  <meta property="og:site_name" content="FALKON&#39;S TECH BLOG"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="FALKON&#39;S TECH BLOG" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">FALKON&#39;S TECH BLOG</a></h1>
+  <h2><a href="/">Record life, record me.</a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+      <li><a href="/project">Project</a></li>
+    
+      <li><a href="/about">About</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article id="post-database/ORA-65500 could not modify DB_UNIQUE_NAME, resource exists" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-03-08T17:25:31.038Z"><a href="/2020/03/09/database/ORA-65500 could not modify DB_UNIQUE_NAME, resource exists/">2020-03-09</a></time>
+      
+      
+  
+    <h1 class="p-name title" itemprop="headline name">ORA-65500 could not modify DB_UNIQUE_NAME, resource exists</h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h5 id="描述：单节点RAC，数据库版本12-2-0-1"><a href="#描述：单节点RAC，数据库版本12-2-0-1" class="headerlink" title="描述：单节点RAC，数据库版本12.2.0.1"></a>描述：单节点RAC，数据库版本12.2.0.1</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">SQL&gt; show parameter db_uniq</span><br><span class="line"></span><br><span class="line">NAME				     TYPE	 VALUE</span><br><span class="line"><span class="comment">------------------------------------ ----------- ------------------------------</span></span><br><span class="line">db_unique_name			     string	 auxdb</span><br><span class="line"></span><br><span class="line">SQL&gt; alter system set db_unique_name=auxsbdb scope=spfile;</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">system</span> <span class="keyword">set</span> db_unique_name=auxsbdb <span class="keyword">scope</span>=<span class="keyword">spfile</span></span><br><span class="line">*</span><br><span class="line"><span class="keyword">ERROR</span> <span class="keyword">at</span> line <span class="number">1</span>:</span><br><span class="line">ORA<span class="number">-32017</span>: <span class="keyword">failure</span> <span class="keyword">in</span> updating <span class="keyword">SPFILE</span></span><br><span class="line">ORA<span class="number">-65500</span>: could <span class="keyword">not</span> <span class="keyword">modify</span> DB_UNIQUE_NAME, <span class="keyword">resource</span> <span class="keyword">exists</span></span><br><span class="line"></span><br><span class="line">[<span class="keyword">oracle</span>@auxsbdb12c ~]$ srvctl remove <span class="keyword">database</span> -d auxdb -f</span><br><span class="line"></span><br><span class="line">[<span class="keyword">oracle</span>@auxsbdb12c ~]$ sqlplus / <span class="keyword">as</span> <span class="keyword">sysdba</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">SQL</span>*Plus: <span class="keyword">Release</span> <span class="number">12.2</span><span class="number">.0</span><span class="number">.1</span><span class="number">.0</span> Production <span class="keyword">on</span> Wed <span class="built_in">Dec</span> <span class="number">4</span> <span class="number">15</span>:<span class="number">46</span>:<span class="number">07</span> <span class="number">2019</span></span><br><span class="line"></span><br><span class="line">Copyright (c) <span class="number">1982</span>, <span class="number">2016</span>, Oracle.  <span class="keyword">All</span> rights reserved.</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Connected <span class="keyword">to</span>:</span><br><span class="line"><span class="keyword">Oracle</span> <span class="keyword">Database</span> <span class="number">12</span>c <span class="keyword">Enterprise</span> <span class="keyword">Edition</span> <span class="keyword">Release</span> <span class="number">12.2</span><span class="number">.0</span><span class="number">.1</span><span class="number">.0</span> - <span class="number">64</span><span class="built_in">bit</span> Production</span><br><span class="line"></span><br><span class="line"><span class="keyword">SQL</span>&gt; <span class="keyword">alter</span> <span class="keyword">system</span> <span class="keyword">set</span> db_unique_name=<span class="string">'auxsbdb'</span> <span class="keyword">scope</span>=<span class="keyword">spfile</span>;</span><br><span class="line"></span><br><span class="line">System altered.</span><br></pre></td></tr></table></figure>
+
+<a id="more"></a>
+
+<p>重启数据库</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line">[oracle@auxsbdb12c ~]$ sqlplus / as sysdba</span><br><span class="line"></span><br><span class="line">SQL*Plus: Release 12.2.0.1.0 Production on Wed Dec 4 16:51:51 2019</span><br><span class="line"></span><br><span class="line">Copyright (c) 1982, 2016, Oracle.  All rights reserved.</span><br><span class="line"></span><br><span class="line">Connected to an idle instance.</span><br><span class="line">SQL&gt; startup</span><br><span class="line">ORA-01078: failure in processing system parameters</span><br><span class="line">LRM-00109: could not open parameter file '/u01/app/oracle/product/12.2.0/dbhome_1/dbs/initauxdb.ora'</span><br><span class="line"></span><br><span class="line">SQL&gt; create pfile from spfile='+DATA/auxdb/PARAMETERFILE/spfile.274.1026060487';</span><br><span class="line"></span><br><span class="line">File created.</span><br><span class="line"></span><br><span class="line"><span class="comment"># 再次启动数据库</span></span><br><span class="line"></span><br><span class="line">[oracle@auxsbdb12c ~]$ sqlplus / as sysdba</span><br><span class="line"></span><br><span class="line">SQL*Plus: Release 12.2.0.1.0 Production on Wed Dec 4 16:51:51 2019</span><br><span class="line"></span><br><span class="line">Copyright (c) 1982, 2016, Oracle.  All rights reserved.</span><br><span class="line"></span><br><span class="line">Connected to an idle instance.</span><br><span class="line"></span><br><span class="line">SQL&gt; startup</span><br><span class="line">ORACLE instance started.</span><br><span class="line"></span><br><span class="line">Total System Global Area 8.1068E+10 bytes</span><br><span class="line">Fixed Size		   30036880 bytes</span><br><span class="line">Variable Size		 1.4496E+10 bytes</span><br><span class="line">Database Buffers	 6.6304E+10 bytes</span><br><span class="line">Redo Buffers		  238395392 bytes</span><br><span class="line">Database mounted.</span><br><span class="line">Database opened.</span><br><span class="line"></span><br><span class="line">SQL&gt; show parameter name</span><br><span class="line"></span><br><span class="line">NAME				     		TYPE	 VALUE</span><br><span class="line"><span class="comment">------------------------------------ ----------- ------------------------------</span></span><br><span class="line">cdb_cluster_name		     	string	 auxsbdb</span><br><span class="line">cell_offloadgroup_name		    string</span><br><span class="line">db_file_name_convert		    string	 auxdb, auxsbdb</span><br><span class="line">db_name 			     		string	 auxdb</span><br><span class="line">db_unique_name			     	string	 auxsbdb</span><br><span class="line">global_names			     	boolean	 FALSE</span><br><span class="line">instance_name			     	string	 auxdb</span><br><span class="line">lock_name_space 		     	string</span><br><span class="line">log_file_name_convert		    string	 auxdb, auxsbdb</span><br><span class="line">pdb_file_name_convert		    string</span><br><span class="line">processor_group_name		    string</span><br><span class="line"></span><br><span class="line">NAME				     		TYPE	 VALUE</span><br><span class="line"><span class="comment">------------------------------------ ----------- ------------------------------</span></span><br><span class="line">service_names			     	string	 auxsbdb.fanger.org</span><br></pre></td></tr></table></figure>
+
+
+
+<p>检查集群服务</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">[grid@auxsbdb12c ~]$ crsctl stat res -t</span><br><span class="line">--------------------------------------------------------------------------------</span><br><span class="line">Name           Target  State        Server                   State details       </span><br><span class="line">--------------------------------------------------------------------------------</span><br><span class="line">Local Resources</span><br><span class="line">--------------------------------------------------------------------------------</span><br><span class="line">ora.ASMNET1LSNR_ASM.lsnr</span><br><span class="line">               ONLINE  ONLINE       auxsbdb12c               STABLE</span><br><span class="line">ora.DATA.dg</span><br><span class="line">               ONLINE  ONLINE       auxsbdb12c               STABLE</span><br><span class="line">ora.LISTENER.lsnr</span><br><span class="line">               ONLINE  ONLINE       auxsbdb12c               STABLE</span><br><span class="line">ora.RECO.dg</span><br><span class="line">               ONLINE  ONLINE       auxsbdb12c               STABLE</span><br><span class="line">ora.net1.network</span><br><span class="line">               ONLINE  ONLINE       auxsbdb12c               STABLE</span><br><span class="line">ora.ons</span><br><span class="line">               ONLINE  ONLINE       auxsbdb12c               STABLE</span><br><span class="line">--------------------------------------------------------------------------------</span><br><span class="line">Cluster Resources</span><br><span class="line">--------------------------------------------------------------------------------</span><br><span class="line">ora.LISTENER_SCAN1.lsnr</span><br><span class="line">      1        ONLINE  ONLINE       auxsbdb12c               STABLE</span><br><span class="line">ora.asm</span><br><span class="line">      1        ONLINE  ONLINE       auxsbdb12c               Started,STABLE</span><br><span class="line">      2        OFFLINE OFFLINE                               STABLE</span><br><span class="line">      3        OFFLINE OFFLINE                               STABLE</span><br><span class="line">ora.auxsbdb12c.vip</span><br><span class="line">      1        ONLINE  ONLINE       auxsbdb12c               STABLE</span><br><span class="line">ora.cvu</span><br><span class="line">      1        ONLINE  ONLINE       auxsbdb12c               STABLE</span><br><span class="line">ora.qosmserver</span><br><span class="line">      1        OFFLINE OFFLINE                               STABLE</span><br><span class="line">ora.scan1.vip</span><br><span class="line">      1        ONLINE  ONLINE       auxsbdb12c               STABLE</span><br><span class="line">--------------------------------------------------------------------------------</span><br></pre></td></tr></table></figure>
+
+
+
+<p>重新注册数据库服务</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line">[oracle@auxsbdb12c ~]$ sqlplus / as sysdba</span><br><span class="line"></span><br><span class="line">SQL*Plus: Release 12.2.0.1.0 Production on Wed Dec 4 18:01:27 2019</span><br><span class="line"></span><br><span class="line">Copyright (c) 1982, 2016, Oracle.  All rights reserved.</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Connected to:</span><br><span class="line">Oracle Database 12c Enterprise Edition Release 12.2.0.1.0 - 64bit Production</span><br><span class="line"></span><br><span class="line"><span class="meta">SQL&gt;</span><span class="bash"> shutdown immediate</span></span><br><span class="line">Database closed.</span><br><span class="line">Database dismounted.</span><br><span class="line">ORACLE instance shut down.</span><br><span class="line"></span><br><span class="line">[oracle@auxsbdb12c ~]$ srvctl add database -d auxsbdb -o $ORACLE_HOME</span><br><span class="line">[oracle@auxsbdb12c ~]$ srvctl add instance -d auxsbdb -i auxdb -n auxsbdb12c</span><br><span class="line">[oracle@auxsbdb12c ~]$ srvctl start database -d auxsbdb</span><br><span class="line"></span><br><span class="line">[grid@auxsbdb12c ~]$ crsctl stat res -t</span><br><span class="line">--------------------------------------------------------------------------------</span><br><span class="line">Name           Target  State        Server                   State details       </span><br><span class="line">--------------------------------------------------------------------------------</span><br><span class="line">Local Resources</span><br><span class="line">--------------------------------------------------------------------------------</span><br><span class="line">ora.ASMNET1LSNR_ASM.lsnr</span><br><span class="line">               ONLINE  ONLINE       auxsbdb12c               STABLE</span><br><span class="line">ora.DATA.dg</span><br><span class="line">               ONLINE  ONLINE       auxsbdb12c               STABLE</span><br><span class="line">ora.LISTENER.lsnr</span><br><span class="line">               ONLINE  ONLINE       auxsbdb12c               STABLE</span><br><span class="line">ora.RECO.dg</span><br><span class="line">               ONLINE  ONLINE       auxsbdb12c               STABLE</span><br><span class="line">ora.net1.network</span><br><span class="line">               ONLINE  ONLINE       auxsbdb12c               STABLE</span><br><span class="line">ora.ons</span><br><span class="line">               ONLINE  ONLINE       auxsbdb12c               STABLE</span><br><span class="line">--------------------------------------------------------------------------------</span><br><span class="line">Cluster Resources</span><br><span class="line">--------------------------------------------------------------------------------</span><br><span class="line">ora.LISTENER_SCAN1.lsnr</span><br><span class="line">      1        ONLINE  ONLINE       auxsbdb12c               STABLE</span><br><span class="line">ora.asm</span><br><span class="line">      1        ONLINE  ONLINE       auxsbdb12c               Started,STABLE</span><br><span class="line">      2        OFFLINE OFFLINE                               STABLE</span><br><span class="line">      3        OFFLINE OFFLINE                               STABLE</span><br><span class="line">ora.auxsbdb.db</span><br><span class="line">      1        ONLINE  ONLINE       auxsbdb12c               Open,HOME=/u01/app/o</span><br><span class="line">                                                             racle/product/12.2.0</span><br><span class="line">                                                             /dbhome_1,STABLE</span><br><span class="line">ora.auxsbdb12c.vip</span><br><span class="line">      1        ONLINE  ONLINE       auxsbdb12c               STABLE</span><br><span class="line">ora.cvu</span><br><span class="line">      1        ONLINE  ONLINE       auxsbdb12c               STABLE</span><br><span class="line">ora.qosmserver</span><br><span class="line">      1        OFFLINE OFFLINE                               STABLE</span><br><span class="line">ora.scan1.vip</span><br><span class="line">      1        ONLINE  ONLINE       auxsbdb12c               STABLE</span><br><span class="line">--------------------------------------------------------------------------------</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer>
+      
+        
+  
+  <div class="categories">
+    <a href="/categories/Database/">Database</a>
+  </div>
+
+        
+  
+  <div class="tags">
+    <a href="/tags/ORA-65500/">ORA-65500</a>
+  </div>
+
+        
+  <div class="addthis addthis_toolbox addthis_default_style">
+    
+      <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+    
+    
+      <a class="addthis_button_tweet"></a>
+    
+    
+      <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+    
+    
+      <a class="addthis_button_pinterest_pinit" pi:pinit:layout="horizontal"></a>
+    
+    <a class="addthis_counter addthis_pill_style"></a>
+  </div>
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js"></script>
+
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">Comments</h1>
+
+  
+      <div id="fb-root"></div>
+<script>
+  (function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=123456789012345";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+</script>
+
+<div class="fb-comments" data-href="http://falkon.cn/2020/03/09/database/ORA-65500%20could%20not%20modify%20DB_UNIQUE_NAME,%20resource%20exists/index.html" data-num-posts="5" data-width="840" data-colorscheme="light"></div>
+      
+  
+</section>
+
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="as_sitesearch" value="falkon.cn">
+  </form>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Categories</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/Database/">Database</a><small>17</small></li>
+  
+    <li><a href="/categories/Linux/">Linux</a><small>2</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/10G/">10G</a><small>1</small></li>
+  
+    <li><a href="/tags/11g/">11g</a><small>2</small></li>
+  
+    <li><a href="/tags/12c/">12c</a><small>3</small></li>
+  
+    <li><a href="/tags/AFD/">AFD</a><small>1</small></li>
+  
+    <li><a href="/tags/ASM/">ASM</a><small>1</small></li>
+  
+    <li><a href="/tags/Audit/">Audit</a><small>1</small></li>
+  
+    <li><a href="/tags/CLONE/">CLONE</a><small>1</small></li>
+  
+    <li><a href="/tags/GoldenGate/">GoldenGate</a><small>1</small></li>
+  
+    <li><a href="/tags/ODA/">ODA</a><small>1</small></li>
+  
+    <li><a href="/tags/ORA-01804/">ORA-01804</a><small>1</small></li>
+  
+    <li><a href="/tags/ORA-28000/">ORA-28000</a><small>1</small></li>
+  
+    <li><a href="/tags/ORA-600/">ORA-600</a><small>1</small></li>
+  
+    <li><a href="/tags/ORA-65500/">ORA-65500</a><small>1</small></li>
+  
+    <li><a href="/tags/Openfiler/">Openfiler</a><small>1</small></li>
+  
+    <li><a href="/tags/Oracle-11g/">Oracle 11g</a><small>1</small></li>
+  
+    <li><a href="/tags/PDB/">PDB</a><small>1</small></li>
+  
+    <li><a href="/tags/PSU/">PSU</a><small>1</small></li>
+  
+    <li><a href="/tags/Patch/">Patch</a><small>1</small></li>
+  
+    <li><a href="/tags/RAC/">RAC</a><small>3</small></li>
+  
+    <li><a href="/tags/Req-mir-free-MB/">Req_mir_free_MB</a><small>1</small></li>
+  
+    <li><a href="/tags/SWAP/">SWAP</a><small>1</small></li>
+  
+    <li><a href="/tags/Synonym/">Synonym</a><small>1</small></li>
+  
+    <li><a href="/tags/exp/">exp</a><small>1</small></li>
+  
+    <li><a href="/tags/expdp/">expdp</a><small>1</small></li>
+  
+    <li><a href="/tags/imp/">imp</a><small>1</small></li>
+  
+    <li><a href="/tags/impdp/">impdp</a><small>1</small></li>
+  
+    <li><a href="/tags/udev/">udev</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2020 Falkon
+  
+</div>
+<div class="clearfix"></div></footer>
+  
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

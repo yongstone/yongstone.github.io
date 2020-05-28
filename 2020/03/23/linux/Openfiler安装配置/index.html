@@ -1,0 +1,291 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  
+  <title>Openfiler安装配置 | FALKON&#39;S TECH BLOG</title>
+  <meta name="author" content="Falkon">
+  
+  <meta name="description" content="在workstation或者virtual box中创建一个内核为其他内核2.6x 64位的虚拟机，添加两块网卡，使用两块网卡来模拟磁盘多路径聚合，两块大小分别为10g和50g的硬盘，10g做为openfiler系统的安装磁盘，50g用来做LUN">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="Openfiler安装配置"/>
+  <meta property="og:site_name" content="FALKON&#39;S TECH BLOG"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="FALKON&#39;S TECH BLOG" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">FALKON&#39;S TECH BLOG</a></h1>
+  <h2><a href="/">Record life, record me.</a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+      <li><a href="/project">Project</a></li>
+    
+      <li><a href="/about">About</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article id="post-linux/Openfiler安装配置" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-03-23T05:36:47.497Z"><a href="/2020/03/23/linux/Openfiler安装配置/">2020-03-23</a></time>
+      
+      
+  
+    <h1 class="p-name title" itemprop="headline name">Openfiler安装配置</h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <ul>
+<li>在workstation或者virtual box中创建一个内核为其他内核2.6x 64位的虚拟机，添加两块网卡，使用两块网卡来模拟磁盘多路径聚合，两块大小分别为10g和50g的硬盘，10g做为openfiler系统的安装磁盘，50g用来做LUN</li>
+</ul>
+<a id="more"></a>
+
+<ul>
+<li>挂在镜像，直接按回车<img src="http://q6p62toq8.falkon.cn/static/images/openfile01.png"></li>
+<li>进入下一步<img src="http://q6p62toq8.falkon.cn/static/images/openfile02.png"></li>
+<li>选择键盘<img src="http://q6p62toq8.falkon.cn/static/images/openfile03.png"></li>
+<li>选择系统安装磁盘，添加两块磁盘，一定不要另外一块磁盘<img src="http://q6p62toq8.falkon.cn/static/images/openfile04.png"></li>
+<li>选择卡网，默认选择后面再配置<img src="http://q6p62toq8.falkon.cn/static/images/openfile05.png"></li>
+<li>选择时区<img src="http://q6p62toq8.falkon.cn/static/images/openfile06.png"></li>
+<li>设置root密码<img src="http://q6p62toq8.falkon.cn/static/images/openfile07.png"></li>
+<li>进入下一步进行安装<img src="http://q6p62toq8.falkon.cn/static/images/openfile08.png"></li>
+<li>安装进度<img src="http://q6p62toq8.falkon.cn/static/images/openfile09.png"></li>
+<li>安装完成后重启<img src="http://q6p62toq8.falkon.cn/static/images/openfile10.png"></li>
+<li>启动后显示了web GUI信息<img src="http://q6p62toq8.falkon.cn/static/images/openfile11.png"></li>
+<li>配置静态IP地址<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 配置eth0</span></span><br><span class="line">[root@localhost ~]<span class="comment"># cat /etc/sysconfig/network-scripts/ifcfg-eth0 </span></span><br><span class="line"><span class="comment"># Intel Corporation 82545EM Gigabit Ethernet Controller (Copper)</span></span><br><span class="line">DEVICE=eth0</span><br><span class="line">BOOTPROTO=yes</span><br><span class="line">HWADDR=00:0C:29:9A:3B:BA</span><br><span class="line">ONBOOT=yes</span><br><span class="line">IPADDR=192.168.112.154</span><br><span class="line">NETMASK=255.255.255.0</span><br><span class="line">GATEWAY=192.168.112.1</span><br><span class="line"></span><br><span class="line"><span class="comment"># 配置eth1</span></span><br><span class="line">[root@localhost ~]<span class="comment"># cat /etc/sysconfig/network-scripts/ifcfg-eth1 </span></span><br><span class="line"><span class="comment"># Intel Corporation 82545EM Gigabit Ethernet Controller (Copper)</span></span><br><span class="line">DEVICE=eth1</span><br><span class="line">BOOTPROTO=static</span><br><span class="line">HWADDR=00:0C:29:9A:3B:C4</span><br><span class="line">ONBOOT=yes</span><br><span class="line">IPADDR=192.168.112.155</span><br><span class="line">NETMASK=255.255.255.0</span><br><span class="line">GATEWAY=192.168.112.1</span><br></pre></td></tr></table></figure></li>
+<li>访问web GUI页面，默认的用户名为<code>openfiler</code>，密码为<code>password</code><img src="http://q6p62toq8.falkon.cn/static/images/openfile12.png"></li>
+<li>status显示当前NAS的物理信息<img src="http://q6p62toq8.falkon.cn/static/images/openfile13.png"></li>
+<li>开启iSCSI target<img src="http://q6p62toq8.falkon.cn/static/images/openfile14.png"></li>
+<li>点击System设置目标主机信息，Network/Host可以填写IP地址或者是主机名，如果是主机名的话，需要配置hosts解析<img src="http://q6p62toq8.falkon.cn/static/images/openfile15.png"></li>
+<li>点击Volume-&gt;Block Devices创建PV，系统预留5%，整块磁盘创建完成后，剩余的5%无法创建<img src="http://q6p62toq8.falkon.cn/static/images/openfile17.png">
+<img src="http://q6p62toq8.falkon.cn/static/images/openfile18.png">
+<img src="http://q6p62toq8.falkon.cn/static/images/openfile19.png"></li>
+<li>点击Volume-&gt;Volume Groups创建VG<img src="http://q6p62toq8.falkon.cn/static/images/openfile20.png">
+<img src="http://q6p62toq8.falkon.cn/static/images/openfile21.png"></li>
+<li>点击Volume-&gt;Add Volume创建LV<img src="http://q6p62toq8.falkon.cn/static/images/openfile22.png">
+<img src="http://q6p62toq8.falkon.cn/static/images/openfile23.png"></li>
+<li>点击Volume-&gt;iSCSI Targets-&gt;Target Configuration设置IQN<img src="http://q6p62toq8.falkon.cn/static/images/openfile24.png"></li>
+<li>点击Volume-&gt;iSCSI Targets-&gt;LUN Mapping挂载LUN<img src="http://q6p62toq8.falkon.cn/static/images/openfile25.png"></li>
+<li>点击Volume-&gt;iSCSI Targets-&gt;Network ACL设置目标主机访问权限<img src="http://q6p62toq8.falkon.cn/static/images/openfile26.png"></li>
+<li>目标主机安装iSCSI包<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">[root@dev01 ~]<span class="comment"># yum -y install iscsi-initiator-utils</span></span><br><span class="line">Loaded plugins: security, ulninfo</span><br><span class="line">Setting up Install Process</span><br><span class="line">Resolving Dependencies</span><br><span class="line">--&gt; Running transaction check</span><br><span class="line">---&gt; Package iscsi-initiator-utils.x86_64 0:6.2.0.873-27.0.3.el6_9 will be installed</span><br><span class="line">--&gt; Finished Dependency Resolution</span><br><span class="line"></span><br><span class="line">Dependencies Resolved</span><br><span class="line"></span><br><span class="line">===============================================================================================================================================================================================================</span><br><span class="line"> Package                                               Arch                                   Version                                                  Repository                                         Size</span><br><span class="line">===============================================================================================================================================================================================================</span><br><span class="line">Installing:</span><br><span class="line"> iscsi-initiator-utils                                 x86_64                                 6.2.0.873-27.0.3.el6_9                                   public_ol6_latest                                 738 k</span><br><span class="line"></span><br><span class="line">Transaction Summary</span><br><span class="line">===============================================================================================================================================================================================================</span><br><span class="line">Install       1 Package(s)</span><br><span class="line"></span><br><span class="line">Total download size: 738 k</span><br><span class="line">Installed size: 2.5 M</span><br><span class="line">Downloading Packages:</span><br><span class="line">warning: rpmts_HdrFromFdno: Header V3 RSA/SHA256 Signature, key ID ec551f03: NOKEY</span><br><span class="line">Retrieving key from file:///etc/pki/rpm-gpg/RPM-GPG-KEY-oracle</span><br><span class="line">Importing GPG key 0xEC551F03:</span><br><span class="line"> Userid : Oracle OSS group (Open Source Software group) &lt;build@oss.oracle.com&gt;</span><br><span class="line"> Package: 6:oraclelinux-release-6Server-10.0.2.x86_64 (@anaconda-OracleLinuxServer-201806251353.x86_64/6.10)</span><br><span class="line"> From   : /etc/pki/rpm-gpg/RPM-GPG-KEY-oracle</span><br><span class="line">Running rpm_check_debug</span><br><span class="line">Running Transaction Test</span><br><span class="line">Transaction Test Succeeded</span><br><span class="line">Running Transaction</span><br><span class="line">  Installing : iscsi-initiator-utils-6.2.0.873-27.0.3.el6_9.x86_64                                                                                                                                         1/1 </span><br><span class="line">  Verifying  : iscsi-initiator-utils-6.2.0.873-27.0.3.el6_9.x86_64                                                                                                                                         1/1 </span><br><span class="line"></span><br><span class="line">Installed:</span><br><span class="line">  iscsi-initiator-utils.x86_64 0:6.2.0.873-27.0.3.el6_9                                                                                                                                                        </span><br><span class="line"></span><br><span class="line">Complete!</span><br></pre></td></tr></table></figure></li>
+<li>查找存储对外提供的卷<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@dev01 ~]<span class="comment"># iscsiadm -m discovery -t st -p 192.168.112.154</span></span><br><span class="line">Starting iscsid:                                           [  OK  ]</span><br><span class="line">192.168.112.154:3260,1 iqn.2006-01.com.openfiler:tsn.dev019527</span><br><span class="line">192.168.112.155:3260,1 iqn.2006-01.com.openfiler:tsn.dev019527</span><br></pre></td></tr></table></figure></li>
+<li>映射逻辑卷到系统中<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">[root@dev01 ~]<span class="comment"># iscsiadm -m node -T iqn.2006-01.com.openfiler:tsn.dev019527 -p 192.168.112.154:3260 -l</span></span><br><span class="line">Logging <span class="keyword">in</span> to [iface: default, target: iqn.2006-01.com.openfiler:tsn.dev019527, portal: 192.168.112.154,3260] (multiple)</span><br><span class="line">Login to [iface: default, target: iqn.2006-01.com.openfiler:tsn.dev019527, portal: 192.168.112.154,3260] successful.</span><br><span class="line">[root@dev01 ~]<span class="comment"># iscsiadm -m node -T iqn.2006-01.com.openfiler:tsn.dev019527 -p 192.168.112.155:3260 -l</span></span><br><span class="line">Logging <span class="keyword">in</span> to [iface: default, target: iqn.2006-01.com.openfiler:tsn.dev019527, portal: 192.168.112.155,3260] (multiple)</span><br><span class="line">Login to [iface: default, target: iqn.2006-01.com.openfiler:tsn.dev019527, portal: 192.168.112.155,3260] successful.</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看LUN的映射，两条路径对应两块分盘</span></span><br><span class="line">Disk /dev/sdb: 51.2 GB, 51170508800 bytes</span><br><span class="line">64 heads, 32 sectors/track, 48800 cylinders</span><br><span class="line">Units = cylinders of 2048 * 512 = 1048576 bytes</span><br><span class="line">Sector size (logical/physical): 512 bytes / 512 bytes</span><br><span class="line">I/O size (minimum/optimal): 512 bytes / 512 bytes</span><br><span class="line">Disk identifier: 0x00000000</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Disk /dev/sdc: 51.2 GB, 51170508800 bytes</span><br><span class="line">64 heads, 32 sectors/track, 48800 cylinders</span><br><span class="line">Units = cylinders of 2048 * 512 = 1048576 bytes</span><br><span class="line">Sector size (logical/physical): 512 bytes / 512 bytes</span><br><span class="line">I/O size (minimum/optimal): 512 bytes / 512 bytes</span><br><span class="line">Disk identifier: 0x00000000</span><br></pre></td></tr></table></figure></li>
+<li>设置开机自动映射<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@dev01 ~]<span class="comment"># iscsiadm -m node -T iqn.2006-01.com.openfiler:tsn.dev019527 -p 192.168.112.154:3260 -o update -n node.startup -v automatic</span></span><br><span class="line">[root@dev01 ~]<span class="comment"># iscsiadm -m node -T iqn.2006-01.com.openfiler:tsn.dev019527 -p 192.168.112.155:3260 -o update -n node.startup -v automatic</span></span><br></pre></td></tr></table></figure></li>
+<li>安装多路径包<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">[root@dev01 ~]<span class="comment"># yum -y install device-mapper-multipath</span></span><br><span class="line">Loaded plugins: security, ulninfo</span><br><span class="line">Setting up Install Process</span><br><span class="line">Resolving Dependencies</span><br><span class="line">--&gt; Running transaction check</span><br><span class="line">---&gt; Package device-mapper-multipath.x86_64 0:0.4.9-106.0.1.el6 will be installed</span><br><span class="line">--&gt; Processing Dependency: device-mapper-multipath-libs = 0.4.9-106.0.1.el6 <span class="keyword">for</span> package: device-mapper-multipath-0.4.9-106.0.1.el6.x86_64</span><br><span class="line">--&gt; Processing Dependency: libmultipath.so()(64bit) <span class="keyword">for</span> package: device-mapper-multipath-0.4.9-106.0.1.el6.x86_64</span><br><span class="line">--&gt; Processing Dependency: libmpathpersist.so.0()(64bit) <span class="keyword">for</span> package: device-mapper-multipath-0.4.9-106.0.1.el6.x86_64</span><br><span class="line">--&gt; Running transaction check</span><br><span class="line">---&gt; Package device-mapper-multipath-libs.x86_64 0:0.4.9-106.0.1.el6 will be installed</span><br><span class="line">--&gt; Finished Dependency Resolution</span><br><span class="line"></span><br><span class="line">Dependencies Resolved</span><br><span class="line"></span><br><span class="line">===============================================================================================================================================================================================================</span><br><span class="line"> Package                                                      Arch                                   Version                                           Repository                                         Size</span><br><span class="line">===============================================================================================================================================================================================================</span><br><span class="line">Installing:</span><br><span class="line"> device-mapper-multipath                                      x86_64                                 0.4.9-106.0.1.el6                                 public_ol6_latest                                 134 k</span><br><span class="line">Installing <span class="keyword">for</span> dependencies:</span><br><span class="line"> device-mapper-multipath-libs                                 x86_64                                 0.4.9-106.0.1.el6                                 public_ol6_latest                                 205 k</span><br><span class="line"></span><br><span class="line">Transaction Summary</span><br><span class="line">===============================================================================================================================================================================================================</span><br><span class="line">Install       2 Package(s)</span><br><span class="line"></span><br><span class="line">Total download size: 339 k</span><br><span class="line">Installed size: 699 k</span><br><span class="line">Downloading Packages:</span><br><span class="line">---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------</span><br><span class="line">Total                                                                                                                                                                           39 MB/s | 339 kB     00:00     </span><br><span class="line">Running rpm_check_debug</span><br><span class="line">Running Transaction Test</span><br><span class="line">Transaction Test Succeeded</span><br><span class="line">Running Transaction</span><br><span class="line">  Installing : device-mapper-multipath-libs-0.4.9-106.0.1.el6.x86_64                                                                                                                                       1/2 </span><br><span class="line">  Installing : device-mapper-multipath-0.4.9-106.0.1.el6.x86_64                                                                                                                                            2/2 </span><br><span class="line">  Verifying  : device-mapper-multipath-libs-0.4.9-106.0.1.el6.x86_64                                                                                                                                       1/2 </span><br><span class="line">  Verifying  : device-mapper-multipath-0.4.9-106.0.1.el6.x86_64                                                                                                                                            2/2 </span><br><span class="line"></span><br><span class="line">Installed:</span><br><span class="line">  device-mapper-multipath.x86_64 0:0.4.9-106.0.1.el6                                                                                                                                                           </span><br><span class="line"></span><br><span class="line">Dependency Installed:</span><br><span class="line">  device-mapper-multipath-libs.x86_64 0:0.4.9-106.0.1.el6                                                                                                                                                      </span><br><span class="line"></span><br><span class="line">Complete!</span><br><span class="line"></span><br><span class="line"><span class="comment"># 复制multipath.conf到etc</span></span><br><span class="line">[root@dev01 ~]<span class="comment"># cp /usr/share/doc/device-mapper-multipath-0.4.9/multipath.conf /etc/</span></span><br></pre></td></tr></table></figure></li>
+<li>配置多路径聚合<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 获取磁盘的WWID号</span></span><br><span class="line">[root@dev01 ~]<span class="comment"># scsi_id -g -u -d /dev/sdb </span></span><br><span class="line">14f504e46494c4552523758456c352d437752492d59774b6e</span><br><span class="line">[root@dev01 ~]<span class="comment"># scsi_id -g -u -d /dev/sdc</span></span><br><span class="line">14f504e46494c4552523758456c352d437752492d59774b6e</span><br><span class="line"></span><br><span class="line"><span class="comment"># 编辑multipath.conf</span></span><br><span class="line">defaults &#123;</span><br><span class="line">	user_friendly_names yes</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">blacklist &#123; </span><br><span class="line">	devnode <span class="string">"^sda"</span> </span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line">multipaths &#123;</span><br><span class="line">	multipath &#123; </span><br><span class="line">		wwid <span class="string">"14f504e46494c4552523758456c352d437752492d59774b6e"</span></span><br><span class="line">		<span class="built_in">alias</span> lv_dev01</span><br><span class="line">		path_grouping_policy	multibus</span><br><span class="line">		path_selector			<span class="string">"round-robin 0"</span> </span><br><span class="line">  		failback				manual </span><br><span class="line">  		rr_weight				priorities </span><br><span class="line">  		no_path_retry			5 </span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>查看聚合后的磁盘信息<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">[root@dev01 ~]<span class="comment"># multipath -ll</span></span><br><span class="line">lv_dev01 (14f504e46494c4552523758456c352d437752492d59774b6e) dm-3 OPNFILER,VIRTUAL-DISK</span><br><span class="line">size=48G features=<span class="string">'1 queue_if_no_path'</span> hwhandler=<span class="string">'0'</span> wp=rw</span><br><span class="line">`-+- policy=<span class="string">'round-robin 0'</span> prio=1 status=active</span><br><span class="line">  |- 3:0:0:0 sdb 8:16 active ready running</span><br><span class="line">  `- 4:0:0:0 sdc 8:32 active ready running</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看磁盘映射</span></span><br><span class="line">[root@dev01 ~]<span class="comment"># ll /dev/mapper/*</span></span><br><span class="line">crw-rw----. 1 root root 10, 236 Mar 26 15:00 /dev/mapper/control</span><br><span class="line">lrwxrwxrwx. 1 root root       7 Mar 30 19:41 /dev/mapper/lv_dev01 -&gt; ../dm-3</span><br><span class="line">lrwxrwxrwx. 1 root root       7 Mar 26 15:00 /dev/mapper/VolGroup-lv_home -&gt; ../dm-2</span><br><span class="line">lrwxrwxrwx. 1 root root       7 Mar 26 15:00 /dev/mapper/VolGroup-lv_root -&gt; ../dm-0</span><br><span class="line">lrwxrwxrwx. 1 root root       7 Mar 26 15:00 /dev/mapper/VolGroup-lv_swap -&gt; ../dm-1</span><br></pre></td></tr></table></figure></li>
+<li>将iSCSI服务和multipathd服务设置为开启启动<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@dev01 ~]<span class="comment"># chkconfig --level 2345 iscsi on</span></span><br><span class="line">[root@dev01 ~]<span class="comment"># chkconfig --level 2345 multipathd on</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+</li>
+</ul>
+
+      
+    </div>
+    <footer>
+      
+        
+  
+  <div class="categories">
+    <a href="/categories/Linux/">Linux</a>
+  </div>
+
+        
+  
+  <div class="tags">
+    <a href="/tags/Openfiler/">Openfiler</a>
+  </div>
+
+        
+  <div class="addthis addthis_toolbox addthis_default_style">
+    
+      <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+    
+    
+      <a class="addthis_button_tweet"></a>
+    
+    
+      <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+    
+    
+      <a class="addthis_button_pinterest_pinit" pi:pinit:layout="horizontal"></a>
+    
+    <a class="addthis_counter addthis_pill_style"></a>
+  </div>
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js"></script>
+
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">Comments</h1>
+
+  
+      <div id="fb-root"></div>
+<script>
+  (function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=123456789012345";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+</script>
+
+<div class="fb-comments" data-href="http://falkon.cn/2020/03/23/linux/Openfiler%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/index.html" data-num-posts="5" data-width="840" data-colorscheme="light"></div>
+      
+  
+</section>
+
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="as_sitesearch" value="falkon.cn">
+  </form>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Categories</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/Database/">Database</a><small>17</small></li>
+  
+    <li><a href="/categories/Linux/">Linux</a><small>2</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/10G/">10G</a><small>1</small></li>
+  
+    <li><a href="/tags/11g/">11g</a><small>2</small></li>
+  
+    <li><a href="/tags/12c/">12c</a><small>3</small></li>
+  
+    <li><a href="/tags/AFD/">AFD</a><small>1</small></li>
+  
+    <li><a href="/tags/ASM/">ASM</a><small>1</small></li>
+  
+    <li><a href="/tags/Audit/">Audit</a><small>1</small></li>
+  
+    <li><a href="/tags/CLONE/">CLONE</a><small>1</small></li>
+  
+    <li><a href="/tags/GoldenGate/">GoldenGate</a><small>1</small></li>
+  
+    <li><a href="/tags/ODA/">ODA</a><small>1</small></li>
+  
+    <li><a href="/tags/ORA-01804/">ORA-01804</a><small>1</small></li>
+  
+    <li><a href="/tags/ORA-28000/">ORA-28000</a><small>1</small></li>
+  
+    <li><a href="/tags/ORA-600/">ORA-600</a><small>1</small></li>
+  
+    <li><a href="/tags/ORA-65500/">ORA-65500</a><small>1</small></li>
+  
+    <li><a href="/tags/Openfiler/">Openfiler</a><small>1</small></li>
+  
+    <li><a href="/tags/Oracle-11g/">Oracle 11g</a><small>1</small></li>
+  
+    <li><a href="/tags/PDB/">PDB</a><small>1</small></li>
+  
+    <li><a href="/tags/PSU/">PSU</a><small>1</small></li>
+  
+    <li><a href="/tags/Patch/">Patch</a><small>1</small></li>
+  
+    <li><a href="/tags/RAC/">RAC</a><small>3</small></li>
+  
+    <li><a href="/tags/Req-mir-free-MB/">Req_mir_free_MB</a><small>1</small></li>
+  
+    <li><a href="/tags/SWAP/">SWAP</a><small>1</small></li>
+  
+    <li><a href="/tags/Synonym/">Synonym</a><small>1</small></li>
+  
+    <li><a href="/tags/exp/">exp</a><small>1</small></li>
+  
+    <li><a href="/tags/expdp/">expdp</a><small>1</small></li>
+  
+    <li><a href="/tags/imp/">imp</a><small>1</small></li>
+  
+    <li><a href="/tags/impdp/">impdp</a><small>1</small></li>
+  
+    <li><a href="/tags/udev/">udev</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2020 Falkon
+  
+</div>
+<div class="clearfix"></div></footer>
+  
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

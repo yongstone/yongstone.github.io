@@ -1,0 +1,288 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  
+  <title>Exp/Imp | FALKON&#39;S TECH BLOG</title>
+  <meta name="author" content="Falkon">
+  
+  <meta name="description" content="exp/imp的使用方法主要有三种方式（完全、用户、表），需要dba权限
+
+EXP 完全
+12[oracle@ystdb11g ~]$ exp system@ystdb file=/backups/full_exp_20200313.dmp log=/backups/full_exp_20200313.log full=y">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="Exp/Imp"/>
+  <meta property="og:site_name" content="FALKON&#39;S TECH BLOG"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="FALKON&#39;S TECH BLOG" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">FALKON&#39;S TECH BLOG</a></h1>
+  <h2><a href="/">Record life, record me.</a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+      <li><a href="/project">Project</a></li>
+    
+      <li><a href="/about">About</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article id="post-database/exp_imp" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-03-13T06:23:32.610Z"><a href="/2020/03/13/database/exp_imp/">2020-03-13</a></time>
+      
+      
+  
+    <h1 class="p-name title" itemprop="headline name">Exp/Imp</h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <ul>
+<li><p>exp/imp的使用方法主要有三种方式（完全、用户、表），需要dba权限</p>
+</li>
+<li><p>EXP 完全</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[oracle@ystdb11g ~]$ exp system@ystdb file=/backups/full_exp_20200313.dmp </span><br><span class="line"><span class="built_in">log</span>=/backups/full_exp_20200313.log full=y</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+</li>
+<li><p>EXP 用户</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">[oracle@ystdb11g ~]$ exp <span class="built_in">test</span>@ystdb file=/backups/test_exp_20200313.dmp </span><br><span class="line"><span class="built_in">log</span>=/backups/test_exp_20200313.log owner=<span class="built_in">test</span></span><br><span class="line"></span><br><span class="line">Export: Release 11.2.0.4.0 - Production on Thu Mar 12 23:07:45 2020</span><br><span class="line"></span><br><span class="line">Copyright (c) 1982, 2011, Oracle and/or its affiliates.  All rights reserved.</span><br><span class="line"></span><br><span class="line">Password:</span><br><span class="line"></span><br><span class="line">Connected to: Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production</span><br><span class="line">With the Partitioning, OLAP, Data Mining and Real Application Testing options</span><br><span class="line">Export <span class="keyword">done</span> <span class="keyword">in</span> AL32UTF8 character <span class="built_in">set</span> and AL16UTF16 NCHAR character <span class="built_in">set</span></span><br><span class="line"></span><br><span class="line">About to <span class="built_in">export</span> specified users ...</span><br><span class="line">. exporting pre-schema procedural objects and actions</span><br><span class="line">. exporting foreign <span class="keyword">function</span> library names <span class="keyword">for</span> user TEST</span><br><span class="line">. exporting PUBLIC <span class="built_in">type</span> synonyms</span><br><span class="line">. exporting private <span class="built_in">type</span> synonyms</span><br><span class="line">. exporting object <span class="built_in">type</span> definitions <span class="keyword">for</span> user TEST</span><br><span class="line">About to <span class="built_in">export</span> TEST<span class="string">'s objects ...</span></span><br><span class="line"><span class="string">. exporting database links</span></span><br><span class="line"><span class="string">. exporting sequence numbers</span></span><br><span class="line"><span class="string">. exporting cluster definitions</span></span><br><span class="line"><span class="string">. about to export TEST'</span>s tables via Conventional Path ...</span><br><span class="line">. . exporting table                          TTB01       5000 rows exported</span><br><span class="line">. . exporting table                          TTB02       6000 rows exported</span><br><span class="line">. . exporting table                          TTB03       7000 rows exported</span><br><span class="line">. . exporting table                          TTB04      10000 rows exported</span><br><span class="line">. . exporting table                          TTB05      15000 rows exported</span><br><span class="line">. exporting synonyms</span><br><span class="line">. exporting views</span><br><span class="line">. exporting stored procedures</span><br><span class="line">. exporting operators</span><br><span class="line">. exporting referential integrity constraints</span><br><span class="line">. exporting triggers</span><br><span class="line">. exporting indextypes</span><br><span class="line">. exporting bitmap, functional and extensible indexes</span><br><span class="line">. exporting posttables actions</span><br><span class="line">. exporting materialized views</span><br><span class="line">. exporting snapshot logs</span><br><span class="line">. exporting job queues</span><br><span class="line">. exporting refresh groups and children</span><br><span class="line">. exporting dimensions</span><br><span class="line">. exporting post-schema procedural objects and actions</span><br><span class="line">. exporting statistics</span><br><span class="line">Export terminated successfully without warnings.</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>EXP 表</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">[oracle@ystdb11g ~]$ exp <span class="built_in">test</span>@ystdb file=/backups/test_ttb01_exp_20200313.dmp </span><br><span class="line"><span class="built_in">log</span>=/backups/test_ttb01_exp_20200313.log tables=TTB01</span><br><span class="line"></span><br><span class="line">Export: Release 11.2.0.4.0 - Production on Thu Mar 12 23:23:05 2020</span><br><span class="line"></span><br><span class="line">Copyright (c) 1982, 2011, Oracle and/or its affiliates.  All rights reserved.</span><br><span class="line"></span><br><span class="line">Password:</span><br><span class="line"></span><br><span class="line">Connected to: Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production</span><br><span class="line">With the Partitioning, OLAP, Data Mining and Real Application Testing options</span><br><span class="line">Export <span class="keyword">done</span> <span class="keyword">in</span> AL32UTF8 character <span class="built_in">set</span> and AL16UTF16 NCHAR character <span class="built_in">set</span></span><br><span class="line"></span><br><span class="line">About to <span class="built_in">export</span> specified tables via Conventional Path ...</span><br><span class="line">. . exporting table                          TTB01       5000 rows exported</span><br><span class="line">Export terminated successfully without warnings.</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>IMP 完全</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[oracle@ystdb11g ~]$ imp system@ystdb file=/backups/full_exp_20200313.dmp </span><br><span class="line"><span class="built_in">log</span>=/backups/full_imp_20200313.log full=y</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>IMP 用户</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">[oracle@ystdb11g ~]$ imp <span class="built_in">test</span>@ystdb file=/backups/test_exp_20200313.dmp </span><br><span class="line"><span class="built_in">log</span>=/backups/test_imp_20200313.log fromuser=<span class="built_in">test</span> touser=<span class="built_in">test</span></span><br><span class="line"></span><br><span class="line">Import: Release 11.2.0.4.0 - Production on Thu Mar 12 23:49:14 2020</span><br><span class="line"></span><br><span class="line">Copyright (c) 1982, 2011, Oracle and/or its affiliates.  All rights reserved.</span><br><span class="line"></span><br><span class="line">Password:</span><br><span class="line"></span><br><span class="line">Connected to: Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production</span><br><span class="line">With the Partitioning, OLAP, Data Mining and Real Application Testing options</span><br><span class="line"></span><br><span class="line">Export file created by EXPORT:V11.02.00 via conventional path</span><br><span class="line">import <span class="keyword">done</span> <span class="keyword">in</span> AL32UTF8 character <span class="built_in">set</span> and AL16UTF16 NCHAR character <span class="built_in">set</span></span><br><span class="line">. . importing table                        <span class="string">"TTB01"</span>       5000 rows imported</span><br><span class="line">. . importing table                        <span class="string">"TTB02"</span>       6000 rows imported</span><br><span class="line">. . importing table                        <span class="string">"TTB03"</span>       7000 rows imported</span><br><span class="line">. . importing table                        <span class="string">"TTB04"</span>      10000 rows imported</span><br><span class="line">. . importing table                        <span class="string">"TTB05"</span>      15000 rows imported</span><br><span class="line">Import terminated successfully without warnings.</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>IMP 表</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">[oracle@ystdb11g backups]$ imp <span class="built_in">test</span>@ystdb file=/backups/test_ttb02_exp_20200313.dmp </span><br><span class="line"><span class="built_in">log</span>=/backups/test_ttb02_imp_20200313.log tables=TTB02</span><br><span class="line"></span><br><span class="line">Import: Release 11.2.0.4.0 - Production on Thu Mar 12 23:58:57 2020</span><br><span class="line"></span><br><span class="line">Copyright (c) 1982, 2011, Oracle and/or its affiliates.  All rights reserved.</span><br><span class="line"></span><br><span class="line">Password:</span><br><span class="line"></span><br><span class="line">Connected to: Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production</span><br><span class="line">With the Partitioning, OLAP, Data Mining and Real Application Testing options</span><br><span class="line"></span><br><span class="line">Export file created by EXPORT:V11.02.00 via conventional path</span><br><span class="line">import <span class="keyword">done</span> <span class="keyword">in</span> AL32UTF8 character <span class="built_in">set</span> and AL16UTF16 NCHAR character <span class="built_in">set</span></span><br><span class="line">. importing TEST<span class="string">'s objects into TEST</span></span><br><span class="line"><span class="string">. importing TEST'</span>s objects into TEST</span><br><span class="line">. . importing table                        <span class="string">"TTB02"</span>       6000 rows imported</span><br><span class="line">Import terminated successfully without warnings.</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>EXP-00091: Exporting questionable statistics<br>出现EXP-00091: Exporting questionable statistics的原因是因为客户端的字符集和数据库的字符集不一致，根据数据库的字符集修改客户端的字符集即可</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">SQL&gt; col value <span class="keyword">for</span> a20</span><br><span class="line">SQL&gt; select * from nls_database_parameters <span class="built_in">where</span> parameter like <span class="string">'NLS_CHAR%'</span>;</span><br><span class="line"></span><br><span class="line">PARAMETER               VALUE</span><br><span class="line">------------------------------ --------------------</span><br><span class="line">NLS_CHARACTERSET           AL32UTF8</span><br></pre></td></tr></table></figure></li>
+<li><p>Linux系统临时修改，永久需要在Oracle用户的.bash_profile文件中增加</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[oracle@ystdb11g ~]$ <span class="built_in">export</span> NLS_LANG=AMERICAN_AMERICA.AL32UTF8</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Windows系统临时修改，永久修改需要添加系统环境环境变量</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\Falkon&gt;<span class="built_in">set</span> NLS_LANG=AMERICAN_AMERICA.AL32UTF8</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>如果导出的dmp文件没有明确的命名和表示，那么我们将不能确认导出的方式是exp还是expdp，在使用impdp导入的时候将会报如下错误</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[oracle@ystdb11g backups]$ impdp <span class="built_in">test</span>@ystdb file=/backups/test_exp_20200313.dmp </span><br><span class="line"><span class="built_in">log</span>=/backups/test_imp_20200313.log fromuser=<span class="built_in">test</span> touser=<span class="built_in">test</span></span><br><span class="line"></span><br><span class="line">Import: Release 11.2.0.4.0 - Production on Fri Mar 13 00:02:32 2020</span><br><span class="line"></span><br><span class="line">Copyright (c) 1982, 2011, Oracle and/or its affiliates.  All rights reserved.</span><br><span class="line">Password:</span><br><span class="line"></span><br><span class="line">Connected to: Oracle Database 11g Enterprise Edition Release 11.2.0.4.0 - 64bit Production</span><br><span class="line">With the Partitioning, OLAP, Data Mining and Real Application Testing options</span><br><span class="line">ORA-39002: invalid operation</span><br><span class="line">ORA-39070: Unable to open the <span class="built_in">log</span> file.</span><br><span class="line">ORA-39088: file name cannot contain a path specification</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>关于exp buffer的说明<br>官网说明链接 <a href="https://docs.oracle.com/cd/A84870_01/doc/server.816/a76955/ch01.htm" target="_blank" rel="noopener">https://docs.oracle.com/cd/A84870_01/doc/server.816/a76955/ch01.htm</a><br>Default: operating system-dependent. See your Oracle operating system-specific documentation to determine the default value for this parameter.</p>
+<p>Specifies the size, in bytes, of the buffer used to fetch rows. As a result, this parameter determines the maximum number of rows in an array fetched by Export. Use the following formula to calculate the buffer size:</p>
+<p><strong>buffer_size = rows_in_array * maximum_row_size</strong></p>
+<p>If you specify zero, the Export utility fetches only one row at a time.<br>Tables with LONG, LOB, BFILE, REF, ROWID, LOGICAL ROWID, DATE, or type columns are fetched one row at a time.<br>Note: The BUFFER parameter applies only to conventional path Export. It has no effect on a direct path Export.</p>
+<p>Example<br>This section shows an example of how to calculate buffer size.<br>Consider that the following table is created:</p>
+<p><strong>create table sample (name varchar(30), weight number);</strong></p>
+<p>The maximum size of the name column is 30, plus 2 bytes for the indicator. The maximum size of the weight column is 22 (the size of the internal representation for Oracle numbers), plus 2 bytes for the indicator.<br>Therefore, the maximum row size is 56 (30+2+22+2).<br>To perform array operations for 100 rows, a buffer size of 5600 should be specified.</p>
+<p><strong>对于数据量较大的可以通过设置buffer来增加导出的速度，具体的计算方式：需要导出的行数 * （每个字段的字节数+2）</strong></p>
+</li>
+</ul>
+
+      
+    </div>
+    <footer>
+      
+        
+  
+  <div class="categories">
+    <a href="/categories/Database/">Database</a>
+  </div>
+
+        
+  
+  <div class="tags">
+    <a href="/tags/exp/">exp</a>, <a href="/tags/imp/">imp</a>
+  </div>
+
+        
+  <div class="addthis addthis_toolbox addthis_default_style">
+    
+      <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+    
+    
+      <a class="addthis_button_tweet"></a>
+    
+    
+      <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+    
+    
+      <a class="addthis_button_pinterest_pinit" pi:pinit:layout="horizontal"></a>
+    
+    <a class="addthis_counter addthis_pill_style"></a>
+  </div>
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js"></script>
+
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">Comments</h1>
+
+  
+      <div id="fb-root"></div>
+<script>
+  (function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=123456789012345";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+</script>
+
+<div class="fb-comments" data-href="http://falkon.cn/2020/03/13/database/exp_imp/index.html" data-num-posts="5" data-width="840" data-colorscheme="light"></div>
+      
+  
+</section>
+
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="as_sitesearch" value="falkon.cn">
+  </form>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Categories</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/Database/">Database</a><small>17</small></li>
+  
+    <li><a href="/categories/Linux/">Linux</a><small>2</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/10G/">10G</a><small>1</small></li>
+  
+    <li><a href="/tags/11g/">11g</a><small>2</small></li>
+  
+    <li><a href="/tags/12c/">12c</a><small>3</small></li>
+  
+    <li><a href="/tags/AFD/">AFD</a><small>1</small></li>
+  
+    <li><a href="/tags/ASM/">ASM</a><small>1</small></li>
+  
+    <li><a href="/tags/Audit/">Audit</a><small>1</small></li>
+  
+    <li><a href="/tags/CLONE/">CLONE</a><small>1</small></li>
+  
+    <li><a href="/tags/GoldenGate/">GoldenGate</a><small>1</small></li>
+  
+    <li><a href="/tags/ODA/">ODA</a><small>1</small></li>
+  
+    <li><a href="/tags/ORA-01804/">ORA-01804</a><small>1</small></li>
+  
+    <li><a href="/tags/ORA-28000/">ORA-28000</a><small>1</small></li>
+  
+    <li><a href="/tags/ORA-600/">ORA-600</a><small>1</small></li>
+  
+    <li><a href="/tags/ORA-65500/">ORA-65500</a><small>1</small></li>
+  
+    <li><a href="/tags/Openfiler/">Openfiler</a><small>1</small></li>
+  
+    <li><a href="/tags/Oracle-11g/">Oracle 11g</a><small>1</small></li>
+  
+    <li><a href="/tags/PDB/">PDB</a><small>1</small></li>
+  
+    <li><a href="/tags/PSU/">PSU</a><small>1</small></li>
+  
+    <li><a href="/tags/Patch/">Patch</a><small>1</small></li>
+  
+    <li><a href="/tags/RAC/">RAC</a><small>3</small></li>
+  
+    <li><a href="/tags/Req-mir-free-MB/">Req_mir_free_MB</a><small>1</small></li>
+  
+    <li><a href="/tags/SWAP/">SWAP</a><small>1</small></li>
+  
+    <li><a href="/tags/Synonym/">Synonym</a><small>1</small></li>
+  
+    <li><a href="/tags/exp/">exp</a><small>1</small></li>
+  
+    <li><a href="/tags/expdp/">expdp</a><small>1</small></li>
+  
+    <li><a href="/tags/imp/">imp</a><small>1</small></li>
+  
+    <li><a href="/tags/impdp/">impdp</a><small>1</small></li>
+  
+    <li><a href="/tags/udev/">udev</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2020 Falkon
+  
+</div>
+<div class="clearfix"></div></footer>
+  
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>
