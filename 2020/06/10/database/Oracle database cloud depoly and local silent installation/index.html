@@ -1,0 +1,308 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  
+  <title>Oracle 12c 云上部署和本地静默安装 | FALKON&#39;S TECH BLOG</title>
+  <meta name="author" content="Falkon">
+  
+  <meta name="description" content="平台：Oracle Linux 7.2 最小化安装
+数据库版本：12.2.01">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="Oracle 12c 云上部署和本地静默安装"/>
+  <meta property="og:site_name" content="FALKON&#39;S TECH BLOG"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  <link href="/images/favicon.png" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="FALKON&#39;S TECH BLOG" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">FALKON&#39;S TECH BLOG</a></h1>
+  <h2><a href="/">Record life, record me.</a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+      <li><a href="/project">Project</a></li>
+    
+      <li><a href="/about">About</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article id="post-database/Oracle database cloud depoly and local silent installation" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-06-10T03:32:43.377Z"><a href="/2020/06/10/database/Oracle database cloud depoly and local silent installation/">2020-06-10</a></time>
+      
+      
+  
+    <h1 class="p-name title" itemprop="headline name">Oracle 12c 云上部署和本地静默安装</h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <ul>
+<li>平台：Oracle Linux 7.2 最小化安装</li>
+<li>数据库版本：12.2.01</li>
+</ul>
+<a id="more"></a>
+
+<ul>
+<li><p>配置ip地址</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">[root@orcldb12c ~]<span class="comment"># vi /etc/sysconfig/network-scripts/ifcfg-ens33</span></span><br><span class="line">TYPE=Ethernet</span><br><span class="line">PROXY_METHOD=none</span><br><span class="line">BROWSER_ONLY=no</span><br><span class="line">BOOTPROTO=static</span><br><span class="line">DEFROUTE=yes</span><br><span class="line">IPV4_FAILURE_FATAL=no</span><br><span class="line">IPV6INIT=yes</span><br><span class="line">IPV6_AUTOCONF=yes</span><br><span class="line">IPV6_DEFROUTE=yes</span><br><span class="line">IPV6_FAILURE_FATAL=no</span><br><span class="line">IPV6_ADDR_GEN_MODE=stable-privacy</span><br><span class="line">NAME=ens33</span><br><span class="line">UUID=9726931d-4a1f-4fcb-a2cf-6fd567b72458</span><br><span class="line">DEVICE=ens33</span><br><span class="line">ONBOOT=yes</span><br><span class="line">IPADDR=192.168.112.60</span><br><span class="line">NETMASK=255.255.255.0</span><br><span class="line">GATEWAY=192.168.112.1</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>关闭防火墙</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@orcldb12c ~]<span class="comment"># hostnamectl set-hostname orcldb12c</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>关闭selinix</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[root@orcldb12c ~]<span class="comment"># vi /etc/sysconfig/selinux</span></span><br><span class="line"><span class="comment"># This file controls the state of SELinux on the system.</span></span><br><span class="line"><span class="comment"># SELINUX= can take one of these three values:</span></span><br><span class="line"><span class="comment">#     enforcing - SELinux security policy is enforced.</span></span><br><span class="line"><span class="comment">#     permissive - SELinux prints warnings instead of enforcing.</span></span><br><span class="line"><span class="comment">#     disabled - No SELinux policy is loaded.</span></span><br><span class="line">SELINUX=disabled</span><br><span class="line"><span class="comment"># SELINUXTYPE= can take one of three values:</span></span><br><span class="line"><span class="comment">#     targeted - Targeted processes are protected,</span></span><br><span class="line"><span class="comment">#     minimum - Modification of targeted policy. Only selected processes are protected.</span></span><br><span class="line"><span class="comment">#     mls - Multi Level Security protection.</span></span><br><span class="line">SELINUXTYPE=targeted</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>配置软件包仓库</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@orcldb12c ~]<span class="comment"># vi /etc/yum.repos.d/oracle-linux-ol7.repo</span></span><br><span class="line">[ol7_latest]</span><br><span class="line">name=Oracle Linux <span class="variable">$releasever</span> Latest (<span class="variable">$basearch</span>)</span><br><span class="line">baseurl=file:///media</span><br><span class="line">gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-oracle</span><br><span class="line">gpgcheck=1</span><br><span class="line">enabled=1</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>创建用户组和用户</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@orcldb12c ~]<span class="comment"># groupadd -g 1001 oinstall</span></span><br><span class="line">[root@orcldb12c ~]<span class="comment"># groupadd -g 1002 dba</span></span><br><span class="line">[root@orcldb12c ~]<span class="comment"># groupadd -g 1003 oper</span></span><br><span class="line">[root@orcldb12c ~]<span class="comment"># useradd -g oinstall -G dba,oper oracle</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>设置用户名密码并验证</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@orcldb12c ~]<span class="comment"># passwd oracle</span></span><br><span class="line">Changing password <span class="keyword">for</span> user oracle.</span><br><span class="line">New password: </span><br><span class="line">Retype new password: </span><br><span class="line">passwd: all authentication tokens updated successfully.</span><br><span class="line"></span><br><span class="line">[root@orcldb12c ~]<span class="comment"># id oracle</span></span><br><span class="line">uid=1001(oracle) gid=1001(oinstall) groups=1001(oinstall),1002(dba),1003(oper)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>创建目录并改变属组及权限</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@orcldb12c ~]<span class="comment"># mkdir -p /u01/app/oracle</span></span><br><span class="line">[root@orcldb12c ~]<span class="comment"># chown -R oracle:oinstall /u01/</span></span><br><span class="line">[root@orcldb12c ~]<span class="comment"># chmod -R 775 /u01/</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>配置系统参数</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[root@orcldb12c ~]<span class="comment"># vi /etc/sysctl.d/97-oracle-database-sysctl.conf</span></span><br><span class="line"><span class="comment"># Oracle kernel parameters </span></span><br><span class="line">fs.aio-max-nr = 1048576</span><br><span class="line">fs.file-max = 6815744</span><br><span class="line">kernel.shmmni = 4096</span><br><span class="line">kernel.sem = 32000 1024000000 500 32000</span><br><span class="line">net.ipv4.ip_local_port_range = 9000 65500</span><br><span class="line">net.core.rmem_default = 4194304</span><br><span class="line">net.core.rmem_max = 4194304</span><br><span class="line">net.core.wmem_default = 4194304</span><br><span class="line">net.core.wmem_max = 4194304</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>配置资源限制</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[root@orcldb12c ~]<span class="comment"># vi /etc/security/limits.conf</span></span><br><span class="line"><span class="comment"># Oracle resource limits</span></span><br><span class="line">oracle 	soft 	nofile 	131072</span><br><span class="line">oracle 	soft 	nproc 	131072</span><br><span class="line">oracle 	hard 	nofile 	131072</span><br><span class="line">oracle 	hard 	nproc 	131072</span><br><span class="line">oracle 	soft 	core 	unlimited</span><br><span class="line">oracle 	hard 	core 	unlimited</span><br><span class="line">oracle 	soft 	stack 	10240</span><br><span class="line">oracle 	hard 	stack 	32768</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>配置用户环境变量</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">[oracle@orcldb12c ~]$ vi .bash_profile</span><br><span class="line"></span><br><span class="line"><span class="comment"># Oracle user environment variable</span></span><br><span class="line"><span class="built_in">export</span> ORACLE_SID=orcldb</span><br><span class="line"><span class="built_in">export</span> ORACLE_BASE=/u01/app/oracle</span><br><span class="line"><span class="built_in">export</span> ORACLE_HOME=<span class="variable">$ORACLE_BASE</span>/product/12.2.0/dbhome_1</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$ORACLE_HOME</span>/bin:<span class="variable">$PATH</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 验证环境变量配置</span></span><br><span class="line">[oracle@orcldb12c ~]$ <span class="built_in">source</span> .bash_profile </span><br><span class="line">[oracle@orcldb12c ~]$ <span class="built_in">echo</span> <span class="variable">$ORACLE_SID</span></span><br><span class="line">orcldb</span><br><span class="line">[oracle@orcldb12c ~]$ <span class="built_in">echo</span> <span class="variable">$ORACLE_BASE</span></span><br><span class="line">/u01/app/oracle</span><br><span class="line">[oracle@orcldb12c ~]$ <span class="built_in">echo</span> <span class="variable">$ORACLE_HOME</span></span><br><span class="line">/u01/app/oracle/product/12.2.0/dbhome_1</span><br><span class="line">[oracle@orcldb12c ~]$ <span class="built_in">echo</span> <span class="variable">$PATH</span></span><br><span class="line">/u01/app/oracle/product/12.2.0/dbhome_1/bin:/usr/<span class="built_in">local</span>/bin:/bin:/usr/bin:/usr/<span class="built_in">local</span>/sbin:/usr/sbin:/home/oracle/.<span class="built_in">local</span>/bin:/home/oracle/bin:/home/oracle/.<span class="built_in">local</span>/bin:/home/oracle/bin</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装依赖包</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 官方文档依赖包链接</span></span><br><span class="line">https://docs.oracle.com/en/database/oracle/oracle-database/12.2/ladbi/supported-red-hat-enterprise-linux-7-distributions-for-x86-64.html<span class="comment">#GUID-2E11B561-6587-4789-A583-2E33D705E498</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>上传数据库安装包并解压缩</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sftp:/opt&gt; put</span><br><span class="line">Uploading linuxx64_12201_database.zip to remote:/opt/linuxx64_12201_database.zip</span><br><span class="line">sftp: sent 3.21 GB <span class="keyword">in</span> 30.44 seconds</span><br><span class="line"></span><br><span class="line">[root@orcldb12c opt]<span class="comment"># unzip linuxx64_12201_database.zip</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>对比后配置db_inst.rsp</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">[oracle@orcldb12c response]$ cat db_install.rsp | grep -Ev <span class="string">"^#|^$"</span></span><br><span class="line">oracle.install.responseFileVersion=/oracle/install/rspfmt_dbinstall_response_schema_v12.2.0</span><br><span class="line">oracle.install.option=INSTALL_DB_SWONLY</span><br><span class="line">UNIX_GROUP_NAME=oinstall</span><br><span class="line">INVENTORY_LOCATION=/u01/app/oraInventory</span><br><span class="line">ORACLE_HOME=/u01/app/oracle/product/12.2.0/dbhome_1</span><br><span class="line">ORACLE_BASE=/u01/app/oracle</span><br><span class="line">oracle.install.db.InstallEdition=EE</span><br><span class="line">oracle.install.db.OSDBA_GROUP=dba</span><br><span class="line">oracle.install.db.OSOPER_GROUP=oper</span><br><span class="line">oracle.install.db.OSBACKUPDBA_GROUP=dba</span><br><span class="line">oracle.install.db.OSDGDBA_GROUP=dba</span><br><span class="line">oracle.install.db.OSKMDBA_GROUP=dba</span><br><span class="line">oracle.install.db.OSRACDBA_GROUP=dba</span><br><span class="line">oracle.install.db.rac.configurationType=</span><br><span class="line">oracle.install.db.CLUSTER_NODES=</span><br><span class="line">oracle.install.db.isRACOneInstall=</span><br><span class="line">oracle.install.db.racOneServiceName=</span><br><span class="line">oracle.install.db.rac.serverpoolName=</span><br><span class="line">oracle.install.db.rac.serverpoolCardinality=</span><br><span class="line">oracle.install.db.config.starterdb.type=</span><br><span class="line">oracle.install.db.config.starterdb.globalDBName=</span><br><span class="line">oracle.install.db.config.starterdb.SID=</span><br><span class="line">oracle.install.db.ConfigureAsContainerDB=</span><br><span class="line">oracle.install.db.config.PDBName=</span><br><span class="line">oracle.install.db.config.starterdb.characterSet=</span><br><span class="line">oracle.install.db.config.starterdb.memoryOption=</span><br><span class="line">oracle.install.db.config.starterdb.memoryLimit=</span><br><span class="line">oracle.install.db.config.starterdb.installExampleSchemas=</span><br><span class="line">oracle.install.db.config.starterdb.password.ALL=</span><br><span class="line">oracle.install.db.config.starterdb.password.SYS=</span><br><span class="line">oracle.install.db.config.starterdb.password.SYSTEM=</span><br><span class="line">oracle.install.db.config.starterdb.password.DBSNMP=</span><br><span class="line">oracle.install.db.config.starterdb.password.PDBADMIN=</span><br><span class="line">oracle.install.db.config.starterdb.managementOption=</span><br><span class="line">oracle.install.db.config.starterdb.omsHost=</span><br><span class="line">oracle.install.db.config.starterdb.omsPort=</span><br><span class="line">oracle.install.db.config.starterdb.emAdminUser=</span><br><span class="line">oracle.install.db.config.starterdb.emAdminPassword=</span><br><span class="line">oracle.install.db.config.starterdb.enableRecovery=</span><br><span class="line">oracle.install.db.config.starterdb.storageType=</span><br><span class="line">oracle.install.db.config.starterdb.fileSystemStorage.dataLocation=</span><br><span class="line">oracle.install.db.config.starterdb.fileSystemStorage.recoveryLocation=</span><br><span class="line">oracle.install.db.config.asm.diskGroup=</span><br><span class="line">oracle.install.db.config.asm.ASMSNMPPassword=</span><br><span class="line">MYORACLESUPPORT_USERNAME=</span><br><span class="line">MYORACLESUPPORT_PASSWORD=</span><br><span class="line">SECURITY_UPDATES_VIA_MYORACLESUPPORT=</span><br><span class="line">DECLINE_SECURITY_UPDATES=</span><br><span class="line">PROXY_HOST=</span><br><span class="line">PROXY_PORT=</span><br><span class="line">PROXY_USER=</span><br><span class="line">PROXY_PWD=</span><br><span class="line">COLLECTOR_SUPPORTHUB_URL=</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>执行安装前检查</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[oracle@orcldb12c database]$ ./runInstaller -silent -executeprereqs</span><br><span class="line">Starting Oracle Universal Installer...</span><br><span class="line"></span><br><span class="line">Checking Temp space: must be greater than 500 MB.   Actual 32523 MB    Passed</span><br><span class="line">Checking swap space: must be greater than 150 MB.   Actual 8191 MB    Passed</span><br><span class="line">Preparing to launch Oracle Universal Installer from /tmp/OraInstall2020-04-27_11-48-01AM. Please <span class="built_in">wait</span> ...[oracle@orcldb12c database]$ Prerequisite checks executed successfully.</span><br><span class="line">A <span class="built_in">log</span> of this session is currently saved as: /tmp/OraInstall2020-04-27_11-48-01AM/installActions2020-04-27_11-48-01AM.log. Oracle recommends that <span class="keyword">if</span> you want to keep this <span class="built_in">log</span>, you should move it from the temporary location.</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>执行db_install.rsp</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">[oracle@orcldb12c database]$ ./runInstaller -silent -responseFile /opt/database/response/db_install.rsp</span><br><span class="line">Starting Oracle Universal Installer...</span><br><span class="line"></span><br><span class="line">Checking Temp space: must be greater than 500 MB.   Actual 31745 MB    Passed</span><br><span class="line">Checking swap space: must be greater than 150 MB.   Actual 8191 MB    Passed</span><br><span class="line">Preparing to launch Oracle Universal Installer from /tmp/OraInstall2020-04-27_11-49-37AM. Please <span class="built_in">wait</span> ...[oracle@orcldb12c database]$ You can find the <span class="built_in">log</span> of this install session at:</span><br><span class="line"> /u01/app/oraInventory/logs/installActions2020-04-27_11-49-37AM.log</span><br><span class="line">The installation of Oracle Database 12c was successful.</span><br><span class="line">Please check <span class="string">'/u01/app/oraInventory/logs/silentInstall2020-04-27_11-49-37AM.log'</span> <span class="keyword">for</span> more details.</span><br><span class="line"></span><br><span class="line">As a root user, execute the following script(s):</span><br><span class="line">	1. /u01/app/oraInventory/orainstRoot.sh</span><br><span class="line">	2. /u01/app/oracle/product/12.2.0/dbhome_1/root.sh</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Successfully Setup Software.</span><br></pre></td></tr></table></figure></li>
+<li><p>执行root脚本</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[root@orcldb12c ~]<span class="comment"># /u01/app/oraInventory/orainstRoot.sh</span></span><br><span class="line">Changing permissions of /u01/app/oraInventory.</span><br><span class="line">Adding <span class="built_in">read</span>,write permissions <span class="keyword">for</span> group.</span><br><span class="line">Removing <span class="built_in">read</span>,write,execute permissions <span class="keyword">for</span> world.</span><br><span class="line"></span><br><span class="line">Changing groupname of /u01/app/oraInventory to oinstall.</span><br><span class="line">The execution of the script is complete.</span><br><span class="line">[root@orcldb12c ~]<span class="comment"># </span></span><br><span class="line">[root@orcldb12c ~]<span class="comment"># </span></span><br><span class="line">[root@orcldb12c ~]<span class="comment"># /u01/app/oracle/product/12.2.0/dbhome_1/root.sh</span></span><br><span class="line">Check /u01/app/oracle/product/12.2.0/dbhome_1/install/root_orcldb12c_2020-04-27_12-08-39-430357181.log <span class="keyword">for</span> the output of root script</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>检查netca.rsp</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">[oracle@orcldb12c response]$ cat netca.rsp| grep -Ev <span class="string">"^#|^$"</span></span><br><span class="line">[GENERAL]</span><br><span class="line">RESPONSEFILE_VERSION=<span class="string">"12.2"</span></span><br><span class="line">CREATE_TYPE=<span class="string">"CUSTOM"</span></span><br><span class="line">[oracle.net.ca]</span><br><span class="line">INSTALLED_COMPONENTS=&#123;<span class="string">"server"</span>,<span class="string">"net8"</span>,<span class="string">"javavm"</span>&#125;</span><br><span class="line">INSTALL_TYPE=<span class="string">""</span>typical<span class="string">""</span></span><br><span class="line">LISTENER_NUMBER=1</span><br><span class="line">LISTENER_NAMES=&#123;<span class="string">"LISTENER"</span>&#125;</span><br><span class="line">LISTENER_PROTOCOLS=&#123;<span class="string">"TCP;1521"</span>&#125;</span><br><span class="line">LISTENER_START=<span class="string">""</span>LISTENER<span class="string">""</span></span><br><span class="line">NAMING_METHODS=&#123;<span class="string">"TNSNAMES"</span>,<span class="string">"ONAMES"</span>,<span class="string">"HOSTNAME"</span>&#125;</span><br><span class="line">NSN_NUMBER=1</span><br><span class="line">NSN_NAMES=&#123;<span class="string">"EXTPROC_CONNECTION_DATA"</span>&#125;</span><br><span class="line">NSN_SERVICE=&#123;<span class="string">"PLSExtProc"</span>&#125;</span><br><span class="line">NSN_PROTOCOLS=&#123;<span class="string">"TCP;HOSTNAME;1521"</span>&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>执行netca.rsp</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">[oracle@orcldb12c bin]$ ./netca -silent -responseFile /opt/database/response/netca.rsp</span><br><span class="line"></span><br><span class="line">Parsing <span class="built_in">command</span> line arguments:</span><br><span class="line">    Parameter <span class="string">"silent"</span> = <span class="literal">true</span></span><br><span class="line">    Parameter <span class="string">"responsefile"</span> = /opt/database/response/netca.rsp</span><br><span class="line">Done parsing <span class="built_in">command</span> line arguments.</span><br><span class="line">Oracle Net Services Configuration:</span><br><span class="line">Profile configuration complete.</span><br><span class="line">Oracle Net Listener Startup:</span><br><span class="line">    Running Listener Control: </span><br><span class="line">      /u01/app/oracle/product/12.2.0/dbhome_1/bin/lsnrctl start LISTENER</span><br><span class="line">    Listener Control complete.</span><br><span class="line">    Listener started successfully.</span><br><span class="line">Listener configuration complete.</span><br><span class="line">Oracle Net Services configuration successful. The <span class="built_in">exit</span> code is 0</span><br><span class="line">[oracle@orcldb12c bin]$ </span><br><span class="line"></span><br><span class="line"><span class="comment"># 检查监听</span></span><br><span class="line">[oracle@orcldb12c bin]$ lsnrctl status</span><br><span class="line"></span><br><span class="line">LSNRCTL <span class="keyword">for</span> Linux: Version 12.2.0.1.0 - Production on 27-APR-2020 14:54:48</span><br><span class="line"></span><br><span class="line">Copyright (c) 1991, 2016, Oracle.  All rights reserved.</span><br><span class="line"></span><br><span class="line">Connecting to (DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=orcldb12c)(PORT=1521)))</span><br><span class="line">STATUS of the LISTENER</span><br><span class="line">------------------------</span><br><span class="line">Alias                     LISTENER</span><br><span class="line">Version                   TNSLSNR <span class="keyword">for</span> Linux: Version 12.2.0.1.0 - Production</span><br><span class="line">Start Date                27-APR-2020 14:54:36</span><br><span class="line">Uptime                    0 days 0 hr. 0 min. 11 sec</span><br><span class="line">Trace Level               off</span><br><span class="line">Security                  ON: Local OS Authentication</span><br><span class="line">SNMP                      OFF</span><br><span class="line">Listener Parameter File   /u01/app/oracle/product/12.2.0/dbhome_1/network/admin/listener.ora</span><br><span class="line">Listener Log File         /u01/app/oracle/diag/tnslsnr/orcldb12c/listener/alert/log.xml</span><br><span class="line">Listening Endpoints Summary...</span><br><span class="line">  (DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)(HOST=orcldb12c)(PORT=1521)))</span><br><span class="line">  (DESCRIPTION=(ADDRESS=(PROTOCOL=ipc)(KEY=EXTPROC1521)))</span><br><span class="line">The listener supports no services</span><br><span class="line">The <span class="built_in">command</span> completed successfully</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>配置并执行dbca.rsp</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br></pre></td><td class="code"><pre><span class="line">dbca.rsp</span><br><span class="line">[root@orcldb12c response]<span class="comment"># cat dbca.rsp | grep -Ev "^#|^$"</span></span><br><span class="line">responseFileVersion=/oracle/assistants/rspfmt_dbca_response_schema_v12.2.0</span><br><span class="line">gdbName=orcldb</span><br><span class="line">sid=orcldb</span><br><span class="line">databaseConfigType=</span><br><span class="line">RACOneNodeServiceName=</span><br><span class="line">policyManaged=</span><br><span class="line">createServerPool=</span><br><span class="line">serverPoolName=</span><br><span class="line">cardinality=</span><br><span class="line">force=</span><br><span class="line">pqPoolName=</span><br><span class="line">pqCardinality=</span><br><span class="line">createAsContainerDatabase=<span class="literal">true</span></span><br><span class="line">numberOfPDBs=1</span><br><span class="line">pdbName=testpdb1</span><br><span class="line">useLocalUndoForPDBs=</span><br><span class="line">pdbAdminPassword=</span><br><span class="line">nodelist=</span><br><span class="line">templateName=General_Purpose.dbc</span><br><span class="line">sysPassword=PP--ssw00rd</span><br><span class="line">systemPassword=PP--ssw00rd</span><br><span class="line">oracleHomeUserPassword=</span><br><span class="line">emConfiguration=</span><br><span class="line">emExpressPort=5500</span><br><span class="line">runCVUChecks=</span><br><span class="line">dbsnmpPassword=</span><br><span class="line">omsHost=</span><br><span class="line">omsPort=</span><br><span class="line">emUser=</span><br><span class="line">emPassword=</span><br><span class="line">dvConfiguration=</span><br><span class="line">dvUserName=</span><br><span class="line">dvUserPassword=</span><br><span class="line">dvAccountManagerName=</span><br><span class="line">dvAccountManagerPassword=</span><br><span class="line">olsConfiguration=</span><br><span class="line">datafileJarLocation=</span><br><span class="line">datafileDestination=</span><br><span class="line">recoveryAreaDestination=</span><br><span class="line">storageType=</span><br><span class="line">diskGroupName=</span><br><span class="line">asmsnmpPassword=</span><br><span class="line">recoveryGroupName=</span><br><span class="line">characterSet=AL32UTF8</span><br><span class="line">nationalCharacterSet=</span><br><span class="line">registerWithDirService=</span><br><span class="line">dirServiceUserName=</span><br><span class="line">dirServicePassword=</span><br><span class="line">walletPassword=</span><br><span class="line">listeners=LISTENER</span><br><span class="line">variablesFile=</span><br><span class="line">variables=</span><br><span class="line">initParams=</span><br><span class="line">sampleSchema=</span><br><span class="line">memoryPercentage=80</span><br><span class="line">databaseType=</span><br><span class="line">automaticMemoryManagement=</span><br><span class="line">totalMemory=</span><br><span class="line"></span><br><span class="line"><span class="comment"># 执行dbca.rsp</span></span><br><span class="line">[oracle@orcldb12c ~]$ dbca -silent -createDatabase -responseFile /opt/database/response/dbca.rsp</span><br><span class="line">Enter PDBADMIN User Password: </span><br><span class="line"></span><br><span class="line">Copying database files</span><br><span class="line">1% complete</span><br><span class="line">13% complete</span><br><span class="line">25% complete</span><br><span class="line">Creating and starting Oracle instance</span><br><span class="line">26% complete</span><br><span class="line">30% complete</span><br><span class="line">31% complete</span><br><span class="line">35% complete</span><br><span class="line">38% complete</span><br><span class="line">39% complete</span><br><span class="line">41% complete</span><br><span class="line">Completing Database Creation</span><br><span class="line">42% complete</span><br><span class="line">43% complete</span><br><span class="line">44% complete</span><br><span class="line">46% complete</span><br><span class="line">49% complete</span><br><span class="line">50% complete</span><br><span class="line">Creating Pluggable Databases</span><br><span class="line">55% complete</span><br><span class="line">75% complete</span><br><span class="line">Executing Post Configuration Actions</span><br><span class="line">100% complete</span><br><span class="line">Look at the <span class="built_in">log</span> file <span class="string">"/u01/app/oracle/cfgtoollogs/dbca/orcldb/orcldb.log"</span> <span class="keyword">for</span> further details.</span><br></pre></td></tr></table></figure></li>
+</ul>
+
+      
+    </div>
+    <footer>
+      
+        
+  
+  <div class="categories">
+    <a href="/categories/Database/">Database</a>
+  </div>
+
+        
+  
+  <div class="tags">
+    <a href="/tags/12c/">12c</a>, <a href="/tags/silent/">silent</a>, <a href="/tags/Cloud/">Cloud</a>
+  </div>
+
+        
+  <div class="addthis addthis_toolbox addthis_default_style">
+    
+      <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+    
+    
+      <a class="addthis_button_tweet"></a>
+    
+    
+      <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+    
+    
+      <a class="addthis_button_pinterest_pinit" pi:pinit:layout="horizontal"></a>
+    
+    <a class="addthis_counter addthis_pill_style"></a>
+  </div>
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js"></script>
+
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">Comments</h1>
+
+  
+      <div id="fb-root"></div>
+<script>
+  (function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=123456789012345";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+</script>
+
+<div class="fb-comments" data-href="http://falkon.cn/2020/06/10/database/Oracle%20database%20cloud%20depoly%20and%20local%20silent%20installation/index.html" data-num-posts="5" data-width="840" data-colorscheme="light"></div>
+      
+  
+</section>
+
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="as_sitesearch" value="falkon.cn">
+  </form>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Categories</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/Database/">Database</a><small>19</small></li>
+  
+    <li><a href="/categories/Linux/">Linux</a><small>3</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/10g/">10g</a><small>1</small></li>
+  
+    <li><a href="/tags/11g/">11g</a><small>3</small></li>
+  
+    <li><a href="/tags/12c/">12c</a><small>4</small></li>
+  
+    <li><a href="/tags/19c/">19c</a><small>1</small></li>
+  
+    <li><a href="/tags/AFD/">AFD</a><small>1</small></li>
+  
+    <li><a href="/tags/ASM/">ASM</a><small>1</small></li>
+  
+    <li><a href="/tags/Audit/">Audit</a><small>1</small></li>
+  
+    <li><a href="/tags/Cloud/">Cloud</a><small>1</small></li>
+  
+    <li><a href="/tags/EMCC/">EMCC</a><small>1</small></li>
+  
+    <li><a href="/tags/EXP-IMP/">EXP/IMP</a><small>1</small></li>
+  
+    <li><a href="/tags/EXPDP-IMPDP/">EXPDP/IMPDP</a><small>1</small></li>
+  
+    <li><a href="/tags/GoldenGate/">GoldenGate</a><small>1</small></li>
+  
+    <li><a href="/tags/Install/">Install</a><small>1</small></li>
+  
+    <li><a href="/tags/ODA/">ODA</a><small>1</small></li>
+  
+    <li><a href="/tags/ORA-01804/">ORA-01804</a><small>1</small></li>
+  
+    <li><a href="/tags/ORA-28000/">ORA-28000</a><small>1</small></li>
+  
+    <li><a href="/tags/ORA-600/">ORA-600</a><small>1</small></li>
+  
+    <li><a href="/tags/ORA-65500/">ORA-65500</a><small>1</small></li>
+  
+    <li><a href="/tags/Openfiler/">Openfiler</a><small>2</small></li>
+  
+    <li><a href="/tags/PDB/">PDB</a><small>1</small></li>
+  
+    <li><a href="/tags/PSU/">PSU</a><small>1</small></li>
+  
+    <li><a href="/tags/Patch/">Patch</a><small>1</small></li>
+  
+    <li><a href="/tags/RAC/">RAC</a><small>3</small></li>
+  
+    <li><a href="/tags/Req-mir-free-MB/">Req_mir_free_MB</a><small>1</small></li>
+  
+    <li><a href="/tags/Synonym/">Synonym</a><small>1</small></li>
+  
+    <li><a href="/tags/silent/">silent</a><small>1</small></li>
+  
+    <li><a href="/tags/swap/">swap</a><small>1</small></li>
+  
+    <li><a href="/tags/udev/">udev</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2020 Falkon
+  
+</div>
+<div class="clearfix"></div></footer>
+  
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

@@ -48,6 +48,122 @@
 </header>
   <div id="content" class="inner">
     <div id="main-col" class="alignleft"><div id="wrapper">
+  <article id="post-database/ORA-28000 the account is locked" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-03-13T08:53:06.736Z"><a href="/2020/03/13/database/ORA-28000 the account is locked/">2020-03-13</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/03/13/database/ORA-28000 the account is locked/">ORA-28000 the account is locked</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <ul>
+<li>今天有个客户反应账户锁了，我给发了解锁账户的语句，过了一会告诉我解锁的语句不起作用，截图我看语句也执行成功了，有点没想明白，通过远程直接上手，下面是排查过程，这里隐去了客户的相关账户和监听日志信息</li>
+</ul>
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2020/03/13/database/ORA-28000 the account is locked/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article id="post-database/exp_imp" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-03-13T06:23:32.610Z"><a href="/2020/03/13/database/exp_imp/">2020-03-13</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/03/13/database/exp_imp/">Exp/Imp</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <ul>
+<li><p>exp/imp的使用方法主要有三种方式（完全、用户、表），需要dba权限</p>
+</li>
+<li><p>EXP 完全</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[oracle@ystdb11g ~]$ exp system@ystdb file=/backups/full_exp_20200313.dmp </span><br><span class="line"><span class="built_in">log</span>=/backups/full_exp_20200313.log full=y</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2020/03/13/database/exp_imp/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article id="post-database/expdp_impdp" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-03-13T06:22:43.482Z"><a href="/2020/03/13/database/expdp_impdp/">2020-03-13</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/03/13/database/expdp_impdp/">Expdp/Impdp</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <ul>
+<li>关于数据泵(data pump)的说明，数据泵是exp/imp的升级，exp/imp是客户端程序，既可以在客户点使用，也可以在服务端使用，利用Oracle客户端工具，可以直接将服务器上的数据导入被本地电脑。expdp/impdp是服务端工具，只能在服务端使用。两种工具也无法混用，就是说exp导出的数据无法使用impdp导入。对于小于GB的数据可以exp/imp，对于大于GB的数据来说exp/imp的效率较为低下，建议对于Oracle 11g以上版本的数据库都采用expdp/impdp</li>
+</ul>
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2020/03/13/database/expdp_impdp/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
   <article id="post-linux/Linux扩展swap分区" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   
   <div class="post-content">
@@ -331,84 +447,13 @@
 
 
 
-  <article id="post-database/ORA-01804 failure to initialize timezone information" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time class="dt-published" datetime="2020-03-08T17:25:31.031Z"><a href="/2020/03/09/database/ORA-01804 failure to initialize timezone information/">2020-03-09</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2020/03/09/database/ORA-01804 failure to initialize timezone information/">ORA-01804 failure to initialize timezone information</a></h1>
-  
-
-    </header>
-    <div class="e-content entry" itemprop="articleBody">
-      
-        <h5 id="描述：单节点RAC备库，版本12-2-0-1"><a href="#描述：单节点RAC备库，版本12-2-0-1" class="headerlink" title="描述：单节点RAC备库，版本12.2.0.1"></a>描述：单节点RAC备库，版本12.2.0.1</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">RMAN&gt; CONFIGURE ARCHIVELOG DELETION POLICY TO applied on all standby;</span><br><span class="line"></span><br><span class="line">old RMAN configuration parameters:</span><br><span class="line">CONFIGURE ARCHIVELOG DELETION POLICY TO APPLIED ON ALL STANDBY;</span><br><span class="line">new RMAN configuration parameters:</span><br><span class="line">CONFIGURE ARCHIVELOG DELETION POLICY TO APPLIED ON ALL STANDBY;</span><br><span class="line">new RMAN configuration parameters are successfully stored</span><br><span class="line">RMAN-00571: ===========================================================</span><br><span class="line">RMAN-00569: =============== ERROR MESSAGE STACK FOLLOWS ===============</span><br><span class="line">RMAN-00571: ===========================================================</span><br><span class="line">RMAN-03009: failure of REFAF command on default channel at 12/05/2019 18:38:02</span><br><span class="line">ORA-01804: failure to initialize timezone information</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    <footer>
-      
-        
-          <div class="alignleft">
-            <a href="/2020/03/09/database/ORA-01804 failure to initialize timezone information/#more" class="more-link">Read More</a>
-          </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-  <article id="post-database/Oracle单节点RAC安装PSU补丁程序" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time class="dt-published" datetime="2020-03-08T17:25:31.025Z"><a href="/2020/03/09/database/Oracle单节点RAC安装PSU补丁程序/">2020-03-09</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2020/03/09/database/Oracle单节点RAC安装PSU补丁程序/">Oracle 单节点RAC安装PSU补丁程序</a></h1>
-  
-
-    </header>
-    <div class="e-content entry" itemprop="articleBody">
-      
-        <h5 id="描述：单节点RAC，数据库版本12-2-0-1"><a href="#描述：单节点RAC，数据库版本12-2-0-1" class="headerlink" title="描述：单节点RAC，数据库版本12.2.0.1"></a>描述：单节点RAC，数据库版本12.2.0.1</h5><p>下载最新OPatch，补丁编号6880880,升级Grid和OracleHome的OPatch</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 升级Grid的OPatch</span></span><br><span class="line">[root@auxsbdb12c grid]<span class="comment"># mv OPatch/ OPatch.bak</span></span><br><span class="line">[root@auxsbdb12c home]<span class="comment"># cp -r OPatch/ /u01/app/12.2.0/grid/</span></span><br><span class="line">[root@auxsbdb12c grid]<span class="comment"># chown -R grid:oinstall OPatch</span></span><br><span class="line">[grid@auxsbdb12c ~]$ opatch version</span><br><span class="line">OPatch Version: 12.2.0.1.18</span><br><span class="line"></span><br><span class="line">OPatch succeeded.</span><br><span class="line"></span><br><span class="line"><span class="comment"># 升级OracleHome的OPatch</span></span><br><span class="line">[oracle@auxsbdb12c dbhome_1]$ mv OPatch/ OPatch.bak</span><br><span class="line">[root@auxsbdb12c home]<span class="comment"># cp -r OPatch/ /u01/app/oracle/product/12.2.0/dbhome_1/</span></span><br><span class="line">[root@auxsbdb12c dbhome_1]<span class="comment"># chown -R oracle:oinstall OPatch</span></span><br><span class="line">[root@auxsbdb12c dbhome_1]<span class="comment"># cd OPatch</span></span><br><span class="line">[root@auxsbdb12c OPatch]<span class="comment"># ./opatch version</span></span><br><span class="line">OPatch Version: 12.2.0.1.18</span><br><span class="line"></span><br><span class="line">OPatch succeeded.</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    <footer>
-      
-        
-          <div class="alignleft">
-            <a href="/2020/03/09/database/Oracle单节点RAC安装PSU补丁程序/#more" class="more-link">Read More</a>
-          </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
 
 <nav id="pagination">
   
     <a href="/" class="alignleft prev">Prev</a>
   
+  
+    <a href="/page/3/" class="alignright next">Next</a>
   
   <div class="clearfix"></div>
 </nav></div></div>
@@ -426,9 +471,9 @@
   <h3 class="title">Categories</h3>
   <ul class="entry">
   
-    <li><a href="/categories/Database/">Database</a><small>17</small></li>
+    <li><a href="/categories/Database/">Database</a><small>19</small></li>
   
-    <li><a href="/categories/Linux/">Linux</a><small>2</small></li>
+    <li><a href="/categories/Linux/">Linux</a><small>3</small></li>
   
   </ul>
 </div>
@@ -443,13 +488,19 @@
   
     <li><a href="/tags/11g/">11g</a><small>3</small></li>
   
-    <li><a href="/tags/12c/">12c</a><small>3</small></li>
+    <li><a href="/tags/12c/">12c</a><small>4</small></li>
+  
+    <li><a href="/tags/19c/">19c</a><small>1</small></li>
   
     <li><a href="/tags/AFD/">AFD</a><small>1</small></li>
   
     <li><a href="/tags/ASM/">ASM</a><small>1</small></li>
   
     <li><a href="/tags/Audit/">Audit</a><small>1</small></li>
+  
+    <li><a href="/tags/Cloud/">Cloud</a><small>1</small></li>
+  
+    <li><a href="/tags/EMCC/">EMCC</a><small>1</small></li>
   
     <li><a href="/tags/EXP-IMP/">EXP/IMP</a><small>1</small></li>
   
@@ -469,7 +520,7 @@
   
     <li><a href="/tags/ORA-65500/">ORA-65500</a><small>1</small></li>
   
-    <li><a href="/tags/Openfiler/">Openfiler</a><small>1</small></li>
+    <li><a href="/tags/Openfiler/">Openfiler</a><small>2</small></li>
   
     <li><a href="/tags/PDB/">PDB</a><small>1</small></li>
   
@@ -482,6 +533,8 @@
     <li><a href="/tags/Req-mir-free-MB/">Req_mir_free_MB</a><small>1</small></li>
   
     <li><a href="/tags/Synonym/">Synonym</a><small>1</small></li>
+  
+    <li><a href="/tags/silent/">silent</a><small>1</small></li>
   
     <li><a href="/tags/swap/">swap</a><small>1</small></li>
   

@@ -1,0 +1,320 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  
+  <title>Zabbix 5.0 编译安装 | FALKON&#39;S TECH BLOG</title>
+  <meta name="author" content="Falkon">
+  
+  <meta name="description" content="平台：Oracle Linux 7.8
+数据库：MySQL 8.0
+中间件：Apache 2.4
+PHP：PHP 7.2">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="Zabbix 5.0 编译安装"/>
+  <meta property="og:site_name" content="FALKON&#39;S TECH BLOG"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  <link href="/images/favicon.png" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="FALKON&#39;S TECH BLOG" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">FALKON&#39;S TECH BLOG</a></h1>
+  <h2><a href="/">Record life, record me.</a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+      <li><a href="/project">Project</a></li>
+    
+      <li><a href="/about">About</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article id="post-linux/Zabbix 5.0 compile installation" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-06-10T03:38:39.253Z"><a href="/2020/06/10/linux/Zabbix 5.0 compile installation/">2020-06-10</a></time>
+      
+      
+  
+    <h1 class="p-name title" itemprop="headline name">Zabbix 5.0 编译安装</h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <ul>
+<li>平台：Oracle Linux 7.8</li>
+<li>数据库：MySQL 8.0</li>
+<li>中间件：Apache 2.4</li>
+<li>PHP：PHP 7.2</li>
+</ul>
+<a id="more"></a>
+
+<ul>
+<li><p>关闭SELINUX</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@pe-sysmonitor-zabbix ~]<span class="comment"># sed -i 's/SELINUX=enforcing/SELINUX=disabled/' /etc/sysconfig/selinux</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>关闭防火墙</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@pe-sysmonitor-zabbix ~]<span class="comment"># systemctl disable --now firewalld</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装LAMP</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@pe-sysmonitor-zabbix ~]<span class="comment"># dnf install -y httpd php php-gd php-ldap php-mysqlnd php-json php-bcmath php-mbstring php-xml mysql mysql-server mysql-devel libevent-devel pcre-devel gcc gcc-c++ make libcurl-devel curl-* net-snmp* libxml2-* wget tar</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>启动相关组件并设置为开机启动</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@pe-sysmonitor-zabbix ~]<span class="comment"># systemctl enable --now httpd mysqlnd php-fpm</span></span><br><span class="line">[root@pe-sysmonitor-zabbix ~]<span class="comment"># systemctl start httpd mysqld php-fpm</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>解压并编译Zabbix5.0源码</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@pe-sysmonitor-zabbix ~]<span class="comment"># tar -zxvf /opt/zabbix-5.0.1.tar.gz</span></span><br><span class="line">[root@pe-sysmonitor-zabbix ~]<span class="comment"># cd /opt/zabbix-5.0.1</span></span><br><span class="line">[root@pe-sysmonitor-zabbix ~]<span class="comment"># /configure --prefix=/usr/local/zabbix --enable-server --enable-agent --with-mysql  --with-net-snmp --with-libcurl --with-libxml2</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>登录mysql数据库，建立zabbix数据库用户等相关信息，先安装的数据为mysql8.0，直接root用户可登录</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">[root@pe-sysmonitor-zabbix mysql]<span class="comment"># mysql -u root</span></span><br><span class="line">Welcome to the MySQL monitor.  Commands end with ; or \g.</span><br><span class="line">Your MySQL connection id is 8</span><br><span class="line">Server version: 8.0.17 Source distribution</span><br><span class="line"></span><br><span class="line">Copyright (c) 2000, 2019, Oracle and/or its affiliates. All rights reserved.</span><br><span class="line"></span><br><span class="line">Oracle is a registered trademark of Oracle Corporation and/or its</span><br><span class="line">affiliates. Other names may be trademarks of their respective</span><br><span class="line">owners.</span><br><span class="line"></span><br><span class="line">Type <span class="string">'help;'</span> or <span class="string">'\h'</span> <span class="keyword">for</span> <span class="built_in">help</span>. Type <span class="string">'\c'</span> to clear the current input statement.</span><br><span class="line"></span><br><span class="line">mysql&gt; show databases;</span><br><span class="line">+--------------------+</span><br><span class="line">| Database           |</span><br><span class="line">+--------------------+</span><br><span class="line">| information_schema |</span><br><span class="line">| mysql              |</span><br><span class="line">| performance_schema |</span><br><span class="line">| sys                |</span><br><span class="line">+--------------------+</span><br><span class="line">4 rows <span class="keyword">in</span> <span class="built_in">set</span> (0.01 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; </span><br><span class="line">mysql&gt; </span><br><span class="line">mysql&gt; </span><br><span class="line">mysql&gt; create database zabbix character <span class="built_in">set</span> utf8 collate utf8_bin;</span><br><span class="line">Query OK, 1 row affected, 2 warnings (0.06 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; create user zabbix@localhost identified by <span class="string">'welcome1'</span>;</span><br><span class="line">Query OK, 0 rows affected (0.04 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; grant all privileges on zabbix.* to zabbix@localhost;</span><br><span class="line">Query OK, 0 rows affected (0.02 sec) </span><br><span class="line">mysql&gt; quit</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>按顺序导入sql</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@pe-sysmonitor-zabbix ~]<span class="comment"># mysql -u zabbix -p zabbix &lt; /opt/zabbix-5.0.1/database/mysql/schema.sql</span></span><br><span class="line">[root@pe-sysmonitor-zabbix ~]<span class="comment"># mysql -u zabbix -p zabbix &lt; /opt/zabbix-5.0.1/database/mysql/images.sql</span></span><br><span class="line">[root@pe-sysmonitor-zabbix ~]<span class="comment"># mysql -u zabbix -p zabbix &lt; /opt/zabbix-5.0.1/database/mysql/data.sql</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>修改zabbix server配置文件的数据库密码，配置文件位置：/usr/local/zabbix/etc/zabbix_server.conf</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">DBPassword=welcome1</span><br><span class="line">...</span><br></pre></td></tr></table></figure></li>
+<li><p>为zabbix server添加systemd启动文件</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">vi /lib/systemd/system/zabbix-server.service</span><br><span class="line">[Unit]</span><br><span class="line">Description=Zabbix Server</span><br><span class="line">After=syslog.target</span><br><span class="line">After=network.target</span><br><span class="line">After=mysql.service</span><br><span class="line">After=mysqld.service</span><br><span class="line">After=mariadb.service</span><br><span class="line">After=postgresql.service</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">Environment=<span class="string">"CONFFILE=/usr/local/zabbix/etc/zabbix_server.conf"</span></span><br><span class="line">EnvironmentFile=-/etc/sysconfig/zabbix-server</span><br><span class="line">Type=forking</span><br><span class="line">Restart=on-failure</span><br><span class="line">PIDFile=/tmp/zabbix_server.pid</span><br><span class="line">KillMode=control-group</span><br><span class="line">ExecStart=/usr/<span class="built_in">local</span>/zabbix/sbin/zabbix_server -c <span class="variable">$CONFFILE</span></span><br><span class="line">ExecStop=/bin/<span class="built_in">kill</span> -SIGTERM <span class="variable">$MAINPID</span></span><br><span class="line">RestartSec=10s</span><br><span class="line">TimeoutSec=0</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br></pre></td></tr></table></figure></li>
+<li><p>为zabbix agent添加systemd启动文件</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">vi /lib/systemd/system/zabbix-agent.service</span><br><span class="line">[Unit]</span><br><span class="line">Description=Zabbix Agent</span><br><span class="line">After=syslog.target</span><br><span class="line">After=network.target</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">Environment=<span class="string">"CONFFILE=/usr/local/zabbix/etc/zabbix_agentd.conf"</span></span><br><span class="line">EnvironmentFile=-/etc/sysconfig/zabbix-agent</span><br><span class="line">Type=forking</span><br><span class="line">Restart=on-failure</span><br><span class="line">PIDFile=/tmp/zabbix_agentd.pid</span><br><span class="line">KillMode=control-group</span><br><span class="line">ExecStart=/usr/<span class="built_in">local</span>/zabbix/sbin/zabbix_agentd -c <span class="variable">$CONFFILE</span></span><br><span class="line">ExecStop=/bin/<span class="built_in">kill</span> -SIGTERM <span class="variable">$MAINPID</span></span><br><span class="line">RestartSec=10s</span><br><span class="line">User=zabbix</span><br><span class="line">Group=zabbix</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>设置为开机启动并启动zabbix server和zabbix agent</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">[root@pe-sysmonitor-zabbix ~]<span class="comment"># systemctl enable --now zabbix-server</span></span><br><span class="line">[root@pe-sysmonitor-zabbix ~]<span class="comment"># systemctl enable --now zabbix-agent</span></span><br><span class="line">[root@pe-sysmonitor-zabbix ~]<span class="comment"># systemctl start zabbix-server</span></span><br><span class="line">[root@pe-sysmonitor-zabbix ~]<span class="comment"># systemctl start zabbix-agent</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 观察/tmp/zabbix_server.log有无错误，如果出现如下错误需要对zabbix用户增加授权</span></span><br><span class="line"><span class="comment"># mysql&gt; grant SUPER,SESSION_VARIABLES_ADMIN on *.* to 'zabbix'@'localhost';</span></span><br><span class="line">865:20200610:225723.864 Starting Zabbix Server. Zabbix 5.0.1 (revision c2a0b03480).</span><br><span class="line">865:20200610:225723.864 ****** Enabled features ******</span><br><span class="line">865:20200610:225723.864 SNMP monitoring:           YES</span><br><span class="line">865:20200610:225723.864 IPMI monitoring:            NO</span><br><span class="line">865:20200610:225723.864 Web monitoring:            YES</span><br><span class="line">865:20200610:225723.864 VMware monitoring:         YES</span><br><span class="line">865:20200610:225723.864 SMTP authentication:       YES</span><br><span class="line">865:20200610:225723.864 ODBC:                       NO</span><br><span class="line">865:20200610:225723.864 SSH support:                NO</span><br><span class="line">865:20200610:225723.864 IPv6 support:               NO</span><br><span class="line">865:20200610:225723.864 TLS support:                NO</span><br><span class="line">865:20200610:225723.864 ******************************</span><br><span class="line">865:20200610:225723.864 using configuration file: /usr/<span class="built_in">local</span>/zabbix/etc/zabbix_server.conf</span><br><span class="line">865:20200610:225723.870 [Z3001] connection to database <span class="string">'zabbix'</span> failed: [1227] Access denied; you need (at least one of) the SUPER, SYSTEM_VARIABLES_ADMIN or SESSION_VARIABLES_ADMIN privilege(s) <span class="keyword">for</span> this operation</span><br><span class="line">865:20200610:225723.870 Cannot connect to the database. Exiting...</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>检查zabbix server的启动状态</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">[root@pe-sysmonitor-zabbix ~]<span class="comment"># systemctl status zabbix-server</span></span><br><span class="line">● zabbix-server.service - Zabbix Server</span><br><span class="line">   Loaded: loaded (/usr/lib/systemd/system/zabbix-server.service; enabled; vendor preset: disabled)</span><br><span class="line">   Active: active (running) since Wed 2020-06-10 22:59:57 CST; 11h ago</span><br><span class="line">  Process: 926 ExecStart=/usr/<span class="built_in">local</span>/zabbix/sbin/zabbix_server -c <span class="variable">$CONFFILE</span> (code=exited, status=0/SUCCESS)</span><br><span class="line"> Main PID: 928 (zabbix_server)</span><br><span class="line">    Tasks: 38 (<span class="built_in">limit</span>: 23588)</span><br><span class="line">   Memory: 47.8M</span><br><span class="line">   CGroup: /system.slice/zabbix-server.service</span><br><span class="line">           ├─928 /usr/<span class="built_in">local</span>/zabbix/sbin/zabbix_server -c /usr/<span class="built_in">local</span>/zabbix/etc/zabbix_server.conf</span><br><span class="line">           ├─929 /usr/<span class="built_in">local</span>/zabbix/sbin/zabbix_server: configuration syncer [synced configuration <span class="keyword">in</span> 0.036692 sec, idle 60 sec]</span><br><span class="line">           ├─930 /usr/<span class="built_in">local</span>/zabbix/sbin/zabbix_server: housekeeper [deleted 60 hist/trends, 0 items/triggers, 0 events, 0 sessions, 0 alarms, 0 audit items, 0 records <span class="keyword">in</span> 0.034538 sec, id&gt;</span><br><span class="line">           ├─931 /usr/<span class="built_in">local</span>/zabbix/sbin/zabbix_server: timer <span class="comment">#1 [updated 0 hosts, suppressed 0 events in 0.000782 sec, idle 59 sec]</span></span><br><span class="line">           ├─932 /usr/<span class="built_in">local</span>/zabbix/sbin/zabbix_server: http poller <span class="comment">#1 [got 0 values in 0.000887 sec, idle 5 sec]</span></span><br><span class="line">           ├─933 /usr/<span class="built_in">local</span>/zabbix/sbin/zabbix_server: discoverer <span class="comment">#1 [processed 0 rules in 0.000880 sec, idle 60 sec]</span></span><br><span class="line">           ├─934 /usr/<span class="built_in">local</span>/zabbix/sbin/zabbix_server: <span class="built_in">history</span> syncer <span class="comment">#1 [processed 0 values, 0 triggers in 0.000036 sec, idle 1 sec]</span></span><br><span class="line">           ├─935 /usr/<span class="built_in">local</span>/zabbix/sbin/zabbix_server: <span class="built_in">history</span> syncer <span class="comment">#2 [processed 0 values, 0 triggers in 0.000049 sec, idle 1 sec]</span></span><br><span class="line">           ├─936 /usr/<span class="built_in">local</span>/zabbix/sbin/zabbix_server: <span class="built_in">history</span> syncer <span class="comment">#3 [processed 0 values, 0 triggers in 0.000027 sec, idle 1 sec]</span></span><br><span class="line">           ├─937 /usr/<span class="built_in">local</span>/zabbix/sbin/zabbix_server: <span class="built_in">history</span> syncer <span class="comment">#4 [processed 0 values, 0 triggers in 0.000030 sec, idle 1 sec]</span></span><br><span class="line">           ├─938 /usr/<span class="built_in">local</span>/zabbix/sbin/zabbix_server: escalator <span class="comment">#1 [processed 0 escalations in 0.001530 sec, idle 3 sec]</span></span><br><span class="line">           ├─939 /usr/<span class="built_in">local</span>/zabbix/sbin/zabbix_server: proxy poller <span class="comment">#1 [exchanged data with 0 proxies in 0.000028 sec, idle 5 sec]</span></span><br><span class="line">           ├─940 /usr/<span class="built_in">local</span>/zabbix/sbin/zabbix_server: self-monitoring [processed data <span class="keyword">in</span> 0.000035 sec, idle 1 sec]</span><br><span class="line">           ├─941 /usr/<span class="built_in">local</span>/zabbix/sbin/zabbix_server: task manager [processed 0 task(s) <span class="keyword">in</span> 0.000552 sec, idle 5 sec]</span><br><span class="line">           ├─942 /usr/<span class="built_in">local</span>/zabbix/sbin/zabbix_server: poller <span class="comment">#1 [got 0 values in 0.000041 sec, idle 1 sec]</span></span><br><span class="line">           ├─943 /usr/<span class="built_in">local</span>/zabbix/sbin/zabbix_server: poller <span class="comment">#2 [got 1 values in 0.000554 sec, idle 1 sec]</span></span><br><span class="line">           ├─944 /usr/<span class="built_in">local</span>/zabbix/sbin/zabbix_server: poller <span class="comment">#3 [got 0 values in 0.000038 sec, idle 1 sec]</span></span><br><span class="line">           ├─945 /usr/<span class="built_in">local</span>/zabbix/sbin/zabbix_server: poller <span class="comment">#4 [got 0 values in 0.000022 sec, idle 1 sec]</span></span><br><span class="line">           ├─946 /usr/<span class="built_in">local</span>/zabbix/sbin/zabbix_server: poller <span class="comment">#5 [got 0 values in 0.000022 sec, idle 1 sec]</span></span><br><span class="line">           ├─947 /usr/<span class="built_in">local</span>/zabbix/sbin/zabbix_server: unreachable poller <span class="comment">#1 [got 0 values in 0.000020 sec, idle 5 sec]</span></span><br><span class="line">           ├─948 /usr/<span class="built_in">local</span>/zabbix/sbin/zabbix_server: trapper <span class="comment">#1 [processed data in 0.000532 sec, waiting for connection]</span></span><br><span class="line">           ├─949 /usr/<span class="built_in">local</span>/zabbix/sbin/zabbix_server: trapper <span class="comment">#2 [processed data in 0.000589 sec, waiting for connection]</span></span><br><span class="line">           ├─950 /usr/<span class="built_in">local</span>/zabbix/sbin/zabbix_server: trapper <span class="comment">#3 [processed data in 0.000450 sec, waiting for connection]</span></span><br><span class="line">           ├─951 /usr/<span class="built_in">local</span>/zabbix/sbin/zabbix_server: trapper <span class="comment">#4 [processed data in 0.000663 sec, waiting for connection]</span></span><br><span class="line">           ├─952 /usr/<span class="built_in">local</span>/zabbix/sbin/zabbix_server: trapper <span class="comment">#5 [processed data in 0.000391 sec, waiting for connection]</span></span><br><span class="line">           ├─953 /usr/<span class="built_in">local</span>/zabbix/sbin/zabbix_server: icmp pinger <span class="comment">#1 [got 0 values in 0.000022 sec, idle 5 sec]</span></span><br><span class="line">           ├─954 /usr/<span class="built_in">local</span>/zabbix/sbin/zabbix_server: alert manager <span class="comment">#1 [sent 0, failed 0 alerts, idle 5.005964 sec during 5.006082 sec]</span></span><br><span class="line">           ├─955 /usr/<span class="built_in">local</span>/zabbix/sbin/zabbix_server: alerter <span class="comment">#1 started</span></span><br><span class="line">           ├─956 /usr/<span class="built_in">local</span>/zabbix/sbin/zabbix_server: alerter <span class="comment">#2 started</span></span><br><span class="line">           ├─957 /usr/<span class="built_in">local</span>/zabbix/sbin/zabbix_server: alerter <span class="comment">#3 started</span></span><br><span class="line">           ├─958 /usr/<span class="built_in">local</span>/zabbix/sbin/zabbix_server: preprocessing manager <span class="comment">#1 [queued 0, processed 6 values, idle 5.002700 sec during 5.002968 sec]</span></span><br><span class="line">           ├─959 /usr/<span class="built_in">local</span>/zabbix/sbin/zabbix_server: preprocessing worker <span class="comment">#1 started</span></span><br><span class="line">           ├─960 /usr/<span class="built_in">local</span>/zabbix/sbin/zabbix_server: preprocessing worker <span class="comment">#2 started</span></span><br><span class="line">           ├─961 /usr/<span class="built_in">local</span>/zabbix/sbin/zabbix_server: preprocessing worker <span class="comment">#3 started</span></span><br><span class="line">           ├─962 /usr/<span class="built_in">local</span>/zabbix/sbin/zabbix_server: lld manager <span class="comment">#1 [processed 0 LLD rules during 5.004781 sec]</span></span><br><span class="line">           ├─963 /usr/<span class="built_in">local</span>/zabbix/sbin/zabbix_server: lld worker <span class="comment">#1 [processed 1 LLD rules, idle 3598.022039 sec during 3598.152512 sec]</span></span><br></pre></td></tr></table></figure></li>
+<li><p>拷贝zabbix的前端文件到apache默认的web目录，进行前端安装</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@pe-sysmonitor-zabbix ~]<span class="comment"># cp -r /opt/zabbix-5.0.0/ui/* /var/www/html/</span></span><br><span class="line">[root@pe-sysmonitor-zabbix ~]<span class="comment"># chown -R apache:apache /var/www/html/</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>配置php参数</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@pe-sysmonitor-zabbix ~]<span class="comment"># sed -i 's#post_max_size = 8M#post_max_size = 16M#' /etc/php.ini</span></span><br><span class="line">[root@pe-sysmonitor-zabbix ~]<span class="comment"># sed -i 's#max_execution_time = 30#max_execution_time = 300#' /etc/php.ini</span></span><br><span class="line">[root@pe-sysmonitor-zabbix ~]<span class="comment"># sed -i 's#max_input_time = 60#max_input_time = 300#' /etc/php.ini</span></span><br><span class="line">[root@pe-sysmonitor-zabbix ~]<span class="comment"># sed -i 's#;date.timezone =#date.timezone = Asia/Shanghai#' /etc/php.ini</span></span><br><span class="line">[root@pe-sysmonitor-zabbix ~]<span class="comment"># systemctl restart php-fpm</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>配置完成后使用浏览器访问zabbix服务的ip进行web初始化</p>
+<img src="http://q6p62toq8.falkon.cn/static/images/zbx-server-001.png">
+</li>
+<li><p>检查各个组件是否正常</p>
+<img src="http://q6p62toq8.falkon.cn/static/images/zbx-server-002.png">
+</li>
+<li><p>数据zabbix数据库密码</p>
+<img src="http://q6p62toq8.falkon.cn/static/images/zbx-server-003.png">
+</li>
+<li><p>zabbix服务器详情</p>
+<img src="http://q6p62toq8.falkon.cn/static/images/zbx-server-004.png">
+</li>
+<li><p>初始化汇总信息</p>
+<img src="http://q6p62toq8.falkon.cn/static/images/zbx-server-005.png">
+</li>
+<li><p>初始化安装，如果提示无法创建配置，点击页面上的链接下载配置文件上传到指定位置，并修改属组为apache:apache</p>
+<img src="http://q6p62toq8.falkon.cn/static/images/zbx-server-006.png">
+</li>
+<li><p>初始化完成后登录，默认账号：Admin，密码：zabbix</p>
+<img src="http://q6p62toq8.falkon.cn/static/images/zbx-server-007.png">
+</li>
+<li><p>zabbix主页</p>
+<img src="http://q6p62toq8.falkon.cn/static/images/zbx-server-008.png">
+</li>
+</ul>
+
+      
+    </div>
+    <footer>
+      
+        
+  
+  <div class="categories">
+    <a href="/categories/Linux/">Linux</a>
+  </div>
+
+        
+  
+  <div class="tags">
+    <a href="/tags/Openfiler/">Openfiler</a>
+  </div>
+
+        
+  <div class="addthis addthis_toolbox addthis_default_style">
+    
+      <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+    
+    
+      <a class="addthis_button_tweet"></a>
+    
+    
+      <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+    
+    
+      <a class="addthis_button_pinterest_pinit" pi:pinit:layout="horizontal"></a>
+    
+    <a class="addthis_counter addthis_pill_style"></a>
+  </div>
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js"></script>
+
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">Comments</h1>
+
+  
+      <div id="fb-root"></div>
+<script>
+  (function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=123456789012345";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+</script>
+
+<div class="fb-comments" data-href="http://falkon.cn/2020/06/10/linux/Zabbix%205.0%20compile%20installation/index.html" data-num-posts="5" data-width="840" data-colorscheme="light"></div>
+      
+  
+</section>
+
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="as_sitesearch" value="falkon.cn">
+  </form>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Categories</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/Database/">Database</a><small>19</small></li>
+  
+    <li><a href="/categories/Linux/">Linux</a><small>3</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/10g/">10g</a><small>1</small></li>
+  
+    <li><a href="/tags/11g/">11g</a><small>3</small></li>
+  
+    <li><a href="/tags/12c/">12c</a><small>4</small></li>
+  
+    <li><a href="/tags/19c/">19c</a><small>1</small></li>
+  
+    <li><a href="/tags/AFD/">AFD</a><small>1</small></li>
+  
+    <li><a href="/tags/ASM/">ASM</a><small>1</small></li>
+  
+    <li><a href="/tags/Audit/">Audit</a><small>1</small></li>
+  
+    <li><a href="/tags/Cloud/">Cloud</a><small>1</small></li>
+  
+    <li><a href="/tags/EMCC/">EMCC</a><small>1</small></li>
+  
+    <li><a href="/tags/EXP-IMP/">EXP/IMP</a><small>1</small></li>
+  
+    <li><a href="/tags/EXPDP-IMPDP/">EXPDP/IMPDP</a><small>1</small></li>
+  
+    <li><a href="/tags/GoldenGate/">GoldenGate</a><small>1</small></li>
+  
+    <li><a href="/tags/Install/">Install</a><small>1</small></li>
+  
+    <li><a href="/tags/ODA/">ODA</a><small>1</small></li>
+  
+    <li><a href="/tags/ORA-01804/">ORA-01804</a><small>1</small></li>
+  
+    <li><a href="/tags/ORA-28000/">ORA-28000</a><small>1</small></li>
+  
+    <li><a href="/tags/ORA-600/">ORA-600</a><small>1</small></li>
+  
+    <li><a href="/tags/ORA-65500/">ORA-65500</a><small>1</small></li>
+  
+    <li><a href="/tags/Openfiler/">Openfiler</a><small>2</small></li>
+  
+    <li><a href="/tags/PDB/">PDB</a><small>1</small></li>
+  
+    <li><a href="/tags/PSU/">PSU</a><small>1</small></li>
+  
+    <li><a href="/tags/Patch/">Patch</a><small>1</small></li>
+  
+    <li><a href="/tags/RAC/">RAC</a><small>3</small></li>
+  
+    <li><a href="/tags/Req-mir-free-MB/">Req_mir_free_MB</a><small>1</small></li>
+  
+    <li><a href="/tags/Synonym/">Synonym</a><small>1</small></li>
+  
+    <li><a href="/tags/silent/">silent</a><small>1</small></li>
+  
+    <li><a href="/tags/swap/">swap</a><small>1</small></li>
+  
+    <li><a href="/tags/udev/">udev</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2020 Falkon
+  
+</div>
+<div class="clearfix"></div></footer>
+  
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>
