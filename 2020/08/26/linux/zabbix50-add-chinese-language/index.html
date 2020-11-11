@@ -1,0 +1,290 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  
+  <title>Zabbix5.0添加中文 | FALKON&#39;S TECH BLOG</title>
+  <meta name="author" content="Falkon">
+  
+  <meta name="description" content="Zabbix安装完成后模式英文显示，问了方便后期的使用，将通过安装相关中文包，将语言由原来的英文切换到中文">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="Zabbix5.0添加中文"/>
+  <meta property="og:site_name" content="FALKON&#39;S TECH BLOG"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  <link href="/images/favicon.png" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="FALKON&#39;S TECH BLOG" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">FALKON&#39;S TECH BLOG</a></h1>
+  <h2><a href="/">Record life, record me.</a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+      <li><a href="/project">Project</a></li>
+    
+      <li><a href="/about">About</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article id="post-linux/zabbix50-add-chinese-language" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-08-26T08:11:20.962Z"><a href="/2020/08/26/linux/zabbix50-add-chinese-language/">2020-08-26</a></time>
+      
+      
+  
+    <h1 class="p-name title" itemprop="headline name">Zabbix5.0添加中文</h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <ul>
+<li>Zabbix安装完成后模式英文显示，问了方便后期的使用，将通过安装相关中文包，将语言由原来的英文切换到中文</li>
+</ul>
+<a id="more"></a>
+
+<ul>
+<li>检查中文依赖包和相关组件的安装</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">[root@pe-sysmonitor-zabbix ~]<span class="comment"># locale -a | grep zh_CN</span></span><br><span class="line">[root@pe-sysmonitor-zabbix ~]<span class="comment"># dnf install langpacks-zh_CN.noarch</span></span><br><span class="line">CentOS-BaseOS-8 - Media                                                                                                                     243 kB/s | 3.9 kB     00:00</span><br><span class="line">CentOS-AppStream-8 - Media                                                                                                                  505 kB/s | 4.3 kB     00:00</span><br><span class="line">Dependencies resolved.</span><br><span class="line">============================================================================================================================================================================ Package                                      Architecture                      Version                                 Repository                                     Size</span><br><span class="line">============================================================================================================================================================================Installing:</span><br><span class="line"> langpacks-zh_CN                              noarch                            1.0-12.el8                              c8-media-AppStream                            9.6 k</span><br><span class="line">Installing weak dependencies:</span><br><span class="line"> glibc-langpack-zh                            x86_64                            2.28-72.el8                             c8-media-BaseOS                               2.1 M</span><br><span class="line"></span><br><span class="line">Transaction Summary</span><br><span class="line">============================================================================================================================================================================Install  2 Packages</span><br><span class="line"></span><br><span class="line">Total size: 2.2 M</span><br><span class="line">Installed size: 15 M</span><br><span class="line">Is this ok [y/N]: y</span><br><span class="line">Downloading Packages:</span><br><span class="line">Running transaction check</span><br><span class="line">Transaction check succeeded.</span><br><span class="line">Running transaction <span class="built_in">test</span></span><br><span class="line">Transaction <span class="built_in">test</span> succeeded.</span><br><span class="line">Running transaction</span><br><span class="line">  Preparing        :                                                                                                                                                    1/1</span><br><span class="line">  Installing       : glibc-langpack-zh-2.28-72.el8.x86_64                                                                                                               1/2</span><br><span class="line">  Installing       : langpacks-zh_CN-1.0-12.el8.noarch                                                                                                                  2/2</span><br><span class="line">  Running scriptlet: langpacks-zh_CN-1.0-12.el8.noarch                                                                                                                  2/2</span><br><span class="line">  Verifying        : glibc-langpack-zh-2.28-72.el8.x86_64                                                                                                               1/2</span><br><span class="line">  Verifying        : langpacks-zh_CN-1.0-12.el8.noarch                                                                                                                  2/2</span><br><span class="line"></span><br><span class="line">Installed:</span><br><span class="line">  langpacks-zh_CN-1.0-12.el8.noarch                                                   glibc-langpack-zh-2.28-72.el8.x86_64</span><br><span class="line"></span><br><span class="line">Complete!</span><br><span class="line">[root@pe-sysmonitor-zabbix ~]<span class="comment"># dnf install glibc-common</span></span><br><span class="line">Last metadata expiration check: 0:00:25 ago on Tue 18 Aug 2020 03:24:08 PM CST.</span><br><span class="line">Package glibc-common-2.28-72.el8.x86_64 is already installed.</span><br><span class="line">Dependencies resolved.</span><br><span class="line">Nothing to <span class="keyword">do</span>.</span><br><span class="line">Complete!</span><br><span class="line">[root@pe-sysmonitor-zabbix ~]<span class="comment"># dnf reinstall glibc-common</span></span><br><span class="line">Last metadata expiration check: 0:02:55 ago on Tue 18 Aug 2020 03:24:08 PM CST.</span><br><span class="line">Dependencies resolved.</span><br><span class="line">============================================================================================================================================================================ Package                                   Architecture                        Version                                   Repository                                    Size</span><br><span class="line">============================================================================================================================================================================Reinstalling:</span><br><span class="line"> glibc-common                              x86_64                              2.28-72.el8                               c8-media-BaseOS                              811 k</span><br><span class="line"></span><br><span class="line">Transaction Summary</span><br><span class="line">============================================================================================================================================================================</span><br><span class="line">Total size: 811 k</span><br><span class="line">Installed size: 3.6 M</span><br><span class="line">Is this ok [y/N]: y</span><br><span class="line">Downloading Packages:</span><br><span class="line">Running transaction check</span><br><span class="line">Transaction check succeeded.</span><br><span class="line">Running transaction <span class="built_in">test</span></span><br><span class="line">Transaction <span class="built_in">test</span> succeeded.</span><br><span class="line">Running transaction</span><br><span class="line">  Preparing        :                                                                                                                                                    1/1</span><br><span class="line">  Reinstalling     : glibc-common-2.28-72.el8.x86_64                                                                                                                    1/2</span><br><span class="line">  Cleanup          : glibc-common-2.28-72.el8.x86_64                                                                                                                    2/2</span><br><span class="line">  Running scriptlet: glibc-common-2.28-72.el8.x86_64                                                                                                                    2/2</span><br><span class="line">  Verifying        : glibc-common-2.28-72.el8.x86_64                                                                                                                    1/2</span><br><span class="line">  Verifying        : glibc-common-2.28-72.el8.x86_64                                                                                                                    2/2</span><br><span class="line"></span><br><span class="line">Reinstalled:</span><br><span class="line">  glibc-common-2.28-72.el8.x86_64</span><br><span class="line"></span><br><span class="line">Complete!</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查看中文包安装后的信息</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@pe-sysmonitor-zabbix ~]<span class="comment"># locale -a | grep zh_CN</span></span><br><span class="line">zh_CN</span><br><span class="line">zh_CN.gb18030</span><br><span class="line">zh_CN.gbk</span><br><span class="line">zh_CN.utf8</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>切换到中文后，部分监控项出现乱码</li>
+</ul>
+<img src="http://q6p62toq8.falkon.cn/static/images/chrome_202008201639495.png">
+
+<ul>
+<li>上传字体<br>把C:\Windows\Fonts下的黑体（simhei.ttf）字体上传到Zabbix服务器，并复制到/var/www/html/assets/fonts目录（注意文件权限），每个人的Zabbix的安装目录都不一样，查找下对应的assets/fonts即可,上传完成后修改include/defines.inc.php，具体修改内容如下：<br>复制define(‘ZBX_GRAPH_FONT_NAME’,           ‘DejaVuSans’); // font file name这一行并注释掉<br>修改字体名称为我们上传的字体define(‘ZBX_GRAPH_FONT_NAME’,           ‘DejaVuSans’); // font file name</li>
+</ul>
+<ul>
+<li>刷新后再次查看监控项中文已经正常显示</li>
+</ul>
+<img src="http://q6p62toq8.falkon.cn/static/images/chrome_202008201702326.png">
+      
+    </div>
+    <footer>
+      
+        
+  
+  <div class="categories">
+    <a href="/categories/Linux/">Linux</a>
+  </div>
+
+        
+  
+  <div class="tags">
+    <a href="/tags/Zabbix/">Zabbix</a>
+  </div>
+
+        
+  <div class="addthis addthis_toolbox addthis_default_style">
+    
+      <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+    
+    
+      <a class="addthis_button_tweet"></a>
+    
+    
+      <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+    
+    
+      <a class="addthis_button_pinterest_pinit" pi:pinit:layout="horizontal"></a>
+    
+    <a class="addthis_counter addthis_pill_style"></a>
+  </div>
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js"></script>
+
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">Comments</h1>
+
+  
+      <div id="fb-root"></div>
+<script>
+  (function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=123456789012345";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+</script>
+
+<div class="fb-comments" data-href="http://falkon.cn/2020/08/26/linux/zabbix50-add-chinese-language/index.html" data-num-posts="5" data-width="840" data-colorscheme="light"></div>
+      
+  
+</section>
+
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="as_sitesearch" value="falkon.cn">
+  </form>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Categories</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/Database/">Database</a><small>23</small></li>
+  
+    <li><a href="/categories/Linux/">Linux</a><small>8</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/10g/">10g</a><small>1</small></li>
+  
+    <li><a href="/tags/11g/">11g</a><small>3</small></li>
+  
+    <li><a href="/tags/12c/">12c</a><small>4</small></li>
+  
+    <li><a href="/tags/19c/">19c</a><small>2</small></li>
+  
+    <li><a href="/tags/19g/">19g</a><small>1</small></li>
+  
+    <li><a href="/tags/AFD/">AFD</a><small>1</small></li>
+  
+    <li><a href="/tags/ASM/">ASM</a><small>3</small></li>
+  
+    <li><a href="/tags/Audit/">Audit</a><small>1</small></li>
+  
+    <li><a href="/tags/CentOS8/">CentOS8</a><small>1</small></li>
+  
+    <li><a href="/tags/Cloud/">Cloud</a><small>1</small></li>
+  
+    <li><a href="/tags/EMCC/">EMCC</a><small>1</small></li>
+  
+    <li><a href="/tags/EXP-IMP/">EXP/IMP</a><small>1</small></li>
+  
+    <li><a href="/tags/EXPDP-IMPDP/">EXPDP/IMPDP</a><small>1</small></li>
+  
+    <li><a href="/tags/Flex/">Flex</a><small>1</small></li>
+  
+    <li><a href="/tags/GoldenGate/">GoldenGate</a><small>1</small></li>
+  
+    <li><a href="/tags/Install/">Install</a><small>1</small></li>
+  
+    <li><a href="/tags/LUN/">LUN</a><small>1</small></li>
+  
+    <li><a href="/tags/Linux/">Linux</a><small>1</small></li>
+  
+    <li><a href="/tags/ODA/">ODA</a><small>1</small></li>
+  
+    <li><a href="/tags/OJVM/">OJVM</a><small>1</small></li>
+  
+    <li><a href="/tags/ORA-00700/">ORA-00700</a><small>1</small></li>
+  
+    <li><a href="/tags/ORA-01804/">ORA-01804</a><small>1</small></li>
+  
+    <li><a href="/tags/ORA-28000/">ORA-28000</a><small>1</small></li>
+  
+    <li><a href="/tags/ORA-600/">ORA-600</a><small>1</small></li>
+  
+    <li><a href="/tags/ORA-65500/">ORA-65500</a><small>1</small></li>
+  
+    <li><a href="/tags/Openfiler/">Openfiler</a><small>1</small></li>
+  
+    <li><a href="/tags/PDB/">PDB</a><small>1</small></li>
+  
+    <li><a href="/tags/PSU/">PSU</a><small>1</small></li>
+  
+    <li><a href="/tags/Patch/">Patch</a><small>1</small></li>
+  
+    <li><a href="/tags/RAC/">RAC</a><small>3</small></li>
+  
+    <li><a href="/tags/Req-mir-free-MB/">Req_mir_free_MB</a><small>1</small></li>
+  
+    <li><a href="/tags/Synonym/">Synonym</a><small>1</small></li>
+  
+    <li><a href="/tags/VNC/">VNC</a><small>1</small></li>
+  
+    <li><a href="/tags/Zabbix/">Zabbix</a><small>3</small></li>
+  
+    <li><a href="/tags/Zombie/">Zombie</a><small>1</small></li>
+  
+    <li><a href="/tags/silent/">silent</a><small>1</small></li>
+  
+    <li><a href="/tags/swap/">swap</a><small>1</small></li>
+  
+    <li><a href="/tags/udev/">udev</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2020 Falkon
+  
+</div>
+<div class="clearfix"></div></footer>
+  
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

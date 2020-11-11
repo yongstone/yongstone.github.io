@@ -48,27 +48,113 @@
 </header>
   <div id="content" class="inner">
     <div id="main-col" class="alignleft"><div id="wrapper">
-  <article id="post-linux/Zabbix 5.0 compile installation" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <article id="post-linux/linux-create-zombie-and-kill" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   
   <div class="post-content">
     <header>
       
         <div class="icon"></div>
-        <time class="dt-published" datetime="2020-06-10T03:38:39.253Z"><a href="/2020/06/10/linux/Zabbix 5.0 compile installation/">2020-06-10</a></time>
+        <time class="dt-published" datetime="2020-11-11T05:30:45.683Z"><a href="/2020/11/11/linux/linux-create-zombie-and-kill/">2020-11-11</a></time>
       
       
   
-    <h1 class="title"><a href="/2020/06/10/linux/Zabbix 5.0 compile installation/">Zabbix 5.0 编译安装</a></h1>
+    <h1 class="title"><a href="/2020/11/11/linux/linux-create-zombie-and-kill/">Linux Installation 11g RAC</a></h1>
   
 
     </header>
     <div class="e-content entry" itemprop="articleBody">
       
         <ul>
-<li>平台：Oracle Linux 7.8</li>
-<li>数据库：MySQL 8.0</li>
-<li>中间件：Apache 2.4</li>
-<li>PHP：PHP 7.2</li>
+<li>创建僵尸进程</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;signal.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;linux/wait.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc,<span class="keyword">char</span> **argv)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">        <span class="keyword">int</span> i=<span class="number">0</span>;</span><br><span class="line">        <span class="keyword">pid_t</span> pid=fork();</span><br><span class="line">        <span class="keyword">if</span>(pid==<span class="number">-1</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(pid==<span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">"son pid is %d\n"</span>,getpid());</span><br><span class="line">                <span class="keyword">while</span>(<span class="number">1</span>)</span><br><span class="line">                &#123;</span><br><span class="line">                        <span class="built_in">printf</span>(<span class="string">"son---i=%d\n"</span>,i);</span><br><span class="line">                        i++;</span><br><span class="line">                        sleep(<span class="number">1</span>);</span><br><span class="line">                        <span class="keyword">if</span>(i==<span class="number">5</span>)</span><br><span class="line">                        <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">"son is over!\n"</span>);</span><br><span class="line">        &#125;<span class="keyword">else</span> <span class="keyword">if</span>(pid&gt;<span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">"parent pid is %d\n"</span>,getpid());</span><br><span class="line">                <span class="keyword">while</span>(<span class="number">1</span>) sleep(<span class="number">100</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查看僵尸进程</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">top - 11:20:26 up 5 days, 1 min,  2 users,  load average: 0.18, 0.32, 0.44</span><br><span class="line">Tasks: 379 total,   1 running, 376 sleeping,   1 stopped,   1 zombie                 &lt;&lt;&lt;&lt;&lt;&lt; 僵尸进程</span><br><span class="line">Cpu(s):  6.1%us,  5.5%sy,  0.0%ni, 84.4%id,  3.8%wa,  0.0%hi,  0.2%si,  0.0%st</span><br><span class="line">Mem:   4045668k total,  3835188k used,   210480k free,   231976k buffers</span><br><span class="line">Swap:  4194300k total,  1039544k used,  3154756k free,  2101984k cached</span><br><span class="line"></span><br><span class="line">  PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND                                                                                                                                                                     </span><br><span class="line"> 4577 grid      RT   0 1103m 128m  58m S  3.9  3.2  58:10.06 ocssd.bin</span><br><span class="line"> 9946 root      RT   0  828m  95m  60m S  3.9  2.4 171:54.39 osysmond.bin</span><br><span class="line">10158 root      RT  -5  826m 158m  66m S  3.9  4.0 112:46.22 ologgerd</span><br><span class="line">   18 root      20   0     0    0    0 S  1.9  0.0   9:53.31 rcuos/1</span><br><span class="line"> 4474 grid      20   0 1137m  38m  24m S  1.9  1.0  25:10.52 oraagent.bin</span><br><span class="line"> 5594 oracle    -2   0 1953m  40m  40m S  1.9  1.0 140:08.02 oracle</span><br><span class="line"> 5608 oracle    20   0 1966m  65m  57m S  1.9  1.7  26:11.98 oracle</span><br><span class="line"> 5614 oracle    -2   0 1968m 686m 675m S  1.9 17.4  20:10.71 oracle</span><br><span class="line">19583 root      20   0     0    0    0 S  1.9  0.0   0:01.02 kworker/u4:1</span><br><span class="line">26619 root      20   0     0    0    0 S  1.9  0.0   0:00.02 kworker/u4:0</span><br><span class="line">26717 root      20   0 15216 2240 1720 R  1.9  0.1   0:00.02 top</span><br><span class="line">    1 root      20   0 19396 1736 1532 S  0.0  0.0   0:04.20 init</span><br><span class="line">    2 root      20   0     0    0    0 S  0.0  0.0   0:00.07 kthreadd</span><br><span class="line">    3 root      20   0     0    0    0 S  0.0  0.0   2:33.69 ksoftirqd/0</span><br><span class="line">    5 root       0 -20     0    0    0 S  0.0  0.0   0:00.00 kworker/0:0H</span><br><span class="line">    7 root      20   0     0    0    0 S  0.0  0.0  20:46.80 rcu_sched</span><br><span class="line">    8 root      20   0     0    0    0 S  0.0  0.0   0:00.00 rcu_bh</span><br><span class="line">    9 root      20   0     0    0    0 S  0.0  0.0   9:45.87 rcuos/0</span><br><span class="line">   10 root      20   0     0    0    0 S  0.0  0.0   0:00.00 rcuob/0</span><br><span class="line">   11 root      RT   0     0    0    0 S  0.0  0.0   0:01.38 migration/0</span><br><span class="line">   12 root      RT   0     0    0    0 S  0.0  0.0   0:01.40 watchdog/0</span><br><span class="line">   13 root      RT   0     0    0    0 S  0.0  0.0   0:01.38 watchdog/1</span><br><span class="line">   14 root      RT   0     0    0    0 S  0.0  0.0   0:01.33 migration/1</span><br><span class="line">   15 root      20   0     0    0    0 S  0.0  0.0   2:01.14 ksoftirqd/1</span><br><span class="line">   17 root       0 -20     0    0    0 S  0.0  0.0   0:00.00 kworker/1:0H</span><br><span class="line">   19 root      20   0     0    0    0 S  0.0  0.0   0:00.00 rcuob/1</span><br><span class="line">   20 root       0 -20     0    0    0 S  0.0  0.0   0:00.00 khelper</span><br><span class="line">   21 root      20   0     0    0    0 S  0.0  0.0   0:00.00 kdevtmpfs</span><br><span class="line">   22 root       0 -20     0    0    0 S  0.0  0.0   0:00.00 netns</span><br><span class="line">   23 root       0 -20     0    0    0 S  0.0  0.0   0:00.00 perf</span><br><span class="line">   24 root      20   0     0    0    0 S  0.0  0.0   0:00.49 khungtaskd</span><br><span class="line">   25 root       0 -20     0    0    0 S  0.0  0.0   0:00.00 writeback</span><br><span class="line">   26 root      25   5     0    0    0 S  0.0  0.0   0:00.00 ksmd</span><br><span class="line">   28 root       0 -20     0    0    0 S  0.0  0.0   0:00.00 crypto</span><br><span class="line">   29 root       0 -20     0    0    0 S  0.0  0.0   0:00.00 kintegrityd</span><br><span class="line">   30 root       0 -20     0    0    0 S  0.0  0.0   0:00.00 bioset</span><br><span class="line">   31 root       0 -20     0    0    0 S  0.0  0.0   0:00.00 kblockd</span><br><span class="line">   32 root       0 -20     0    0    0 S  0.0  0.0   0:00.00 ata_sff</span><br><span class="line">   33 root       0 -20     0    0    0 S  0.0  0.0   0:00.00 md</span><br><span class="line">   36 root      20   0     0    0    0 S  0.0  0.0   0:08.09 kswapd0:0</span><br><span class="line">   37 root      20   0     0    0    0 S  0.0  0.0   0:00.00 fsnotify_mark</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查找具体的僵尸进程</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@rac1 ~]<span class="comment"># ps aux | grep Z</span></span><br><span class="line">USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND</span><br><span class="line">root     26698  0.0  0.0      0     0 pts/0    Z+   11:20   0:00 [<span class="built_in">test</span>] &lt;defunct&gt;</span><br><span class="line">root     26732  0.0  0.0 103392  2076 pts/1    S+   11:20   0:00 grep Z</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查找僵尸进程的父进程</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@rac1 ~]<span class="comment"># ps aux | grep test</span></span><br><span class="line">root     26697  0.0  0.0   3984   400 pts/0    S+   11:20   0:00 ./<span class="built_in">test</span></span><br><span class="line">root     26698  0.0  0.0      0     0 pts/0    Z+   11:20   0:00 [<span class="built_in">test</span>] &lt;defunct&gt;     &lt;&lt;&lt;&lt;&lt;&lt;&lt; 进程子ID</span><br><span class="line">root     26874  0.0  0.0 103388  2148 pts/1    S+   11:20   0:00 grep <span class="built_in">test</span></span><br><span class="line"></span><br><span class="line">[root@rac1 ~]<span class="comment"># ps -ef | grep 26698</span></span><br><span class="line">root     26698 26697  0 11:20 pts/0    00:00:00 [<span class="built_in">test</span>] &lt;defunct&gt;                      &lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt; 进程父ID</span><br><span class="line">root     26906 23344  0 11:20 pts/1    00:00:00 grep 26698</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>杀死僵尸进程</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@rac1 ~]<span class="comment"># kill -s 9 26697</span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article id="post-database/oracle-dcd" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-09-08T06:25:26.007Z"><a href="/2020/09/08/database/oracle-dcd/">2020-09-08</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/09/08/database/oracle-dcd/">database/oracle-dcd</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <p>Oracle DCD详解</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article id="post-linux/centos8-mini-installed-then-install-desktop" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-09-01T09:21:40.484Z"><a href="/2020/09/01/linux/centos8-mini-installed-then-install-desktop/">2020-09-01</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/09/01/linux/centos8-mini-installed-then-install-desktop/">CentOS 8 Mini installed then installation Desktop</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <ul>
+<li>Centos 8 系列如果默认以文本模式或者最小话安装，后期需要安装图形桌面的安装及设置</li>
 </ul>
       
     </div>
@@ -76,7 +162,7 @@
       
         
           <div class="alignleft">
-            <a href="/2020/06/10/linux/Zabbix 5.0 compile installation/#more" class="more-link">Read More</a>
+            <a href="/2020/09/01/linux/centos8-mini-installed-then-install-desktop/#more" class="more-link">Read More</a>
           </div>
         
         
@@ -89,33 +175,30 @@
 
 
 
-  <article id="post-database/Oracle database cloud depoly and local silent installation" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <article id="post-linux/zabbix50-server-is-not-running" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   
   <div class="post-content">
     <header>
       
         <div class="icon"></div>
-        <time class="dt-published" datetime="2020-06-10T03:32:43.377Z"><a href="/2020/06/10/database/Oracle database cloud depoly and local silent installation/">2020-06-10</a></time>
+        <time class="dt-published" datetime="2020-08-26T08:12:39.984Z"><a href="/2020/08/26/linux/zabbix50-server-is-not-running/">2020-08-26</a></time>
       
       
   
-    <h1 class="title"><a href="/2020/06/10/database/Oracle database cloud depoly and local silent installation/">Oracle 12c 云上部署和本地静默安装</a></h1>
+    <h1 class="title"><a href="/2020/08/26/linux/zabbix50-server-is-not-running/">ZABBIX SERVER IS NOT RENNING THE INFORMATION DISPLAYED MAY NOT BE CORRECT</a></h1>
   
 
     </header>
     <div class="e-content entry" itemprop="articleBody">
       
-        <ul>
-<li>平台：Oracle Linux 7.2 最小化安装</li>
-<li>数据库版本：12.2.01</li>
-</ul>
+        <p>Zabbix 5.0 启动后总是弹出ZABBIX SERVER IS NOT RENNING: THE INFORMATION DISPLAYED MAY NOT BE CORRECT，服务器上的zabbix_server和zabbix_client状态都正常，根据网上的资料应该是selinux没有关闭，仔细查看才发现Linux 6.x和Linux 7.x的selinux永久关闭的配置文件的路径时不一样的，处理完错误后赶紧写个操作记录供大家参考学习。</p>
       
     </div>
     <footer>
       
         
           <div class="alignleft">
-            <a href="/2020/06/10/database/Oracle database cloud depoly and local silent installation/#more" class="more-link">Read More</a>
+            <a href="/2020/08/26/linux/zabbix50-server-is-not-running/#more" class="more-link">Read More</a>
           </div>
         
         
@@ -128,42 +211,32 @@
 
 
 
-  <article id="post-database/The plug-in BI Publisher Configuration has failed its perform method" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <article id="post-linux/zabbix50-add-chinese-language" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   
   <div class="post-content">
     <header>
       
         <div class="icon"></div>
-        <time class="dt-published" datetime="2020-06-10T03:01:43.758Z"><a href="/2020/06/10/database/The plug-in BI Publisher Configuration has failed its perform method/">2020-06-10</a></time>
+        <time class="dt-published" datetime="2020-08-26T08:11:20.962Z"><a href="/2020/08/26/linux/zabbix50-add-chinese-language/">2020-08-26</a></time>
       
       
   
-    <h1 class="title"><a href="/2020/06/10/database/The plug-in BI Publisher Configuration has failed its perform method/">The plug-in BI Publisher Configuration has failed its perform method</a></h1>
+    <h1 class="title"><a href="/2020/08/26/linux/zabbix50-add-chinese-language/">Zabbix5.0添加中文</a></h1>
   
 
     </header>
     <div class="e-content entry" itemprop="articleBody">
       
         <ul>
-<li><p>平台：Oracle Linux 7.8</p>
-</li>
-<li><p>数据库： Oracle database 19c</p>
-</li>
-<li><p>EMCC： 13.4.0.0.0</p>
-</li>
-<li><p>19c &amp; EMCC13.4安装到%78日志报The plug-in BI Publisher Configuration has failed its perform method</p>
-</li>
-<li><p>CfmLogger_2020-06-07_03-20-28-PM.log</p>
-</li>
+<li>Zabbix安装完成后模式英文显示，问了方便后期的使用，将通过安装相关中文包，将语言由原来的英文切换到中文</li>
 </ul>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">INFO: oracle.sysman.top.oms:start writing</span><br><span class="line">INFO: oracle.sysman.top.oms:data written successfully</span><br><span class="line">INFO: oracle.sysman.top.oms:file flush successfully</span><br><span class="line">INFO: oracle.sysman.top.oms:file closed successfully</span><br><span class="line">INFO: oracle.sysman.top.oms:The plug-in BI Publisher Configuration has failed its perform method</span><br><span class="line">INFO: Cfm.save() was called</span><br><span class="line">INFO: Cfm.save(): 5 aggregate instances saved</span><br><span class="line">INFO: <span class="keyword">done</span> waiting <span class="keyword">for</span> Action from 18:05:05.846</span><br></pre></td></tr></table></figure>
       
     </div>
     <footer>
       
         
           <div class="alignleft">
-            <a href="/2020/06/10/database/The plug-in BI Publisher Configuration has failed its perform method/#more" class="more-link">Read More</a>
+            <a href="/2020/08/26/linux/zabbix50-add-chinese-language/#more" class="more-link">Read More</a>
           </div>
         
         
@@ -176,36 +249,33 @@
 
 
 
-  <article id="post-database/ORA-00600 内部错误代码 参数 [4511]" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <article id="post-database/pga_aggregate_target-specified-is-high" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   
   <div class="post-content">
     <header>
       
         <div class="icon"></div>
-        <time class="dt-published" datetime="2020-04-29T01:53:50.046Z"><a href="/2020/04/29/database/ORA-00600 内部错误代码 参数 [4511]/">2020-04-29</a></time>
+        <time class="dt-published" datetime="2020-08-26T08:05:48.904Z"><a href="/2020/08/26/database/pga_aggregate_target-specified-is-high/">2020-08-26</a></time>
       
       
   
-    <h1 class="title"><a href="/2020/04/29/database/ORA-00600 内部错误代码 参数 [4511]/">ORA-00600 内部错误代码 参数 [4511]</a></h1>
+    <h1 class="title"><a href="/2020/08/26/database/pga_aggregate_target-specified-is-high/">PGA_AGGREGATE_TARGET specified is high</a></h1>
   
 
     </header>
     <div class="e-content entry" itemprop="articleBody">
       
         <ul>
-<li><p>平台：AIX 5.3</p>
-</li>
-<li><p>数据库：10.2.0.1.0</p>
-</li>
-<li><p>客户反映告警日志增长过快，发现告警日志中有大量的600错误，由于保密原因，一些敏感信息将被替换或者删除</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Tue Apr 28 17:09:14 2020</span><br><span class="line">Errors <span class="keyword">in</span> file /oracle/admin/racdb/udump/racdb2_ora_1581514.trc:</span><br><span class="line">ORA-00600: 内部错误代码, 参数: [4511], [], [], [], [], [], [], []</span><br><span class="line">Tue Apr 28 17:09:44 2020</span><br><span class="line">Errors <span class="keyword">in</span> file /oracle/admin/racdb/udump/racdb2_ora_496078.trc:</span><br><span class="line">ORA-00600: 内部错误代码, 参数: [4511], [], [], [], [], [], [], []</span><br><span class="line">Tue Apr 28 17:09:45 2020</span><br></pre></td></tr></table></figure>
+<li>启动数据库出现PGA_AGGREGATE_TARGET specified is high</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">PGA_AGGREGATE_TARGET specified is high</span><br><span class="line">Errors <span class="keyword">in</span> file /u01/app/oracle/diag/rdbms/shdb551/shdb551/trace/shdb551_ora_9494.trc  (incident=122887):</span><br><span class="line">ORA-00700: soft internal error, arguments: [pga physmem <span class="built_in">limit</span>], [12752781312], [10969017344], [], [], [], [], [], [], [], [], []</span><br><span class="line">Incident details <span class="keyword">in</span>: /u01/app/oracle/diag/rdbms/shdb551/shdb551/incident/incdir_122887/shdb551_ora_9494_i122887.trc</span><br></pre></td></tr></table></figure>
       
     </div>
     <footer>
       
         
           <div class="alignleft">
-            <a href="/2020/04/29/database/ORA-00600 内部错误代码 参数 [4511]/#more" class="more-link">Read More</a>
+            <a href="/2020/08/26/database/pga_aggregate_target-specified-is-high/#more" class="more-link">Read More</a>
           </div>
         
         
@@ -218,24 +288,24 @@
 
 
 
-  <article id="post-database/ORA-00980 synonym translation is no longer valid" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <article id="post-database/Patch 30830913 apply (pdb CDB$ROOT) WITH ERRORS" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   
   <div class="post-content">
     <header>
       
         <div class="icon"></div>
-        <time class="dt-published" datetime="2020-04-07T09:56:23.104Z"><a href="/2020/04/07/database/ORA-00980 synonym translation is no longer valid/">2020-04-07</a></time>
+        <time class="dt-published" datetime="2020-08-12T03:22:58.067Z"><a href="/2020/08/12/database/Patch 30830913 apply (pdb CDB$ROOT) WITH ERRORS/">2020-08-12</a></time>
       
       
   
-    <h1 class="title"><a href="/2020/04/07/database/ORA-00980 synonym translation is no longer valid/">ORA-00980 synonym translation is no longer valid</a></h1>
+    <h1 class="title"><a href="/2020/08/12/database/Patch 30830913 apply (pdb CDB$ROOT) WITH ERRORS/">Oracle 19.5 Patch 30830913 apply (pdb CDB$ROOT) WITH ERRORS</a></h1>
   
 
     </header>
     <div class="e-content entry" itemprop="articleBody">
       
         <ul>
-<li>同义词创建时，不会去检查内容的准确性，即使表不存在，也可以创建该表的同义词，但是select的时候会报ORA-00980 synonym translation is no longer valid的错误</li>
+<li>19.3升级19.5.2，建库出现如下告警</li>
 </ul>
       
     </div>
@@ -243,7 +313,7 @@
       
         
           <div class="alignleft">
-            <a href="/2020/04/07/database/ORA-00980 synonym translation is no longer valid/#more" class="more-link">Read More</a>
+            <a href="/2020/08/12/database/Patch 30830913 apply (pdb CDB$ROOT) WITH ERRORS/#more" class="more-link">Read More</a>
           </div>
         
         
@@ -256,62 +326,28 @@
 
 
 
-  <article id="post-database/Oracle Audit目录中文件的内容以及是否可以删除" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <article id="post-database/oracle-asm-lun-size" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   
   <div class="post-content">
     <header>
       
         <div class="icon"></div>
-        <time class="dt-published" datetime="2020-04-03T01:29:32.990Z"><a href="/2020/04/03/database/Oracle Audit目录中文件的内容以及是否可以删除/">2020-04-03</a></time>
+        <time class="dt-published" datetime="2020-08-03T04:06:48.536Z"><a href="/2020/08/03/database/oracle-asm-lun-size/">2020-08-03</a></time>
       
       
   
-    <h1 class="title"><a href="/2020/04/03/database/Oracle Audit目录中文件的内容以及是否可以删除/">Oracle Audit目录中文件的内容以及是否可以删除</a></h1>
+    <h1 class="title"><a href="/2020/08/03/database/oracle-asm-lun-size/">Oracle ASM LUN Size</a></h1>
   
 
     </header>
     <div class="e-content entry" itemprop="articleBody">
       
-        <ul>
-<li>先看下官方文档的说明<table>
-<thead>
-<tr>
-<th align="left">Property</th>
-<th align="left">Description</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left"><strong>Parameter type</strong></td>
-<td align="left">String</td>
-</tr>
-<tr>
-<td align="left"><strong>Syntax</strong></td>
-<td align="left">`AUDIT_TRAIL = { none</td>
-</tr>
-<tr>
-<td align="left"><strong>Default value</strong></td>
-<td align="left"><code>none</code></td>
-</tr>
-<tr>
-<td align="left"><strong>Modifiable</strong></td>
-<td align="left">No</td>
-</tr>
-<tr>
-<td align="left"><strong>Basic</strong></td>
-<td align="left">No</td>
-</tr>
-</tbody></table>
-</li>
-</ul>
+        
       
     </div>
     <footer>
       
         
-          <div class="alignleft">
-            <a href="/2020/04/03/database/Oracle Audit目录中文件的内容以及是否可以删除/#more" class="more-link">Read More</a>
-          </div>
-        
         
       
       <div class="clearfix"></div>
@@ -322,34 +358,28 @@
 
 
 
-  <article id="post-linux/Openfiler安装配置" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <article id="post-database/oracle-flex-asm-advantages-and-disadvantages" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   
   <div class="post-content">
     <header>
       
         <div class="icon"></div>
-        <time class="dt-published" datetime="2020-03-23T05:36:47.497Z"><a href="/2020/03/23/linux/Openfiler安装配置/">2020-03-23</a></time>
+        <time class="dt-published" datetime="2020-07-21T01:43:07.125Z"><a href="/2020/07/21/database/oracle-flex-asm-advantages-and-disadvantages/">2020-07-21</a></time>
       
       
   
-    <h1 class="title"><a href="/2020/03/23/linux/Openfiler安装配置/">Openfiler安装配置</a></h1>
+    <h1 class="title"><a href="/2020/07/21/database/oracle-flex-asm-advantages-and-disadvantages/">深入了解Oracle Flex ASM及其优点</a></h1>
   
 
     </header>
     <div class="e-content entry" itemprop="articleBody">
       
-        <ul>
-<li>在workstation或者virtual box中创建一个内核为其他内核2.6x 64位的虚拟机，添加两块网卡，使用两块网卡来模拟磁盘多路径聚合，两块大小分别为10g和50g的硬盘，10g做为openfiler系统的安装磁盘，50g用来做LUN</li>
-</ul>
+        
       
     </div>
     <footer>
       
         
-          <div class="alignleft">
-            <a href="/2020/03/23/linux/Openfiler安装配置/#more" class="more-link">Read More</a>
-          </div>
-        
         
       
       <div class="clearfix"></div>
@@ -360,162 +390,24 @@
 
 
 
-  <article id="post-database/ODA最新补丁文档和下载地址" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <article id="post-linux/linux78-config-vncserver" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   
   <div class="post-content">
     <header>
       
         <div class="icon"></div>
-        <time class="dt-published" datetime="2020-03-23T03:42:06.993Z"><a href="/2020/03/23/database/ODA最新补丁文档和下载地址/">2020-03-23</a></time>
+        <time class="dt-published" datetime="2020-06-30T01:57:32.383Z"><a href="/2020/06/30/linux/linux78-config-vncserver/">2020-06-30</a></time>
       
       
   
-    <h1 class="title"><a href="/2020/03/23/database/ODA最新补丁文档和下载地址/">ODA最新补丁文档和下载地址</a></h1>
+    <h1 class="title"><a href="/2020/06/30/linux/linux78-config-vncserver/">Linux 7.8安装配置VNCSERVER</a></h1>
   
 
     </header>
     <div class="e-content entry" itemprop="articleBody">
       
         <ul>
-<li><h3 id="登录官网链接"><a href="#登录官网链接" class="headerlink" title="登录官网链接"></a><a href="http://www.oracle.com/goto/oda/docs" target="_blank" rel="noopener">登录官网链接</a></h3></li>
-</ul>
-<img src="http://q6p62toq8.falkon.cn/static/images/oda-patch001.png">
-      
-    </div>
-    <footer>
-      
-        
-          <div class="alignleft">
-            <a href="/2020/03/23/database/ODA最新补丁文档和下载地址/#more" class="more-link">Read More</a>
-          </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-  <article id="post-database/ASM中的Req_mir_free_MB实验" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time class="dt-published" datetime="2020-03-22T10:59:28.154Z"><a href="/2020/03/22/database/ASM中的Req_mir_free_MB实验/">2020-03-22</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2020/03/22/database/ASM中的Req_mir_free_MB实验/">ASM中的Req_mir_free_MB实验</a></h1>
-  
-
-    </header>
-    <div class="e-content entry" itemprop="articleBody">
-      
-        <ul>
-<li><p>先看下官网对lsdg给出的各个列属性的说明</p>
-<table>
-<thead>
-<tr>
-<th>属性</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>State</td>
-<td>State of the disk group. Values include BROKEN, CONNECTED, DISMOUNTED, MOUNTED, QUIESCING, and UNKNOWN.</td>
-</tr>
-<tr>
-<td>Type</td>
-<td>Disk group redundancy (NORMAL, HIGH, EXTERNAL).</td>
-</tr>
-<tr>
-<td>Rebal</td>
-<td>Y if a rebalance operation is in progress.</td>
-</tr>
-<tr>
-<td>Sector</td>
-<td>Sector size in bytes.</td>
-</tr>
-<tr>
-<td>Block</td>
-<td>Block size in bytes.</td>
-</tr>
-<tr>
-<td>AU</td>
-<td>Allocation unit size in bytes.</td>
-</tr>
-<tr>
-<td>Total_MB</td>
-<td>Size of the disk group in megabytes.</td>
-</tr>
-<tr>
-<td><strong>Free_MB</strong></td>
-<td><strong>Free space in the disk group in megabytes, without regard to redundancy. From the V$ASM_DISKGROUP view.</strong></td>
-</tr>
-<tr>
-<td><strong>Req_mir_free_MB</strong></td>
-<td><strong>Amount of space that must be available in the disk group to restore full redundancy after the most severe failure that can be tolerated by the disk group. This is the REQUIRED_MIRROR_FREE_MB column from the V$ASM_DISKGROUP view.</strong></td>
-</tr>
-<tr>
-<td><strong>Usable_file_MB</strong></td>
-<td><strong>Amount of free space, adjusted for mirroring, that is available for new files. From the V$ASM_DISKGROUP view.</strong></td>
-</tr>
-<tr>
-<td>Offline_disks</td>
-<td>Number of offline disks in the disk group. Offline disks are eventually dropped.</td>
-</tr>
-<tr>
-<td>Voting_files</td>
-<td>Specifies whether the disk group contains voting files (Y or N).</td>
-</tr>
-<tr>
-<td>Name</td>
-<td>Disk group name.</td>
-</tr>
-</tbody></table>
-</li>
-</ul>
-      
-    </div>
-    <footer>
-      
-        
-          <div class="alignleft">
-            <a href="/2020/03/22/database/ASM中的Req_mir_free_MB实验/#more" class="more-link">Read More</a>
-          </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-  <article id="post-database/Oracle 12c PDB Clone" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time class="dt-published" datetime="2020-03-21T12:57:33.381Z"><a href="/2020/03/21/database/Oracle 12c PDB Clone/">2020-03-21</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2020/03/21/database/Oracle 12c PDB Clone/">Oracle 12c PDB克隆</a></h1>
-  
-
-    </header>
-    <div class="e-content entry" itemprop="articleBody">
-      
-        <ul>
-<li>本地克隆官方图示<img src="http://q6p62toq8.falkon.cn/static/images/local_pdb_0911.png">
+<li>查看系统版本<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@aproddb19c ~]<span class="comment"># cat /etc/redhat-release </span></span><br><span class="line">CentOS Linux release 7.8.2003 (Core)</span><br></pre></td></tr></table></figure>
 
 </li>
 </ul>
@@ -525,7 +417,7 @@
       
         
           <div class="alignleft">
-            <a href="/2020/03/21/database/Oracle 12c PDB Clone/#more" class="more-link">Read More</a>
+            <a href="/2020/06/30/linux/linux78-config-vncserver/#more" class="more-link">Read More</a>
           </div>
         
         
@@ -560,9 +452,9 @@
   <h3 class="title">Categories</h3>
   <ul class="entry">
   
-    <li><a href="/categories/Database/">Database</a><small>19</small></li>
+    <li><a href="/categories/Database/">Database</a><small>23</small></li>
   
-    <li><a href="/categories/Linux/">Linux</a><small>3</small></li>
+    <li><a href="/categories/Linux/">Linux</a><small>8</small></li>
   
   </ul>
 </div>
@@ -579,13 +471,17 @@
   
     <li><a href="/tags/12c/">12c</a><small>4</small></li>
   
-    <li><a href="/tags/19c/">19c</a><small>1</small></li>
+    <li><a href="/tags/19c/">19c</a><small>2</small></li>
+  
+    <li><a href="/tags/19g/">19g</a><small>1</small></li>
   
     <li><a href="/tags/AFD/">AFD</a><small>1</small></li>
   
-    <li><a href="/tags/ASM/">ASM</a><small>1</small></li>
+    <li><a href="/tags/ASM/">ASM</a><small>3</small></li>
   
     <li><a href="/tags/Audit/">Audit</a><small>1</small></li>
+  
+    <li><a href="/tags/CentOS8/">CentOS8</a><small>1</small></li>
   
     <li><a href="/tags/Cloud/">Cloud</a><small>1</small></li>
   
@@ -595,11 +491,21 @@
   
     <li><a href="/tags/EXPDP-IMPDP/">EXPDP/IMPDP</a><small>1</small></li>
   
+    <li><a href="/tags/Flex/">Flex</a><small>1</small></li>
+  
     <li><a href="/tags/GoldenGate/">GoldenGate</a><small>1</small></li>
   
     <li><a href="/tags/Install/">Install</a><small>1</small></li>
   
+    <li><a href="/tags/LUN/">LUN</a><small>1</small></li>
+  
+    <li><a href="/tags/Linux/">Linux</a><small>1</small></li>
+  
     <li><a href="/tags/ODA/">ODA</a><small>1</small></li>
+  
+    <li><a href="/tags/OJVM/">OJVM</a><small>1</small></li>
+  
+    <li><a href="/tags/ORA-00700/">ORA-00700</a><small>1</small></li>
   
     <li><a href="/tags/ORA-01804/">ORA-01804</a><small>1</small></li>
   
@@ -609,7 +515,7 @@
   
     <li><a href="/tags/ORA-65500/">ORA-65500</a><small>1</small></li>
   
-    <li><a href="/tags/Openfiler/">Openfiler</a><small>2</small></li>
+    <li><a href="/tags/Openfiler/">Openfiler</a><small>1</small></li>
   
     <li><a href="/tags/PDB/">PDB</a><small>1</small></li>
   
@@ -622,6 +528,12 @@
     <li><a href="/tags/Req-mir-free-MB/">Req_mir_free_MB</a><small>1</small></li>
   
     <li><a href="/tags/Synonym/">Synonym</a><small>1</small></li>
+  
+    <li><a href="/tags/VNC/">VNC</a><small>1</small></li>
+  
+    <li><a href="/tags/Zabbix/">Zabbix</a><small>3</small></li>
+  
+    <li><a href="/tags/Zombie/">Zombie</a><small>1</small></li>
   
     <li><a href="/tags/silent/">silent</a><small>1</small></li>
   

@@ -1,0 +1,298 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  
+  <title>ORA-00600 内部错误代码 参数 [4511] | FALKON&#39;S TECH BLOG</title>
+  <meta name="author" content="Falkon">
+  
+  <meta name="description" content="平台：AIX 5.3
+
+数据库：10.2.0.1.0
+
+客户反映告警日志增长过快，发现告警日志中有大量的600错误，由于保密原因，一些敏感信息将被替换或者删除
+1234567Tue Apr 28 17:09:14 2020Errors in file /oracle/admin/racdb/udump/racdb2_ora_1581514.trc:ORA-00600: 内部错误代码, 参数: [4511], [], [], [], [], [], [], []Tue Apr 28 17:09:44 2020Errors in file /oracle/admin/racdb/udump/racdb2_ora_496078.trc:ORA-00600: 内部错误代码, 参数: [4511], [], [], [], [], [], [], []Tue Apr 28 17:09:45 2020">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="ORA-00600 内部错误代码 参数 [4511]"/>
+  <meta property="og:site_name" content="FALKON&#39;S TECH BLOG"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  <link href="/images/favicon.png" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="FALKON&#39;S TECH BLOG" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">FALKON&#39;S TECH BLOG</a></h1>
+  <h2><a href="/">Record life, record me.</a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+      <li><a href="/project">Project</a></li>
+    
+      <li><a href="/about">About</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article id="post-database/ora-00600-internal-error-code-parameter-4511" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-04-29T01:53:50.046Z"><a href="/2020/04/29/database/ora-00600-internal-error-code-parameter-4511/">2020-04-29</a></time>
+      
+      
+  
+    <h1 class="p-name title" itemprop="headline name">ORA-00600 内部错误代码 参数 [4511]</h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <ul>
+<li><p>平台：AIX 5.3</p>
+</li>
+<li><p>数据库：10.2.0.1.0</p>
+</li>
+<li><p>客户反映告警日志增长过快，发现告警日志中有大量的600错误，由于保密原因，一些敏感信息将被替换或者删除</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Tue Apr 28 17:09:14 2020</span><br><span class="line">Errors <span class="keyword">in</span> file /oracle/admin/racdb/udump/racdb2_ora_1581514.trc:</span><br><span class="line">ORA-00600: 内部错误代码, 参数: [4511], [], [], [], [], [], [], []</span><br><span class="line">Tue Apr 28 17:09:44 2020</span><br><span class="line">Errors <span class="keyword">in</span> file /oracle/admin/racdb/udump/racdb2_ora_496078.trc:</span><br><span class="line">ORA-00600: 内部错误代码, 参数: [4511], [], [], [], [], [], [], []</span><br><span class="line">Tue Apr 28 17:09:45 2020</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+</li>
+<li><p>查看racdb2_ora_496078.trc</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">Oracle Database 10g Enterprise Edition Release 10.2.0.1.0 - 64bit Production</span><br><span class="line">With the Partitioning, Real Application Clusters, OLAP and Data Mining options</span><br><span class="line">ORACLE_HOME = /oracle/product/10.2.0/db_1</span><br><span class="line">System name:    AIX</span><br><span class="line">Node name:      p570-2</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">*** SERVICE NAME:(SYS<span class="variable">$USERS</span>) 2020-04-28 14:09:44.124</span><br><span class="line">*** SESSION ID:(933.22812) 2020-04-28 14:09:44.124</span><br><span class="line">*** 2020-04-28 14:09:44.124</span><br><span class="line">ksedmp: internal or fatal error</span><br><span class="line">ORA-00600: 内部错误代码, 参数: [4511], [], [], [], [], [], [], []</span><br><span class="line">Current SQL statement <span class="keyword">for</span> this session:</span><br><span class="line">update test_default_test <span class="built_in">set</span> value=<span class="string">'1'</span> <span class="built_in">where</span> key=<span class="string">'hello.world'</span> and value=<span class="string">'0'</span></span><br></pre></td></tr></table></figure></li>
+<li><p>查找Block Header所对应的对象</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line">Block header dump:  0x0b088aef</span><br><span class="line"> Object id on Block? Y</span><br><span class="line"> seg/obj: 0xfd8ab  csc: 0xd03.27e67c2a  itc: 2  flg: E  typ: 1 - DATA</span><br><span class="line">     brn: 0  bdba: 0xb088ae9 ver: 0x01 opc: 0</span><br><span class="line">     inc: 0  exflg: 0</span><br><span class="line"></span><br><span class="line">Block header dump:  0x0b088aef</span><br><span class="line"> Object id on Block? Y</span><br><span class="line"> seg/obj: 0x1112a6  csc: 0xd03.27e67c2a  itc: 2  flg: E  typ: 1 - DATA</span><br><span class="line">     brn: 0  bdba: 0xb088ae9 ver: 0x01 opc: 0</span><br><span class="line">     inc: 0  exflg: 0</span><br><span class="line"></span><br><span class="line">Block header dump:  0x0ad3db04</span><br><span class="line"> Object id on Block? Y</span><br><span class="line"> seg/obj: 0x1112a7  csc: 0xd03.27fcb042  itc: 2  flg: E  typ: 2 - INDEX</span><br><span class="line">     brn: 0  bdba: 0xad3db01 ver: 0x01 opc: 0</span><br><span class="line">     inc: 0  exflg: 0</span><br><span class="line"></span><br><span class="line">Block header dump:  0x0ad3daff</span><br><span class="line"> Object id on Block? Y</span><br><span class="line"> seg/obj: 0xfd9e5  csc: 0xd03.27fcb59f  itc: 2  flg: E  typ: 1 - DATA</span><br><span class="line">     brn: 0  bdba: 0xad3daf9 ver: 0x01 opc: 0</span><br><span class="line">     inc: 0  exflg: 0</span><br><span class="line"></span><br><span class="line">- MOS ORA-600 [4511] <span class="string">"Row locked by inactive ITL"</span> (Doc ID 39553.1)描述</span><br><span class="line">PURPOSE:</span><br><span class="line"></span><br><span class="line">  This article discusses the internal error <span class="string">"ORA-600 [4511]"</span>, what </span><br><span class="line">  it means and possible actions. The information here is only applicable </span><br><span class="line">  to the versions listed and is provided only <span class="keyword">for</span> guidance.</span><br><span class="line"> </span><br><span class="line">ERROR:</span><br><span class="line"></span><br><span class="line">  Format: ORA-600 [4511] [a] [b] [c] [d] [e]</span><br><span class="line"> </span><br><span class="line">VERSIONS:</span><br><span class="line"></span><br><span class="line">  Versions 6.0 and later</span><br><span class="line"> </span><br><span class="line">DESCRIPTION:        </span><br><span class="line"></span><br><span class="line">  We receive this error when a row lock is being tested and the lock is </span><br><span class="line">  not active at the time.</span><br><span class="line"></span><br><span class="line">  This may also be caused by having more than 4095 rows <span class="keyword">in</span> a single </span><br><span class="line">  data block. Only blocks of 32Kb can contain this many rows. The </span><br><span class="line">  workaround is to <span class="built_in">limit</span> the number of rows <span class="keyword">in</span> the block, by setting </span><br><span class="line">  pctfree to a higher value.</span><br><span class="line"></span><br><span class="line">FUNCTIONALITY:      </span><br><span class="line">  TRANSACTION BLOCK OPERATIONS</span><br><span class="line"> </span><br><span class="line">IMPACT:             </span><br><span class="line">  PROCESS FAILURE</span><br><span class="line">  POSSIBLE BLOCK CORRUPTION.</span><br><span class="line"></span><br><span class="line">SUGGESTIONS:</span><br><span class="line"></span><br><span class="line">  If you know the table(s) involved, use ANALYZE TABLE &lt;table_name&gt; </span><br><span class="line">  VALIDATE STRUCTURE CASCADE; to check <span class="keyword">for</span> possible problems.</span><br><span class="line"></span><br><span class="line">  Run DBVERIFY on any datafiles associated with the table(s)</span><br><span class="line"></span><br><span class="line">  This can be related to a Consistent Read (CR) problem, so shutdown and</span><br><span class="line">  restart the instance and see <span class="keyword">if</span> the problem reproduces.</span><br><span class="line"></span><br><span class="line">  Submit all trace files and the alert.log to Oracle Support Services</span><br><span class="line">  <span class="keyword">for</span> further review and analysis.</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>结合MOS的描述查找所对应的对象</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">SQL&gt; select object_name,object_type,owner from dba_objects where data_object_id in (1038507,1118886,1118887,1038821);</span><br><span class="line"></span><br><span class="line">OBJECT_NAME                    OBJECT_TYPE         OWNER</span><br><span class="line"><span class="comment">------------------------------ ------------------- ----------</span></span><br><span class="line">PK_SYS_AUTOTASK_MONITOR        INDEX               TEST_2019</span><br><span class="line">SYS_AUTOTASK_MONITOR           TABLE               TEST_2019</span><br><span class="line">TEST_DEFAULT_TEST_PK2          INDEX               TEST_2019</span><br><span class="line">TEST_DEFAULT_TEST              TABLE               TEST_2019</span><br></pre></td></tr></table></figure></li>
+<li><p>统计表行数</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">SQL&gt; select count(1) from TEST_2019.SYS_AUTOTASK_MONITOR;</span><br><span class="line"></span><br><span class="line">  COUNT(1)</span><br><span class="line"><span class="comment">----------</span></span><br><span class="line">        10</span><br><span class="line"></span><br><span class="line">SQL&gt; select count(1) from TEST_2019.test_default_test;</span><br><span class="line"></span><br><span class="line">  COUNT(1)</span><br><span class="line"><span class="comment">----------</span></span><br><span class="line">       146</span><br></pre></td></tr></table></figure></li>
+<li><p>对表进行复制备份</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">SQL&gt; create table TEST_2019.SYS_AUTOTASK_MONITOR_BAK as select * from TEST_2019.SYS_AUTOTASK_MONITOR;</span><br><span class="line"></span><br><span class="line">Table created.</span><br><span class="line"></span><br><span class="line">SQL&gt; create table TEST_2019.TEST_DEFAULT_TEST_BAK as select * from TEST_2019.TEST_DEFAULT_TEST;</span><br><span class="line"></span><br><span class="line">Table created.</span><br></pre></td></tr></table></figure></li>
+<li><p>进行rebuild index和 analyze table</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">SQL&gt; alter index TEST_2019.PK_SYS_AUTOTASK_MONITOR rebuild;</span><br><span class="line"></span><br><span class="line">Index altered.</span><br><span class="line"></span><br><span class="line">SQL&gt; alter index TEST_2019.test_default_test_PK2 rebuild;</span><br><span class="line"></span><br><span class="line">Index altered.</span><br><span class="line"></span><br><span class="line">SQL&gt; </span><br><span class="line">SQL&gt; analyze table TEST_2019.SYS_AUTOTASK_MONITOR validate structure cascade;</span><br><span class="line"></span><br><span class="line">Table analyzed.</span><br><span class="line"></span><br><span class="line">SQL&gt; analyze table TEST_2019.TEST_DEFAULT_TEST validate structure cascade;</span><br><span class="line"><span class="keyword">analyze</span> <span class="keyword">table</span> TEST_2019.test_default_test <span class="keyword">validate</span> structure <span class="keyword">cascade</span></span><br><span class="line">*</span><br><span class="line"><span class="keyword">ERROR</span> <span class="keyword">at</span> line <span class="number">1</span>:</span><br><span class="line">ORA<span class="number">-01498</span>: <span class="keyword">block</span> <span class="keyword">check</span> <span class="keyword">failure</span> - see <span class="keyword">trace</span> <span class="keyword">file</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>发现TEST_2019.test_default_test表有块错误提示，但没有看到详细的告警日志文件，决定先对表进行重建后再分析表</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">SQL&gt; drop table TEST_2019.TEST_DEFAULT_TEST;</span><br><span class="line"></span><br><span class="line">Table dropped.</span><br><span class="line">SQL&gt; create table TEST_2019.TEST_DEFAULT_TEST as select * from TEST_2019.TEST_DEFAULT_TEST_BAK;</span><br><span class="line"></span><br><span class="line">Table created.</span><br><span class="line"></span><br><span class="line">SQL&gt; analyze table TEST_2019.TEST_DEFAULT_TEST validate structure cascade;</span><br><span class="line"></span><br><span class="line">Table analyzed.</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>检查告警日志发现错误已经消失</p>
+</li>
+</ul>
+
+      
+    </div>
+    <footer>
+      
+        
+  
+  <div class="categories">
+    <a href="/categories/Database/">Database</a>
+  </div>
+
+        
+  
+  <div class="tags">
+    <a href="/tags/10g/">10g</a>, <a href="/tags/RAC/">RAC</a>, <a href="/tags/ORA-600/">ORA-600</a>
+  </div>
+
+        
+  <div class="addthis addthis_toolbox addthis_default_style">
+    
+      <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+    
+    
+      <a class="addthis_button_tweet"></a>
+    
+    
+      <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+    
+    
+      <a class="addthis_button_pinterest_pinit" pi:pinit:layout="horizontal"></a>
+    
+    <a class="addthis_counter addthis_pill_style"></a>
+  </div>
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js"></script>
+
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">Comments</h1>
+
+  
+      <div id="fb-root"></div>
+<script>
+  (function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=123456789012345";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+</script>
+
+<div class="fb-comments" data-href="http://falkon.cn/2020/04/29/database/ora-00600-internal-error-code-parameter-4511/index.html" data-num-posts="5" data-width="840" data-colorscheme="light"></div>
+      
+  
+</section>
+
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="as_sitesearch" value="falkon.cn">
+  </form>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Categories</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/Database/">Database</a><small>23</small></li>
+  
+    <li><a href="/categories/Linux/">Linux</a><small>8</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/10g/">10g</a><small>1</small></li>
+  
+    <li><a href="/tags/11g/">11g</a><small>3</small></li>
+  
+    <li><a href="/tags/12c/">12c</a><small>4</small></li>
+  
+    <li><a href="/tags/19c/">19c</a><small>2</small></li>
+  
+    <li><a href="/tags/19g/">19g</a><small>1</small></li>
+  
+    <li><a href="/tags/AFD/">AFD</a><small>1</small></li>
+  
+    <li><a href="/tags/ASM/">ASM</a><small>3</small></li>
+  
+    <li><a href="/tags/Audit/">Audit</a><small>1</small></li>
+  
+    <li><a href="/tags/CentOS8/">CentOS8</a><small>1</small></li>
+  
+    <li><a href="/tags/Cloud/">Cloud</a><small>1</small></li>
+  
+    <li><a href="/tags/EMCC/">EMCC</a><small>1</small></li>
+  
+    <li><a href="/tags/EXP-IMP/">EXP/IMP</a><small>1</small></li>
+  
+    <li><a href="/tags/EXPDP-IMPDP/">EXPDP/IMPDP</a><small>1</small></li>
+  
+    <li><a href="/tags/Flex/">Flex</a><small>1</small></li>
+  
+    <li><a href="/tags/GoldenGate/">GoldenGate</a><small>1</small></li>
+  
+    <li><a href="/tags/Install/">Install</a><small>1</small></li>
+  
+    <li><a href="/tags/LUN/">LUN</a><small>1</small></li>
+  
+    <li><a href="/tags/Linux/">Linux</a><small>1</small></li>
+  
+    <li><a href="/tags/ODA/">ODA</a><small>1</small></li>
+  
+    <li><a href="/tags/OJVM/">OJVM</a><small>1</small></li>
+  
+    <li><a href="/tags/ORA-00700/">ORA-00700</a><small>1</small></li>
+  
+    <li><a href="/tags/ORA-01804/">ORA-01804</a><small>1</small></li>
+  
+    <li><a href="/tags/ORA-28000/">ORA-28000</a><small>1</small></li>
+  
+    <li><a href="/tags/ORA-600/">ORA-600</a><small>1</small></li>
+  
+    <li><a href="/tags/ORA-65500/">ORA-65500</a><small>1</small></li>
+  
+    <li><a href="/tags/Openfiler/">Openfiler</a><small>1</small></li>
+  
+    <li><a href="/tags/PDB/">PDB</a><small>1</small></li>
+  
+    <li><a href="/tags/PSU/">PSU</a><small>1</small></li>
+  
+    <li><a href="/tags/Patch/">Patch</a><small>1</small></li>
+  
+    <li><a href="/tags/RAC/">RAC</a><small>3</small></li>
+  
+    <li><a href="/tags/Req-mir-free-MB/">Req_mir_free_MB</a><small>1</small></li>
+  
+    <li><a href="/tags/Synonym/">Synonym</a><small>1</small></li>
+  
+    <li><a href="/tags/VNC/">VNC</a><small>1</small></li>
+  
+    <li><a href="/tags/Zabbix/">Zabbix</a><small>3</small></li>
+  
+    <li><a href="/tags/Zombie/">Zombie</a><small>1</small></li>
+  
+    <li><a href="/tags/silent/">silent</a><small>1</small></li>
+  
+    <li><a href="/tags/swap/">swap</a><small>1</small></li>
+  
+    <li><a href="/tags/udev/">udev</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2020 Falkon
+  
+</div>
+<div class="clearfix"></div></footer>
+  
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

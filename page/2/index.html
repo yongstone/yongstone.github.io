@@ -48,24 +48,27 @@
 </header>
   <div id="content" class="inner">
     <div id="main-col" class="alignleft"><div id="wrapper">
-  <article id="post-database/ORA-28000 the account is locked" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <article id="post-linux/zabbix50-compile-installation" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   
   <div class="post-content">
     <header>
       
         <div class="icon"></div>
-        <time class="dt-published" datetime="2020-03-13T08:53:06.736Z"><a href="/2020/03/13/database/ORA-28000 the account is locked/">2020-03-13</a></time>
+        <time class="dt-published" datetime="2020-06-10T03:38:39.253Z"><a href="/2020/06/10/linux/zabbix50-compile-installation/">2020-06-10</a></time>
       
       
   
-    <h1 class="title"><a href="/2020/03/13/database/ORA-28000 the account is locked/">ORA-28000 the account is locked</a></h1>
+    <h1 class="title"><a href="/2020/06/10/linux/zabbix50-compile-installation/">Zabbix 5.0 编译安装</a></h1>
   
 
     </header>
     <div class="e-content entry" itemprop="articleBody">
       
         <ul>
-<li>今天有个客户反应账户锁了，我给发了解锁账户的语句，过了一会告诉我解锁的语句不起作用，截图我看语句也执行成功了，有点没想明白，通过远程直接上手，下面是排查过程，这里隐去了客户的相关账户和监听日志信息</li>
+<li>平台：Oracle Linux 7.8</li>
+<li>数据库：MySQL 8.0</li>
+<li>中间件：Apache 2.4</li>
+<li>PHP：PHP 7.2</li>
 </ul>
       
     </div>
@@ -73,7 +76,7 @@
       
         
           <div class="alignleft">
-            <a href="/2020/03/13/database/ORA-28000 the account is locked/#more" class="more-link">Read More</a>
+            <a href="/2020/06/10/linux/zabbix50-compile-installation/#more" class="more-link">Read More</a>
           </div>
         
         
@@ -86,34 +89,81 @@
 
 
 
-  <article id="post-database/exp_imp" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <article id="post-database/oracle-database-cloud-depoly-and-local-silent-installation" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   
   <div class="post-content">
     <header>
       
         <div class="icon"></div>
-        <time class="dt-published" datetime="2020-03-13T06:23:32.610Z"><a href="/2020/03/13/database/exp_imp/">2020-03-13</a></time>
+        <time class="dt-published" datetime="2020-06-10T03:32:43.377Z"><a href="/2020/06/10/database/oracle-database-cloud-depoly-and-local-silent-installation/">2020-06-10</a></time>
       
       
   
-    <h1 class="title"><a href="/2020/03/13/database/exp_imp/">Exp/Imp</a></h1>
+    <h1 class="title"><a href="/2020/06/10/database/oracle-database-cloud-depoly-and-local-silent-installation/">Oracle 12c 云上部署和本地静默安装</a></h1>
   
 
     </header>
     <div class="e-content entry" itemprop="articleBody">
       
         <ul>
-<li><p>exp/imp的使用方法主要有三种方式（完全、用户、表），需要dba权限</p>
+<li>平台：Oracle Linux 7.2 最小化安装</li>
+<li>数据库版本：12.2.01</li>
+</ul>
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2020/06/10/database/oracle-database-cloud-depoly-and-local-silent-installation/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article id="post-database/the-plug-in-bi-iublisher-configuration-has-failed-its-perform-method" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-06-10T03:01:43.758Z"><a href="/2020/06/10/database/the-plug-in-bi-iublisher-configuration-has-failed-its-perform-method/">2020-06-10</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/06/10/database/the-plug-in-bi-iublisher-configuration-has-failed-its-perform-method/">The plug-in BI Publisher Configuration has failed its perform method</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <ul>
+<li><p>平台：Oracle Linux 7.8</p>
 </li>
-<li><p>EXP 完全</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[oracle@ystdb11g ~]$ exp system@ystdb file=/backups/full_exp_20200313.dmp </span><br><span class="line"><span class="built_in">log</span>=/backups/full_exp_20200313.log full=y</span><br></pre></td></tr></table></figure>
+<li><p>数据库： Oracle database 19c</p>
+</li>
+<li><p>EMCC： 13.4.0.0.0</p>
+</li>
+<li><p>19c &amp; EMCC13.4安装到%78日志报The plug-in BI Publisher Configuration has failed its perform method</p>
+</li>
+<li><p>CfmLogger_2020-06-07_03-20-28-PM.log</p>
+</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">INFO: oracle.sysman.top.oms:start writing</span><br><span class="line">INFO: oracle.sysman.top.oms:data written successfully</span><br><span class="line">INFO: oracle.sysman.top.oms:file flush successfully</span><br><span class="line">INFO: oracle.sysman.top.oms:file closed successfully</span><br><span class="line">INFO: oracle.sysman.top.oms:The plug-in BI Publisher Configuration has failed its perform method</span><br><span class="line">INFO: Cfm.save() was called</span><br><span class="line">INFO: Cfm.save(): 5 aggregate instances saved</span><br><span class="line">INFO: <span class="keyword">done</span> waiting <span class="keyword">for</span> Action from 18:05:05.846</span><br></pre></td></tr></table></figure>
       
     </div>
     <footer>
       
         
           <div class="alignleft">
-            <a href="/2020/03/13/database/exp_imp/#more" class="more-link">Read More</a>
+            <a href="/2020/06/10/database/the-plug-in-bi-iublisher-configuration-has-failed-its-perform-method/#more" class="more-link">Read More</a>
           </div>
         
         
@@ -126,32 +176,36 @@
 
 
 
-  <article id="post-database/expdp_impdp" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <article id="post-database/ora-00600-internal-error-code-parameter-4511" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   
   <div class="post-content">
     <header>
       
         <div class="icon"></div>
-        <time class="dt-published" datetime="2020-03-13T06:22:43.482Z"><a href="/2020/03/13/database/expdp_impdp/">2020-03-13</a></time>
+        <time class="dt-published" datetime="2020-04-29T01:53:50.046Z"><a href="/2020/04/29/database/ora-00600-internal-error-code-parameter-4511/">2020-04-29</a></time>
       
       
   
-    <h1 class="title"><a href="/2020/03/13/database/expdp_impdp/">Expdp/Impdp</a></h1>
+    <h1 class="title"><a href="/2020/04/29/database/ora-00600-internal-error-code-parameter-4511/">ORA-00600 内部错误代码 参数 [4511]</a></h1>
   
 
     </header>
     <div class="e-content entry" itemprop="articleBody">
       
         <ul>
-<li>关于数据泵(data pump)的说明，数据泵是exp/imp的升级，exp/imp是客户端程序，既可以在客户点使用，也可以在服务端使用，利用Oracle客户端工具，可以直接将服务器上的数据导入被本地电脑。expdp/impdp是服务端工具，只能在服务端使用。两种工具也无法混用，就是说exp导出的数据无法使用impdp导入。对于小于GB的数据可以exp/imp，对于大于GB的数据来说exp/imp的效率较为低下，建议对于Oracle 11g以上版本的数据库都采用expdp/impdp</li>
-</ul>
+<li><p>平台：AIX 5.3</p>
+</li>
+<li><p>数据库：10.2.0.1.0</p>
+</li>
+<li><p>客户反映告警日志增长过快，发现告警日志中有大量的600错误，由于保密原因，一些敏感信息将被替换或者删除</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Tue Apr 28 17:09:14 2020</span><br><span class="line">Errors <span class="keyword">in</span> file /oracle/admin/racdb/udump/racdb2_ora_1581514.trc:</span><br><span class="line">ORA-00600: 内部错误代码, 参数: [4511], [], [], [], [], [], [], []</span><br><span class="line">Tue Apr 28 17:09:44 2020</span><br><span class="line">Errors <span class="keyword">in</span> file /oracle/admin/racdb/udump/racdb2_ora_496078.trc:</span><br><span class="line">ORA-00600: 内部错误代码, 参数: [4511], [], [], [], [], [], [], []</span><br><span class="line">Tue Apr 28 17:09:45 2020</span><br></pre></td></tr></table></figure>
       
     </div>
     <footer>
       
         
           <div class="alignleft">
-            <a href="/2020/03/13/database/expdp_impdp/#more" class="more-link">Read More</a>
+            <a href="/2020/04/29/database/ora-00600-internal-error-code-parameter-4511/#more" class="more-link">Read More</a>
           </div>
         
         
@@ -164,32 +218,32 @@
 
 
 
-  <article id="post-linux/Linux扩展swap分区" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <article id="post-database/ora-00980-synonym-translation-is-no-longer-valid" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   
   <div class="post-content">
     <header>
       
         <div class="icon"></div>
-        <time class="dt-published" datetime="2020-03-12T09:01:07.384Z"><a href="/2020/03/12/linux/Linux扩展swap分区/">2020-03-12</a></time>
+        <time class="dt-published" datetime="2020-04-07T09:56:23.104Z"><a href="/2020/04/07/database/ora-00980-synonym-translation-is-no-longer-valid/">2020-04-07</a></time>
       
       
   
-    <h1 class="title"><a href="/2020/03/12/linux/Linux扩展swap分区/">Linux扩展swap分区</a></h1>
+    <h1 class="title"><a href="/2020/04/07/database/ora-00980-synonym-translation-is-no-longer-valid/">ORA-00980 synonym translation is no longer valid</a></h1>
   
 
     </header>
     <div class="e-content entry" itemprop="articleBody">
       
         <ul>
-<li><p>查看现有的swap分区大小</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@ystdb11g ~]<span class="comment"># free -m</span></span><br><span class="line">             total       used       free     shared    buffers     cached</span><br><span class="line">Mem:          1725       1618        106          8         81        872</span><br><span class="line">-/+ buffers/cache:        664       1060</span><br><span class="line">Swap:         2047         13       2034</span><br></pre></td></tr></table></figure>
+<li>同义词创建时，不会去检查内容的准确性，即使表不存在，也可以创建该表的同义词，但是select的时候会报ORA-00980 synonym translation is no longer valid的错误</li>
+</ul>
       
     </div>
     <footer>
       
         
           <div class="alignleft">
-            <a href="/2020/03/12/linux/Linux扩展swap分区/#more" class="more-link">Read More</a>
+            <a href="/2020/04/07/database/ora-00980-synonym-translation-is-no-longer-valid/#more" class="more-link">Read More</a>
           </div>
         
         
@@ -202,163 +256,52 @@
 
 
 
-  <article id="post-database/rhel-install-oracle12c" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <article id="post-database/oracle-audit-files-delete-test" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   
   <div class="post-content">
     <header>
       
         <div class="icon"></div>
-        <time class="dt-published" datetime="2020-03-10T06:09:24.117Z"><a href="/2020/03/10/database/rhel-install-oracle12c/">2020-03-10</a></time>
+        <time class="dt-published" datetime="2020-04-03T01:29:32.990Z"><a href="/2020/04/03/database/oracle-audit-files-delete-test/">2020-04-03</a></time>
       
       
   
-    <h1 class="title"><a href="/2020/03/10/database/rhel-install-oracle12c/">Linux Installation Oracle 12c</a></h1>
-  
-
-    </header>
-    <div class="e-content entry" itemprop="articleBody">
-      
-        <h3 id="1-资源描述"><a href="#1-资源描述" class="headerlink" title="1. 资源描述"></a>1. 资源描述</h3><ul>
-<li><a href="https://wiki.centos.org/Download" target="_blank" rel="noopener">CentOS 6.10</a> 操作系统可选择6.x系列其他的版本</li>
-<li><a href="https://www.oracle.com/technetwork/database/enterprise-edition/downloads/index.html" target="_blank" rel="noopener">Oracle 12.2.0.1</a> 点击链接找到对应操作系统的版本下载即可</li>
-<li><a href="https://www.virtualbox.org/" target="_blank" rel="noopener">Virtual Box 5.2.22</a> 虚拟机软件可选择最新版，建议使用5系列，比较稳定</li>
-<li><a href="https://www.realvnc.com/en/connect/download/viewer/" target="_blank" rel="noopener">VNC Viewer 6.18</a> 远程桌面工具，可选用最新版</li>
-<li><a href="https://www.netsarang.com/en/xshell/" target="_blank" rel="noopener">Xshell 5</a> 远程终端工具5系列官网已经不提供下载了，可选择6系列，有使用限制，单个窗口最大可开4个标签，可选择其他终端工具比如<a href="https://putty.org/" target="_blank" rel="noopener">Putty</a>，<a href="https://mobaxterm.mobatek.net/" target="_blank" rel="noopener">MobaXterm</a>等</li>
-</ul>
-      
-    </div>
-    <footer>
-      
-        
-          <div class="alignleft">
-            <a href="/2020/03/10/database/rhel-install-oracle12c/#more" class="more-link">Read More</a>
-          </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-  <article id="post-database/rhel-install-oracle11g-rac" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time class="dt-published" datetime="2020-03-10T06:09:24.111Z"><a href="/2020/03/10/database/rhel-install-oracle11g-rac/">2020-03-10</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2020/03/10/database/rhel-install-oracle11g-rac/">Linux Installation 11g RAC</a></h1>
+    <h1 class="title"><a href="/2020/04/03/database/oracle-audit-files-delete-test/">Oracle Audit目录中文件的内容以及是否可以删除</a></h1>
   
 
     </header>
     <div class="e-content entry" itemprop="articleBody">
       
-        
-      
-    </div>
-    <footer>
-      
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-  <article id="post-database/rhel-install-oracle11g-ogg" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time class="dt-published" datetime="2020-03-10T06:09:24.104Z"><a href="/2020/03/10/database/rhel-install-oracle11g-ogg/">2020-03-10</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2020/03/10/database/rhel-install-oracle11g-ogg/">Linux Installation Oracle11g GoldenGate</a></h1>
-  
-
-    </header>
-    <div class="e-content entry" itemprop="articleBody">
-      
-        <h3 id="1-资源描述"><a href="#1-资源描述" class="headerlink" title="1. 资源描述"></a>1. 资源描述</h3><ul>
-<li><a href="https://www.oracle.com/technetwork/cn/middleware/goldengate/downloads/index.html" target="_blank" rel="noopener">GoldenGate</a> 组件版本选择为12.3.0.1</li>
-<li><a href="http://rpmfind.net/linux/epel/6/x86_64/Packages/r/rlwrap-0.42-1.el6.x86_64.rpm" target="_blank" rel="noopener">rlwrap</a> 可以解决Linux下sqlplus提供历史命令浏览、删除错误输入等功能</li>
-</ul>
-<h3 id="2-环境准备"><a href="#2-环境准备" class="headerlink" title="2. 环境准备"></a>2. 环境准备</h3><table>
+        <ul>
+<li>先看下官方文档的说明<table>
 <thead>
 <tr>
-<th>名称</th>
-<th>主机名</th>
-<th>SID</th>
-<th>IP地址</th>
+<th align="left">Property</th>
+<th align="left">Description</th>
 </tr>
 </thead>
 <tbody><tr>
-<td>源端</td>
-<td>ogg-src</td>
-<td>prod1</td>
-<td>192.168.56.103</td>
+<td align="left"><strong>Parameter type</strong></td>
+<td align="left">String</td>
 </tr>
 <tr>
-<td>目标端</td>
-<td>ogg-trg</td>
-<td>prod2</td>
-<td>192.168.56.104</td>
+<td align="left"><strong>Syntax</strong></td>
+<td align="left">`AUDIT_TRAIL = { none</td>
+</tr>
+<tr>
+<td align="left"><strong>Default value</strong></td>
+<td align="left"><code>none</code></td>
+</tr>
+<tr>
+<td align="left"><strong>Modifiable</strong></td>
+<td align="left">No</td>
+</tr>
+<tr>
+<td align="left"><strong>Basic</strong></td>
+<td align="left">No</td>
 </tr>
 </tbody></table>
-      
-    </div>
-    <footer>
-      
-        
-          <div class="alignleft">
-            <a href="/2020/03/10/database/rhel-install-oracle11g-ogg/#more" class="more-link">Read More</a>
-          </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-  <article id="post-database/rhel-install-oracle11g" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time class="dt-published" datetime="2020-03-10T06:09:24.099Z"><a href="/2020/03/10/database/rhel-install-oracle11g/">2020-03-10</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2020/03/10/database/rhel-install-oracle11g/">Linux Installation Oracle 11g</a></h1>
-  
-
-    </header>
-    <div class="e-content entry" itemprop="articleBody">
-      
-        <h3 id="1-资源描述"><a href="#1-资源描述" class="headerlink" title="1. 资源描述"></a>1. 资源描述</h3><ul>
-<li><a href="https://wiki.centos.org/Download" target="_blank" rel="noopener">CentOS 6.10</a> 操作系统可选择6.x系列其他的版本</li>
-<li><a href="https://www.oracle.com/technetwork/database/enterprise-edition/downloads/index.html" target="_blank" rel="noopener">Oracle 11.2.0.4</a> 我使用的数据库版本需要MOS才能下载，可选择11.2.0.1版本</li>
-<li><a href="https://www.virtualbox.org/" target="_blank" rel="noopener">Virtual Box 5.2.22</a> 虚拟机软件可选择最新版，建议使用5系列，比较稳定</li>
-<li><a href="https://www.realvnc.com/en/connect/download/viewer/" target="_blank" rel="noopener">VNC Viewer 6.18</a> 远程桌面工具，可选用最新版</li>
-<li><a href="https://www.netsarang.com/en/xshell/" target="_blank" rel="noopener">Xshell 5</a> 远程终端工具5系列官网已经不提供下载了，可选择6系列，有使用限制，单个窗口最大可开4个标签，可选择其他终端工具比如<a href="https://putty.org/" target="_blank" rel="noopener">Putty</a>，<a href="https://mobaxterm.mobatek.net/" target="_blank" rel="noopener">MobaXterm</a>等</li>
+</li>
 </ul>
       
     </div>
@@ -366,7 +309,7 @@
       
         
           <div class="alignleft">
-            <a href="/2020/03/10/database/rhel-install-oracle11g/#more" class="more-link">Read More</a>
+            <a href="/2020/04/03/database/oracle-audit-files-delete-test/#more" class="more-link">Read More</a>
           </div>
         
         
@@ -379,27 +322,33 @@
 
 
 
-  <article id="post-database/rhel-install-oracle12c-rac" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <article id="post-linux/openfiler-installation-and-configuration" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   
   <div class="post-content">
     <header>
       
         <div class="icon"></div>
-        <time class="dt-published" datetime="2020-03-10T06:09:24.081Z"><a href="/2020/03/10/database/rhel-install-oracle12c-rac/">2020-03-10</a></time>
+        <time class="dt-published" datetime="2020-03-23T05:36:47.497Z"><a href="/2020/03/23/linux/openfiler-installation-and-configuration/">2020-03-23</a></time>
       
       
   
-    <h1 class="title"><a href="/2020/03/10/database/rhel-install-oracle12c-rac/">Linux Installation Oracle 12c RAC</a></h1>
+    <h1 class="title"><a href="/2020/03/23/linux/openfiler-installation-and-configuration/">Openfiler安装配置</a></h1>
   
 
     </header>
     <div class="e-content entry" itemprop="articleBody">
       
-        
+        <ul>
+<li>在workstation或者virtual box中创建一个内核为其他内核2.6x 64位的虚拟机，添加两块网卡，使用两块网卡来模拟磁盘多路径聚合，两块大小分别为10g和50g的硬盘，10g做为openfiler系统的安装磁盘，50g用来做LUN</li>
+</ul>
       
     </div>
     <footer>
       
+        
+          <div class="alignleft">
+            <a href="/2020/03/23/linux/openfiler-installation-and-configuration/#more" class="more-link">Read More</a>
+          </div>
         
         
       
@@ -411,30 +360,172 @@
 
 
 
-  <article id="post-database/ORA-65500 could not modify DB_UNIQUE_NAME, resource exists" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <article id="post-database/oda-latest-patch-address" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   
   <div class="post-content">
     <header>
       
         <div class="icon"></div>
-        <time class="dt-published" datetime="2020-03-08T17:25:31.038Z"><a href="/2020/03/09/database/ORA-65500 could not modify DB_UNIQUE_NAME, resource exists/">2020-03-09</a></time>
+        <time class="dt-published" datetime="2020-03-23T03:42:06.993Z"><a href="/2020/03/23/database/oda-latest-patch-address/">2020-03-23</a></time>
       
       
   
-    <h1 class="title"><a href="/2020/03/09/database/ORA-65500 could not modify DB_UNIQUE_NAME, resource exists/">ORA-65500 could not modify DB_UNIQUE_NAME, resource exists</a></h1>
+    <h1 class="title"><a href="/2020/03/23/database/oda-latest-patch-address/">ODA最新补丁文档和下载地址</a></h1>
   
 
     </header>
     <div class="e-content entry" itemprop="articleBody">
       
-        <h5 id="描述：单节点RAC，数据库版本12-2-0-1"><a href="#描述：单节点RAC，数据库版本12-2-0-1" class="headerlink" title="描述：单节点RAC，数据库版本12.2.0.1"></a>描述：单节点RAC，数据库版本12.2.0.1</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">SQL&gt; show parameter db_uniq</span><br><span class="line"></span><br><span class="line">NAME				     TYPE	 VALUE</span><br><span class="line"><span class="comment">------------------------------------ ----------- ------------------------------</span></span><br><span class="line">db_unique_name			     string	 auxdb</span><br><span class="line"></span><br><span class="line">SQL&gt; alter system set db_unique_name=auxsbdb scope=spfile;</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">system</span> <span class="keyword">set</span> db_unique_name=auxsbdb <span class="keyword">scope</span>=<span class="keyword">spfile</span></span><br><span class="line">*</span><br><span class="line"><span class="keyword">ERROR</span> <span class="keyword">at</span> line <span class="number">1</span>:</span><br><span class="line">ORA<span class="number">-32017</span>: <span class="keyword">failure</span> <span class="keyword">in</span> updating <span class="keyword">SPFILE</span></span><br><span class="line">ORA<span class="number">-65500</span>: could <span class="keyword">not</span> <span class="keyword">modify</span> DB_UNIQUE_NAME, <span class="keyword">resource</span> <span class="keyword">exists</span></span><br><span class="line"></span><br><span class="line">[<span class="keyword">oracle</span>@auxsbdb12c ~]$ srvctl remove <span class="keyword">database</span> -d auxdb -f</span><br><span class="line"></span><br><span class="line">[<span class="keyword">oracle</span>@auxsbdb12c ~]$ sqlplus / <span class="keyword">as</span> <span class="keyword">sysdba</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">SQL</span>*Plus: <span class="keyword">Release</span> <span class="number">12.2</span><span class="number">.0</span><span class="number">.1</span><span class="number">.0</span> Production <span class="keyword">on</span> Wed <span class="built_in">Dec</span> <span class="number">4</span> <span class="number">15</span>:<span class="number">46</span>:<span class="number">07</span> <span class="number">2019</span></span><br><span class="line"></span><br><span class="line">Copyright (c) <span class="number">1982</span>, <span class="number">2016</span>, Oracle.  <span class="keyword">All</span> rights reserved.</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Connected <span class="keyword">to</span>:</span><br><span class="line"><span class="keyword">Oracle</span> <span class="keyword">Database</span> <span class="number">12</span>c <span class="keyword">Enterprise</span> <span class="keyword">Edition</span> <span class="keyword">Release</span> <span class="number">12.2</span><span class="number">.0</span><span class="number">.1</span><span class="number">.0</span> - <span class="number">64</span><span class="built_in">bit</span> Production</span><br><span class="line"></span><br><span class="line"><span class="keyword">SQL</span>&gt; <span class="keyword">alter</span> <span class="keyword">system</span> <span class="keyword">set</span> db_unique_name=<span class="string">'auxsbdb'</span> <span class="keyword">scope</span>=<span class="keyword">spfile</span>;</span><br><span class="line"></span><br><span class="line">System altered.</span><br></pre></td></tr></table></figure>
+        <ul>
+<li><h3 id="登录官网链接"><a href="#登录官网链接" class="headerlink" title="登录官网链接"></a><a href="http://www.oracle.com/goto/oda/docs" target="_blank" rel="noopener">登录官网链接</a></h3></li>
+</ul>
+<img src="http://q6p62toq8.falkon.cn/static/images/oda-patch001.png">
       
     </div>
     <footer>
       
         
           <div class="alignleft">
-            <a href="/2020/03/09/database/ORA-65500 could not modify DB_UNIQUE_NAME, resource exists/#more" class="more-link">Read More</a>
+            <a href="/2020/03/23/database/oda-latest-patch-address/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article id="post-database/asm-req_mir_free_mb-test" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-03-22T10:59:28.154Z"><a href="/2020/03/22/database/asm-req_mir_free_mb-test/">2020-03-22</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/03/22/database/asm-req_mir_free_mb-test/">ASM中的Req_mir_free_MB实验</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <ul>
+<li><p>先看下官网对lsdg给出的各个列属性的说明</p>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>State</td>
+<td>State of the disk group. Values include BROKEN, CONNECTED, DISMOUNTED, MOUNTED, QUIESCING, and UNKNOWN.</td>
+</tr>
+<tr>
+<td>Type</td>
+<td>Disk group redundancy (NORMAL, HIGH, EXTERNAL).</td>
+</tr>
+<tr>
+<td>Rebal</td>
+<td>Y if a rebalance operation is in progress.</td>
+</tr>
+<tr>
+<td>Sector</td>
+<td>Sector size in bytes.</td>
+</tr>
+<tr>
+<td>Block</td>
+<td>Block size in bytes.</td>
+</tr>
+<tr>
+<td>AU</td>
+<td>Allocation unit size in bytes.</td>
+</tr>
+<tr>
+<td>Total_MB</td>
+<td>Size of the disk group in megabytes.</td>
+</tr>
+<tr>
+<td><strong>Free_MB</strong></td>
+<td><strong>Free space in the disk group in megabytes, without regard to redundancy. From the V$ASM_DISKGROUP view.</strong></td>
+</tr>
+<tr>
+<td><strong>Req_mir_free_MB</strong></td>
+<td><strong>Amount of space that must be available in the disk group to restore full redundancy after the most severe failure that can be tolerated by the disk group. This is the REQUIRED_MIRROR_FREE_MB column from the V$ASM_DISKGROUP view.</strong></td>
+</tr>
+<tr>
+<td><strong>Usable_file_MB</strong></td>
+<td><strong>Amount of free space, adjusted for mirroring, that is available for new files. From the V$ASM_DISKGROUP view.</strong></td>
+</tr>
+<tr>
+<td>Offline_disks</td>
+<td>Number of offline disks in the disk group. Offline disks are eventually dropped.</td>
+</tr>
+<tr>
+<td>Voting_files</td>
+<td>Specifies whether the disk group contains voting files (Y or N).</td>
+</tr>
+<tr>
+<td>Name</td>
+<td>Disk group name.</td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2020/03/22/database/asm-req_mir_free_mb-test/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article id="post-database/oracle-12c-pdb-clone" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-03-21T12:57:33.381Z"><a href="/2020/03/21/database/oracle-12c-pdb-clone/">2020-03-21</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/03/21/database/oracle-12c-pdb-clone/">Oracle 12c PDB克隆</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <ul>
+<li>本地克隆官方图示<img src="http://q6p62toq8.falkon.cn/static/images/local_pdb_0911.png">
+
+</li>
+</ul>
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2020/03/21/database/oracle-12c-pdb-clone/#more" class="more-link">Read More</a>
           </div>
         
         
@@ -471,9 +562,9 @@
   <h3 class="title">Categories</h3>
   <ul class="entry">
   
-    <li><a href="/categories/Database/">Database</a><small>19</small></li>
+    <li><a href="/categories/Database/">Database</a><small>23</small></li>
   
-    <li><a href="/categories/Linux/">Linux</a><small>3</small></li>
+    <li><a href="/categories/Linux/">Linux</a><small>8</small></li>
   
   </ul>
 </div>
@@ -490,13 +581,17 @@
   
     <li><a href="/tags/12c/">12c</a><small>4</small></li>
   
-    <li><a href="/tags/19c/">19c</a><small>1</small></li>
+    <li><a href="/tags/19c/">19c</a><small>2</small></li>
+  
+    <li><a href="/tags/19g/">19g</a><small>1</small></li>
   
     <li><a href="/tags/AFD/">AFD</a><small>1</small></li>
   
-    <li><a href="/tags/ASM/">ASM</a><small>1</small></li>
+    <li><a href="/tags/ASM/">ASM</a><small>3</small></li>
   
     <li><a href="/tags/Audit/">Audit</a><small>1</small></li>
+  
+    <li><a href="/tags/CentOS8/">CentOS8</a><small>1</small></li>
   
     <li><a href="/tags/Cloud/">Cloud</a><small>1</small></li>
   
@@ -506,11 +601,21 @@
   
     <li><a href="/tags/EXPDP-IMPDP/">EXPDP/IMPDP</a><small>1</small></li>
   
+    <li><a href="/tags/Flex/">Flex</a><small>1</small></li>
+  
     <li><a href="/tags/GoldenGate/">GoldenGate</a><small>1</small></li>
   
     <li><a href="/tags/Install/">Install</a><small>1</small></li>
   
+    <li><a href="/tags/LUN/">LUN</a><small>1</small></li>
+  
+    <li><a href="/tags/Linux/">Linux</a><small>1</small></li>
+  
     <li><a href="/tags/ODA/">ODA</a><small>1</small></li>
+  
+    <li><a href="/tags/OJVM/">OJVM</a><small>1</small></li>
+  
+    <li><a href="/tags/ORA-00700/">ORA-00700</a><small>1</small></li>
   
     <li><a href="/tags/ORA-01804/">ORA-01804</a><small>1</small></li>
   
@@ -520,7 +625,7 @@
   
     <li><a href="/tags/ORA-65500/">ORA-65500</a><small>1</small></li>
   
-    <li><a href="/tags/Openfiler/">Openfiler</a><small>2</small></li>
+    <li><a href="/tags/Openfiler/">Openfiler</a><small>1</small></li>
   
     <li><a href="/tags/PDB/">PDB</a><small>1</small></li>
   
@@ -533,6 +638,12 @@
     <li><a href="/tags/Req-mir-free-MB/">Req_mir_free_MB</a><small>1</small></li>
   
     <li><a href="/tags/Synonym/">Synonym</a><small>1</small></li>
+  
+    <li><a href="/tags/VNC/">VNC</a><small>1</small></li>
+  
+    <li><a href="/tags/Zabbix/">Zabbix</a><small>3</small></li>
+  
+    <li><a href="/tags/Zombie/">Zombie</a><small>1</small></li>
   
     <li><a href="/tags/silent/">silent</a><small>1</small></li>
   

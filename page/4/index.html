@@ -1,0 +1,265 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  
+  <title>Page 4 | FALKON&#39;S TECH BLOG</title>
+  <meta name="author" content="Falkon">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+  <meta property="og:site_name" content="FALKON&#39;S TECH BLOG"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  <link href="/images/favicon.png" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="FALKON&#39;S TECH BLOG" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">FALKON&#39;S TECH BLOG</a></h1>
+  <h2><a href="/">Record life, record me.</a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+      <li><a href="/project">Project</a></li>
+    
+      <li><a href="/about">About</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper">
+  <article id="post-database/ora-01804-failure-to-initialize-timezone-information" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-03-08T17:25:31.031Z"><a href="/2020/03/09/database/ora-01804-failure-to-initialize-timezone-information/">2020-03-09</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/03/09/database/ora-01804-failure-to-initialize-timezone-information/">ORA-01804 failure to initialize timezone information</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h5 id="描述：单节点RAC备库，版本12-2-0-1"><a href="#描述：单节点RAC备库，版本12-2-0-1" class="headerlink" title="描述：单节点RAC备库，版本12.2.0.1"></a>描述：单节点RAC备库，版本12.2.0.1</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">RMAN&gt; CONFIGURE ARCHIVELOG DELETION POLICY TO applied on all standby;</span><br><span class="line"></span><br><span class="line">old RMAN configuration parameters:</span><br><span class="line">CONFIGURE ARCHIVELOG DELETION POLICY TO APPLIED ON ALL STANDBY;</span><br><span class="line">new RMAN configuration parameters:</span><br><span class="line">CONFIGURE ARCHIVELOG DELETION POLICY TO APPLIED ON ALL STANDBY;</span><br><span class="line">new RMAN configuration parameters are successfully stored</span><br><span class="line">RMAN-00571: ===========================================================</span><br><span class="line">RMAN-00569: =============== ERROR MESSAGE STACK FOLLOWS ===============</span><br><span class="line">RMAN-00571: ===========================================================</span><br><span class="line">RMAN-03009: failure of REFAF command on default channel at 12/05/2019 18:38:02</span><br><span class="line">ORA-01804: failure to initialize timezone information</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2020/03/09/database/ora-01804-failure-to-initialize-timezone-information/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article id="post-database/oracle-single-node-installation-psu-patch" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-03-08T17:25:31.025Z"><a href="/2020/03/09/database/oracle-single-node-installation-psu-patch/">2020-03-09</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2020/03/09/database/oracle-single-node-installation-psu-patch/">Oracle 单节点RAC安装PSU补丁程序</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h5 id="描述：单节点RAC，数据库版本12-2-0-1"><a href="#描述：单节点RAC，数据库版本12-2-0-1" class="headerlink" title="描述：单节点RAC，数据库版本12.2.0.1"></a>描述：单节点RAC，数据库版本12.2.0.1</h5><p>下载最新OPatch，补丁编号6880880,升级Grid和OracleHome的OPatch</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 升级Grid的OPatch</span></span><br><span class="line">[root@auxsbdb12c grid]<span class="comment"># mv OPatch/ OPatch.bak</span></span><br><span class="line">[root@auxsbdb12c home]<span class="comment"># cp -r OPatch/ /u01/app/12.2.0/grid/</span></span><br><span class="line">[root@auxsbdb12c grid]<span class="comment"># chown -R grid:oinstall OPatch</span></span><br><span class="line">[grid@auxsbdb12c ~]$ opatch version</span><br><span class="line">OPatch Version: 12.2.0.1.18</span><br><span class="line"></span><br><span class="line">OPatch succeeded.</span><br><span class="line"></span><br><span class="line"><span class="comment"># 升级OracleHome的OPatch</span></span><br><span class="line">[oracle@auxsbdb12c dbhome_1]$ mv OPatch/ OPatch.bak</span><br><span class="line">[root@auxsbdb12c home]<span class="comment"># cp -r OPatch/ /u01/app/oracle/product/12.2.0/dbhome_1/</span></span><br><span class="line">[root@auxsbdb12c dbhome_1]<span class="comment"># chown -R oracle:oinstall OPatch</span></span><br><span class="line">[root@auxsbdb12c dbhome_1]<span class="comment"># cd OPatch</span></span><br><span class="line">[root@auxsbdb12c OPatch]<span class="comment"># ./opatch version</span></span><br><span class="line">OPatch Version: 12.2.0.1.18</span><br><span class="line"></span><br><span class="line">OPatch succeeded.</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2020/03/09/database/oracle-single-node-installation-psu-patch/#more" class="more-link">Read More</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+
+<nav id="pagination">
+  
+    <a href="/page/3/" class="alignleft prev">Prev</a>
+  
+  
+  <div class="clearfix"></div>
+</nav></div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="as_sitesearch" value="falkon.cn">
+  </form>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Categories</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/Database/">Database</a><small>23</small></li>
+  
+    <li><a href="/categories/Linux/">Linux</a><small>8</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/10g/">10g</a><small>1</small></li>
+  
+    <li><a href="/tags/11g/">11g</a><small>3</small></li>
+  
+    <li><a href="/tags/12c/">12c</a><small>4</small></li>
+  
+    <li><a href="/tags/19c/">19c</a><small>2</small></li>
+  
+    <li><a href="/tags/19g/">19g</a><small>1</small></li>
+  
+    <li><a href="/tags/AFD/">AFD</a><small>1</small></li>
+  
+    <li><a href="/tags/ASM/">ASM</a><small>3</small></li>
+  
+    <li><a href="/tags/Audit/">Audit</a><small>1</small></li>
+  
+    <li><a href="/tags/CentOS8/">CentOS8</a><small>1</small></li>
+  
+    <li><a href="/tags/Cloud/">Cloud</a><small>1</small></li>
+  
+    <li><a href="/tags/EMCC/">EMCC</a><small>1</small></li>
+  
+    <li><a href="/tags/EXP-IMP/">EXP/IMP</a><small>1</small></li>
+  
+    <li><a href="/tags/EXPDP-IMPDP/">EXPDP/IMPDP</a><small>1</small></li>
+  
+    <li><a href="/tags/Flex/">Flex</a><small>1</small></li>
+  
+    <li><a href="/tags/GoldenGate/">GoldenGate</a><small>1</small></li>
+  
+    <li><a href="/tags/Install/">Install</a><small>1</small></li>
+  
+    <li><a href="/tags/LUN/">LUN</a><small>1</small></li>
+  
+    <li><a href="/tags/Linux/">Linux</a><small>1</small></li>
+  
+    <li><a href="/tags/ODA/">ODA</a><small>1</small></li>
+  
+    <li><a href="/tags/OJVM/">OJVM</a><small>1</small></li>
+  
+    <li><a href="/tags/ORA-00700/">ORA-00700</a><small>1</small></li>
+  
+    <li><a href="/tags/ORA-01804/">ORA-01804</a><small>1</small></li>
+  
+    <li><a href="/tags/ORA-28000/">ORA-28000</a><small>1</small></li>
+  
+    <li><a href="/tags/ORA-600/">ORA-600</a><small>1</small></li>
+  
+    <li><a href="/tags/ORA-65500/">ORA-65500</a><small>1</small></li>
+  
+    <li><a href="/tags/Openfiler/">Openfiler</a><small>1</small></li>
+  
+    <li><a href="/tags/PDB/">PDB</a><small>1</small></li>
+  
+    <li><a href="/tags/PSU/">PSU</a><small>1</small></li>
+  
+    <li><a href="/tags/Patch/">Patch</a><small>1</small></li>
+  
+    <li><a href="/tags/RAC/">RAC</a><small>3</small></li>
+  
+    <li><a href="/tags/Req-mir-free-MB/">Req_mir_free_MB</a><small>1</small></li>
+  
+    <li><a href="/tags/Synonym/">Synonym</a><small>1</small></li>
+  
+    <li><a href="/tags/VNC/">VNC</a><small>1</small></li>
+  
+    <li><a href="/tags/Zabbix/">Zabbix</a><small>3</small></li>
+  
+    <li><a href="/tags/Zombie/">Zombie</a><small>1</small></li>
+  
+    <li><a href="/tags/silent/">silent</a><small>1</small></li>
+  
+    <li><a href="/tags/swap/">swap</a><small>1</small></li>
+  
+    <li><a href="/tags/udev/">udev</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2020 Falkon
+  
+</div>
+<div class="clearfix"></div></footer>
+  
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,301 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  
+  <title>ORA-01804 failure to initialize timezone information | FALKON&#39;S TECH BLOG</title>
+  <meta name="author" content="Falkon">
+  
+  <meta name="description" content="描述：单节点RAC备库，版本12.2.0.1123456789101112RMAN&amp;gt; CONFIGURE ARCHIVELOG DELETION POLICY TO applied on all standby;old RMAN configuration parameters:CONFIGURE ARCHIVELOG DELETION POLICY TO APPLIED ON ALL STANDBY;new RMAN configuration parameters:CONFIGURE ARCHIVELOG DELETION POLICY TO APPLIED ON ALL STANDBY;new RMAN configuration parameters are successfully storedRMAN-00571: ===========================================================RMAN-00569: =============== ERROR MESSAGE STACK FOLLOWS ===============RMAN-00571: ===========================================================RMAN-03009: failure of REFAF command on default channel at 12/05/2019 18:38:02ORA-01804: failure to initialize timezone information">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="ORA-01804 failure to initialize timezone information"/>
+  <meta property="og:site_name" content="FALKON&#39;S TECH BLOG"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  <link href="/images/favicon.png" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="FALKON&#39;S TECH BLOG" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">FALKON&#39;S TECH BLOG</a></h1>
+  <h2><a href="/">Record life, record me.</a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+      <li><a href="/project">Project</a></li>
+    
+      <li><a href="/about">About</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article id="post-database/ora-01804-failure-to-initialize-timezone-information" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-03-08T17:25:31.031Z"><a href="/2020/03/09/database/ora-01804-failure-to-initialize-timezone-information/">2020-03-09</a></time>
+      
+      
+  
+    <h1 class="p-name title" itemprop="headline name">ORA-01804 failure to initialize timezone information</h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h5 id="描述：单节点RAC备库，版本12-2-0-1"><a href="#描述：单节点RAC备库，版本12-2-0-1" class="headerlink" title="描述：单节点RAC备库，版本12.2.0.1"></a>描述：单节点RAC备库，版本12.2.0.1</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">RMAN&gt; CONFIGURE ARCHIVELOG DELETION POLICY TO applied on all standby;</span><br><span class="line"></span><br><span class="line">old RMAN configuration parameters:</span><br><span class="line">CONFIGURE ARCHIVELOG DELETION POLICY TO APPLIED ON ALL STANDBY;</span><br><span class="line">new RMAN configuration parameters:</span><br><span class="line">CONFIGURE ARCHIVELOG DELETION POLICY TO APPLIED ON ALL STANDBY;</span><br><span class="line">new RMAN configuration parameters are successfully stored</span><br><span class="line">RMAN-00571: ===========================================================</span><br><span class="line">RMAN-00569: =============== ERROR MESSAGE STACK FOLLOWS ===============</span><br><span class="line">RMAN-00571: ===========================================================</span><br><span class="line">RMAN-03009: failure of REFAF command on default channel at 12/05/2019 18:38:02</span><br><span class="line">ORA-01804: failure to initialize timezone information</span><br></pre></td></tr></table></figure>
+
+<a id="more"></a>
+
+<p>因为我这里是主备库，所以先查看主库的时区文件版本情况，造成这个问题的原因应该是，在做同步的时候，把时区版本的系统同步到了备库，而备库没有该时区文件。所以先查看主库文件信息</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 查看主库的时区文件</span></span><br><span class="line">SQL&gt; select * from v$timezone_file;</span><br><span class="line"></span><br><span class="line">FILENAME		VERSION     CON_ID</span><br><span class="line"><span class="comment">-------------------- ---------- ----------</span></span><br><span class="line">timezlrg_31.dat 	     31 	 0</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 查看主库时区版本</span></span><br><span class="line">SQL&gt; col PROPERTY_NAME for a25</span><br><span class="line">SQL&gt; col VALUE for a15</span><br><span class="line">SQL&gt; SELECT PROPERTY_NAME, SUBSTR(property_value, 1, 30) value                                                                </span><br><span class="line">FROM DATABASE_PROPERTIES</span><br><span class="line">WHERE PROPERTY_NAME LIKE 'DST_%'</span><br><span class="line">ORDER BY PROPERTY_NAME;  2    3    4  </span><br><span class="line"></span><br><span class="line">PROPERTY_NAME		  VALUE</span><br><span class="line"><span class="comment">------------------------- ---------------</span></span><br><span class="line">DST_PRIMARY_TT_VERSION	  31</span><br><span class="line">DST_SECONDARY_TT_VERSION  0</span><br><span class="line">DST_UPGRADE_STATE	  NONE</span><br></pre></td></tr></table></figure>
+
+
+
+<p>查找主库的时区文件，发现对应版本的时区文件是存在的</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line">-- 查看主库时区文件</span><br><span class="line">[oracle@auxdb12c1 ~]$ cd /u01/app/oracle/product/12.2.0.1/dbhome_1/oracore/zoneinfo/</span><br><span class="line">[oracle@auxdb12c1 zoneinfo]$ ll</span><br><span class="line">total 32452</span><br><span class="line">drwxr-xr-x 2 oracle oinstall   4096 Feb  7  2019 big</span><br><span class="line">drwxr-xr-x 2 oracle oinstall   4096 Feb  7  2019 little</span><br><span class="line">-rw-r--r-- 1 oracle oinstall  58132 Sep 10  2018 readme.txt</span><br><span class="line">-rw-r--r-- 1 oracle oinstall  47612 May  2  2016 timezdif.csv</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 792894 Aug 10  2016 timezlrg_10.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 787272 Aug 10  2016 timezlrg_11.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 785621 Aug 10  2016 timezlrg_12.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 782475 Aug 10  2016 timezlrg_13.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 791430 Aug 10  2016 timezlrg_14.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 791476 Aug 10  2016 timezlrg_15.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 800913 Aug 10  2016 timezlrg_16.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 779003 Aug 10  2016 timezlrg_17.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 781669 Aug 10  2016 timezlrg_18.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 785786 Aug 10  2016 timezlrg_19.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 493675 Aug 10  2016 timezlrg_1.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 789973 Aug 10  2016 timezlrg_20.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 782517 Aug 10  2016 timezlrg_21.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 784497 Aug 10  2016 timezlrg_22.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 788897 Aug 10  2016 timezlrg_23.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 777086 Aug 10  2016 timezlrg_24.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 780468 Aug 10  2016 timezlrg_25.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 785474 Aug 10  2016 timezlrg_26.dat</span><br><span class="line">-rwxr-xr-x 1 oracle oinstall 785408 Sep 10  2018 timezlrg_27.dat</span><br><span class="line">-rwxr-xr-x 1 oracle oinstall 782585 Sep 10  2018 timezlrg_28.dat</span><br><span class="line">-rwxr-xr-x 1 oracle oinstall 788462 Sep 10  2018 timezlrg_29.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 507957 Aug 10  2016 timezlrg_2.dat</span><br><span class="line">-rwxr-xr-x 1 oracle oinstall 785841 Sep 10  2018 timezlrg_30.dat</span><br><span class="line">-rwxr-xr-x 1 oracle oinstall 786708 Sep 10  2018 timezlrg_31.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 527717 Aug 10  2016 timezlrg_3.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 531137 Aug 10  2016 timezlrg_4.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 587487 Dec  9  2015 timezlrg_5.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 586750 Aug 10  2016 timezlrg_6.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 601242 Aug 10  2016 timezlrg_7.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 616723 Dec  9  2015 timezlrg_8.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 801410 Aug 10  2016 timezlrg_9.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 345637 Dec  9  2015 timezone_10.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 345356 Dec  9  2015 timezone_11.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 345024 Aug 10  2016 timezone_12.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 344425 Aug 10  2016 timezone_13.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 344448 Dec  9  2015 timezone_14.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 344448 Aug 10  2016 timezone_15.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 343044 Aug 10  2016 timezone_16.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 341718 Dec  9  2015 timezone_17.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 341718 Aug 10  2016 timezone_18.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 343167 Aug 10  2016 timezone_19.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 274427 Aug 10  2016 timezone_1.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 343167 Aug 10  2016 timezone_20.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 343249 Aug 10  2016 timezone_21.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 343594 Aug 10  2016 timezone_22.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 343768 Aug 10  2016 timezone_23.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 340192 Dec  9  2015 timezone_24.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 340197 Aug 10  2016 timezone_25.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 342602 Aug 10  2016 timezone_26.dat</span><br><span class="line">-rwxr-xr-x 1 oracle oinstall 342602 Sep 10  2018 timezone_27.dat</span><br><span class="line">-rwxr-xr-x 1 oracle oinstall 341401 Sep 10  2018 timezone_28.dat</span><br><span class="line">-rwxr-xr-x 1 oracle oinstall 341401 Sep 10  2018 timezone_29.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 274900 Dec  9  2015 timezone_2.dat</span><br><span class="line">-rwxr-xr-x 1 oracle oinstall 340884 Sep 10  2018 timezone_30.dat</span><br><span class="line">-rwxr-xr-x 1 oracle oinstall 340892 Sep 10  2018 timezone_31.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 286651 Aug 10  2016 timezone_3.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 286264 Dec  9  2015 timezone_4.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 286310 Aug 10  2016 timezone_5.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 286217 Dec  9  2015 timezone_6.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 286815 Aug 10  2016 timezone_7.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 302100 Dec  9  2015 timezone_8.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 351525 Aug 10  2016 timezone_9.dat</span><br></pre></td></tr></table></figure>
+
+
+
+<p>查看备库的时区文件信息发现为空，而DST_PRIMARY_TT_VERSION信息是存在的</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 查看备库时区文件</span></span><br><span class="line">SQL&gt; select * from v$timezone_file;</span><br><span class="line"></span><br><span class="line">no rows selected</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 查看备库时区版本</span></span><br><span class="line">SQL&gt; col PROPERTY_NAME for a25</span><br><span class="line">SQL&gt; col VALUE for a15</span><br><span class="line"><span class="keyword">SELECT</span> PROPERTY_NAME, <span class="keyword">SUBSTR</span>(property_value, <span class="number">1</span>, <span class="number">30</span>) <span class="keyword">value</span>                                                                </span><br><span class="line"><span class="keyword">FROM</span> DATABASE_PROPERTIES</span><br><span class="line"><span class="keyword">WHERE</span> PROPERTY_NAME <span class="keyword">LIKE</span> <span class="string">'DST_%'</span></span><br><span class="line">ORDER BY PROPERTY_NAME; SQL&gt; SQL&gt;   2    3    4  </span><br><span class="line"></span><br><span class="line">PROPERTY_NAME		  VALUE</span><br><span class="line"><span class="comment">------------------------- ---------------</span></span><br><span class="line">DST_PRIMARY_TT_VERSION	  31</span><br><span class="line">DST_SECONDARY_TT_VERSION  0</span><br><span class="line">DST_UPGRADE_STATE	  NONE</span><br></pre></td></tr></table></figure>
+
+
+
+<p>查看备库时区文件，没有31号时区文件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line">[oracle@auxsbdb12c admin]$ cd /u01/app/oracle/product/12.2.0/dbhome_1/oracore/zoneinfo/</span><br><span class="line">[oracle@auxsbdb12c zoneinfo]$ ll</span><br><span class="line">total 26664</span><br><span class="line">drwxr-xr-x 2 oracle oinstall   4096 Dec  3 16:28 big</span><br><span class="line">drwxr-xr-x 2 oracle oinstall   4096 Dec  3 16:28 little</span><br><span class="line">-rw-r--r-- 1 oracle oinstall  52603 May  1  2016 readme.txt</span><br><span class="line">-rw-r--r-- 1 oracle oinstall  47612 May  1  2016 timezdif.csv</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 792894 Aug 10  2016 timezlrg_10.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 787272 Aug 10  2016 timezlrg_11.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 785621 Aug 10  2016 timezlrg_12.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 782475 Aug 10  2016 timezlrg_13.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 791430 Aug 10  2016 timezlrg_14.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 791476 Aug 10  2016 timezlrg_15.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 800913 Aug 10  2016 timezlrg_16.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 779003 Aug 10  2016 timezlrg_17.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 781669 Aug 10  2016 timezlrg_18.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 785786 Aug 10  2016 timezlrg_19.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 493675 Aug 10  2016 timezlrg_1.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 789973 Aug 10  2016 timezlrg_20.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 782517 Aug 10  2016 timezlrg_21.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 784497 Aug 10  2016 timezlrg_22.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 788897 Aug 10  2016 timezlrg_23.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 777086 Aug 10  2016 timezlrg_24.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 780468 Aug 10  2016 timezlrg_25.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 785474 Aug 10  2016 timezlrg_26.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 507957 Aug 10  2016 timezlrg_2.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 527717 Aug 10  2016 timezlrg_3.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 531137 Aug 10  2016 timezlrg_4.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 587487 Dec  9  2015 timezlrg_5.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 586750 Aug 10  2016 timezlrg_6.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 601242 Aug 10  2016 timezlrg_7.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 616723 Dec  9  2015 timezlrg_8.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 801410 Aug 10  2016 timezlrg_9.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 345637 Dec  9  2015 timezone_10.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 345356 Dec  9  2015 timezone_11.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 345024 Aug 10  2016 timezone_12.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 344425 Aug 10  2016 timezone_13.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 344448 Dec  9  2015 timezone_14.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 344448 Aug 10  2016 timezone_15.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 343044 Aug 10  2016 timezone_16.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 341718 Dec  9  2015 timezone_17.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 341718 Aug 10  2016 timezone_18.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 343167 Aug 10  2016 timezone_19.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 274427 Aug 10  2016 timezone_1.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 343167 Aug 10  2016 timezone_20.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 343249 Aug 10  2016 timezone_21.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 343594 Aug 10  2016 timezone_22.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 343768 Aug 10  2016 timezone_23.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 340192 Dec  9  2015 timezone_24.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 340197 Aug 10  2016 timezone_25.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 342602 Aug 10  2016 timezone_26.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 274900 Dec  9  2015 timezone_2.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 286651 Aug 10  2016 timezone_3.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 286264 Dec  9  2015 timezone_4.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 286310 Aug 10  2016 timezone_5.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 286217 Dec  9  2015 timezone_6.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 286815 Aug 10  2016 timezone_7.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 302100 Dec  9  2015 timezone_8.dat</span><br><span class="line">-rw-r--r-- 1 oracle oinstall 351525 Aug 10  2016 timezone_9.dat</span><br></pre></td></tr></table></figure>
+
+
+
+<p>去Oracle官网下载相应的时区文件补丁，文档编号：412160.1</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">Oracle DST Timezone database RDBMS DST patch OJVM DST patch</span><br><span class="line">version release number number</span><br><span class="line">----------- -------------------- ------------------- --------------</span><br><span class="line">Version 1 N&#x2F;A N&#x2F;A</span><br><span class="line">Version 2 patch 3171059 N&#x2F;A</span><br><span class="line">Version 3 patch 4689959 N&#x2F;A</span><br><span class="line">Version 4 - tzdata2006g update - patch 5632264 patch 5865568</span><br><span class="line">Version 5 patch 5880630 N&#x2F;A</span><br><span class="line">Version 6 - tzdata2007f update - patch 6113507 patch 6113568</span><br><span class="line">Version 7 - tzdata2007k update - patch 6672979 patch 6708377</span><br><span class="line">Version 8 N&#x2F;A N&#x2F;A</span><br><span class="line">Version 9 - tzdata2008f update - patch 7181943 patch 7449057</span><br><span class="line">Version 10 - tzdata2008i update - patch 7580744 patch 7708501</span><br><span class="line">Version 11 - tzdata2009g update - patch 8524113 * patch 8603182</span><br><span class="line">Version 12 N&#x2F;A N&#x2F;A</span><br><span class="line">Version 13 - tzdata2009s update - patch 9146268 * patch 9197935</span><br><span class="line">Version 14 - tzdata2010j update - patch 9742718 * patch 9751299</span><br><span class="line">Version 15 - tzdata2010o update - patch 10272702 * patch 10406470</span><br><span class="line">Version 16 - tzdata2011g update - patch 12320006 * patch 12565410</span><br><span class="line">Version 17 - tzdata2011j update - patch 12949905 * patch 12949919 ( tzdata2011i for OJVM )</span><br><span class="line">Version 18 - tzdata2012c update - patch 13417321 * patch 14112098</span><br><span class="line">Version 19 - tzdata2012j update - patch 15897859 * patch 15897884</span><br><span class="line">Version 20 - tzdata2013c update - patch 16799735 * patch 16799766</span><br><span class="line">Version 21 - tzdata2013e update - patch 17432124 * patch 17443054</span><br><span class="line">Version 22 - tzdata2014c update - patch 18759211 * patch 18759260</span><br><span class="line">Version 23 - tzdata2014f update - patch 19396455 * patch 19397646</span><br><span class="line">Version 24 - tzdata2015d update - patch 20875898 * patch 20875943</span><br><span class="line">Version 25 - tzdata2015g update - patch 22037014 * patch 22037067</span><br><span class="line">Version 26 - tzdata2016d update - patch 22873635 * patch 22873666</span><br><span class="line">Version 27 - tzdata2016f update - patch 23614158 * patch 23614160</span><br><span class="line">Version 28 - tzdata2016g update - patch 24701840 * patch 24701882</span><br><span class="line">Version 29 - tzdata2016j update - patch 25173124 * patch 25173172</span><br><span class="line">Version 30 - tzdata2017b update - patch 25881255 * patch 25881271</span><br><span class="line">Version 31 - tzdata2017c update - patch 27015449 * patch 27015468</span><br><span class="line">Version 32 - tzdata2018e update - patch 28125601 * patch 28127287</span><br><span class="line">Version 33 - tzdata2018g update - patch 28852325 * patch 28852334</span><br><span class="line">Version 34 - tzdata2019b update - patch 29997937 * patch 29997959</span><br></pre></td></tr></table></figure>
+
+
+
+<p>安装时区文件补丁</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">[oracle@subjsbdb12c OPatch]$ ./opatch apply /home/27015449/</span><br><span class="line">Oracle Interim Patch Installer version 12.2.0.1.18</span><br><span class="line">Copyright (c) 2019, Oracle Corporation.  All rights reserved.</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Oracle Home       : /u01/app/oracle/product/12.2.0/dbhome_1</span><br><span class="line">Central Inventory : /u01/app/oraInventory</span><br><span class="line">   from           : /u01/app/oracle/product/12.2.0/dbhome_1/oraInst.loc</span><br><span class="line">OPatch version    : 12.2.0.1.18</span><br><span class="line">OUI version       : 12.2.0.1.4</span><br><span class="line">Log file location : /u01/app/oracle/product/12.2.0/dbhome_1/cfgtoollogs/opatch/opatch2019-12-06_11-13-05AM_1.log</span><br><span class="line"></span><br><span class="line">Verifying environment and performing prerequisite checks...</span><br><span class="line">OPatch continues with these patches:   27015449  </span><br><span class="line"></span><br><span class="line">Do you want to proceed? [y|n]</span><br><span class="line">y</span><br><span class="line">User Responded with: Y</span><br><span class="line">All checks passed.</span><br><span class="line">Backing up files...</span><br><span class="line">Applying interim patch '27015449' to OH '/u01/app/oracle/product/12.2.0/dbhome_1'</span><br><span class="line"></span><br><span class="line">Patching component oracle.oracore.rsf, 12.2.0.1.0...</span><br><span class="line">Patch 27015449 successfully applied.</span><br><span class="line">Log file location: /u01/app/oracle/product/12.2.0/dbhome_1/cfgtoollogs/opatch/opatch2019-12-06_11-13-05AM_1.log</span><br><span class="line"></span><br><span class="line">OPatch succeeded.</span><br></pre></td></tr></table></figure>
+
+
+
+<p>修改时区文件版本后，再次检查发现已经正常</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line">SQL&gt; EXEC DBMS_DST.BEGIN_UPGRADE(31);</span><br><span class="line"><span class="keyword">BEGIN</span> DBMS_DST.BEGIN_UPGRADE(<span class="number">31</span>); <span class="keyword">END</span>;</span><br><span class="line"></span><br><span class="line">*</span><br><span class="line">ERROR at line 1:</span><br><span class="line">ORA-56926: database must be in UPGRADE mode in order to <span class="keyword">start</span> an <span class="keyword">upgrade</span> <span class="keyword">window</span></span><br><span class="line">ORA<span class="number">-06512</span>: <span class="keyword">at</span> <span class="string">"SYS.DBMS_SYS_ERROR"</span>, line <span class="number">79</span></span><br><span class="line">ORA<span class="number">-06512</span>: <span class="keyword">at</span> <span class="string">"SYS.DBMS_DST"</span>, line <span class="number">1241</span></span><br><span class="line">ORA<span class="number">-06512</span>: <span class="keyword">at</span> line <span class="number">1</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">SQL</span>&gt; <span class="keyword">shutdown</span> immediat</span><br><span class="line">SP2<span class="number">-0717</span>: illegal <span class="keyword">SHUTDOWN</span> <span class="keyword">option</span></span><br><span class="line"><span class="keyword">SQL</span>&gt; <span class="keyword">shutdown</span> <span class="keyword">immediate</span></span><br><span class="line"><span class="keyword">Database</span> closed.</span><br><span class="line"><span class="keyword">Database</span> dismounted.</span><br><span class="line"><span class="keyword">ORACLE</span> <span class="keyword">instance</span> shut down.</span><br><span class="line"><span class="keyword">SQL</span>&gt; <span class="keyword">startup</span> <span class="keyword">upgrade</span></span><br><span class="line"><span class="keyword">ORACLE</span> <span class="keyword">instance</span> started.</span><br><span class="line"></span><br><span class="line">Total <span class="keyword">System</span> <span class="keyword">Global</span> Area <span class="number">8.1068E+10</span> <span class="keyword">bytes</span></span><br><span class="line"><span class="keyword">Fixed</span> <span class="keyword">Size</span>		   <span class="number">30036880</span> <span class="keyword">bytes</span></span><br><span class="line"><span class="keyword">Variable</span> <span class="keyword">Size</span>		 <span class="number">1.4496E+10</span> <span class="keyword">bytes</span></span><br><span class="line"><span class="keyword">Database</span> Buffers	 <span class="number">6.6304E+10</span> <span class="keyword">bytes</span></span><br><span class="line"><span class="keyword">Redo</span> Buffers		  <span class="number">238395392</span> <span class="keyword">bytes</span></span><br><span class="line"><span class="keyword">Database</span> mounted.</span><br><span class="line"><span class="keyword">Database</span> opened.</span><br><span class="line"><span class="keyword">SQL</span>&gt; EXEC DBMS_DST.BEGIN_UPGRADE(<span class="number">31</span>);</span><br><span class="line"></span><br><span class="line">PL/SQL procedure successfully completed.</span><br><span class="line"></span><br><span class="line">SQL&gt; shutdown immediate</span><br><span class="line">Database closed.</span><br><span class="line">Database dismounted.</span><br><span class="line">ORACLE instance shut down.</span><br><span class="line">SQL&gt; startup</span><br><span class="line">ORACLE instance started.</span><br><span class="line"></span><br><span class="line">Total System Global Area 8.1068E+10 bytes</span><br><span class="line">Fixed Size		   30036880 bytes</span><br><span class="line">Variable Size		 1.4496E+10 bytes</span><br><span class="line">Database Buffers	 6.6304E+10 bytes</span><br><span class="line">Redo Buffers		  238395392 bytes</span><br><span class="line">Database mounted.</span><br><span class="line">Database opened.</span><br><span class="line">SQL&gt; select * from v$timezone_file;</span><br><span class="line"></span><br><span class="line">FILENAME		VERSION     CON_ID</span><br><span class="line"><span class="comment">-------------------- ---------- ----------</span></span><br><span class="line">timezlrg_31.dat 	     31 	 0</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer>
+      
+        
+  
+  <div class="categories">
+    <a href="/categories/Database/">Database</a>
+  </div>
+
+        
+  
+  <div class="tags">
+    <a href="/tags/ORA-01804/">ORA-01804</a>
+  </div>
+
+        
+  <div class="addthis addthis_toolbox addthis_default_style">
+    
+      <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+    
+    
+      <a class="addthis_button_tweet"></a>
+    
+    
+      <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+    
+    
+      <a class="addthis_button_pinterest_pinit" pi:pinit:layout="horizontal"></a>
+    
+    <a class="addthis_counter addthis_pill_style"></a>
+  </div>
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js"></script>
+
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">Comments</h1>
+
+  
+      <div id="fb-root"></div>
+<script>
+  (function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=123456789012345";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+</script>
+
+<div class="fb-comments" data-href="http://falkon.cn/2020/03/09/database/ora-01804-failure-to-initialize-timezone-information/index.html" data-num-posts="5" data-width="840" data-colorscheme="light"></div>
+      
+  
+</section>
+
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="as_sitesearch" value="falkon.cn">
+  </form>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Categories</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/Database/">Database</a><small>23</small></li>
+  
+    <li><a href="/categories/Linux/">Linux</a><small>8</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/10g/">10g</a><small>1</small></li>
+  
+    <li><a href="/tags/11g/">11g</a><small>3</small></li>
+  
+    <li><a href="/tags/12c/">12c</a><small>4</small></li>
+  
+    <li><a href="/tags/19c/">19c</a><small>2</small></li>
+  
+    <li><a href="/tags/19g/">19g</a><small>1</small></li>
+  
+    <li><a href="/tags/AFD/">AFD</a><small>1</small></li>
+  
+    <li><a href="/tags/ASM/">ASM</a><small>3</small></li>
+  
+    <li><a href="/tags/Audit/">Audit</a><small>1</small></li>
+  
+    <li><a href="/tags/CentOS8/">CentOS8</a><small>1</small></li>
+  
+    <li><a href="/tags/Cloud/">Cloud</a><small>1</small></li>
+  
+    <li><a href="/tags/EMCC/">EMCC</a><small>1</small></li>
+  
+    <li><a href="/tags/EXP-IMP/">EXP/IMP</a><small>1</small></li>
+  
+    <li><a href="/tags/EXPDP-IMPDP/">EXPDP/IMPDP</a><small>1</small></li>
+  
+    <li><a href="/tags/Flex/">Flex</a><small>1</small></li>
+  
+    <li><a href="/tags/GoldenGate/">GoldenGate</a><small>1</small></li>
+  
+    <li><a href="/tags/Install/">Install</a><small>1</small></li>
+  
+    <li><a href="/tags/LUN/">LUN</a><small>1</small></li>
+  
+    <li><a href="/tags/Linux/">Linux</a><small>1</small></li>
+  
+    <li><a href="/tags/ODA/">ODA</a><small>1</small></li>
+  
+    <li><a href="/tags/OJVM/">OJVM</a><small>1</small></li>
+  
+    <li><a href="/tags/ORA-00700/">ORA-00700</a><small>1</small></li>
+  
+    <li><a href="/tags/ORA-01804/">ORA-01804</a><small>1</small></li>
+  
+    <li><a href="/tags/ORA-28000/">ORA-28000</a><small>1</small></li>
+  
+    <li><a href="/tags/ORA-600/">ORA-600</a><small>1</small></li>
+  
+    <li><a href="/tags/ORA-65500/">ORA-65500</a><small>1</small></li>
+  
+    <li><a href="/tags/Openfiler/">Openfiler</a><small>1</small></li>
+  
+    <li><a href="/tags/PDB/">PDB</a><small>1</small></li>
+  
+    <li><a href="/tags/PSU/">PSU</a><small>1</small></li>
+  
+    <li><a href="/tags/Patch/">Patch</a><small>1</small></li>
+  
+    <li><a href="/tags/RAC/">RAC</a><small>3</small></li>
+  
+    <li><a href="/tags/Req-mir-free-MB/">Req_mir_free_MB</a><small>1</small></li>
+  
+    <li><a href="/tags/Synonym/">Synonym</a><small>1</small></li>
+  
+    <li><a href="/tags/VNC/">VNC</a><small>1</small></li>
+  
+    <li><a href="/tags/Zabbix/">Zabbix</a><small>3</small></li>
+  
+    <li><a href="/tags/Zombie/">Zombie</a><small>1</small></li>
+  
+    <li><a href="/tags/silent/">silent</a><small>1</small></li>
+  
+    <li><a href="/tags/swap/">swap</a><small>1</small></li>
+  
+    <li><a href="/tags/udev/">udev</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2020 Falkon
+  
+</div>
+<div class="clearfix"></div></footer>
+  
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

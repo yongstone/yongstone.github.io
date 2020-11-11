@@ -1,0 +1,290 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  
+  <title>ZABBIX SERVER IS NOT RENNING THE INFORMATION DISPLAYED MAY NOT BE CORRECT | FALKON&#39;S TECH BLOG</title>
+  <meta name="author" content="Falkon">
+  
+  <meta name="description" content="Zabbix 5.0 启动后总是弹出ZABBIX SERVER IS NOT RENNING: THE INFORMATION DISPLAYED MAY NOT BE CORRECT，服务器上的zabbix_server和zabbix_client状态都正常，根据网上的资料应该是selinux没有关闭，仔细查看才发现Linux 6.x和Linux 7.x的selinux永久关闭的配置文件的路径时不一样的，处理完错误后赶紧写个操作记录供大家参考学习。">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="ZABBIX SERVER IS NOT RENNING THE INFORMATION DISPLAYED MAY NOT BE CORRECT"/>
+  <meta property="og:site_name" content="FALKON&#39;S TECH BLOG"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  <link href="/images/favicon.png" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="FALKON&#39;S TECH BLOG" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">FALKON&#39;S TECH BLOG</a></h1>
+  <h2><a href="/">Record life, record me.</a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+      <li><a href="/project">Project</a></li>
+    
+      <li><a href="/about">About</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article id="post-linux/zabbix50-server-is-not-running" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2020-08-26T08:12:39.984Z"><a href="/2020/08/26/linux/zabbix50-server-is-not-running/">2020-08-26</a></time>
+      
+      
+  
+    <h1 class="p-name title" itemprop="headline name">ZABBIX SERVER IS NOT RENNING THE INFORMATION DISPLAYED MAY NOT BE CORRECT</h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <p>Zabbix 5.0 启动后总是弹出ZABBIX SERVER IS NOT RENNING: THE INFORMATION DISPLAYED MAY NOT BE CORRECT，服务器上的zabbix_server和zabbix_client状态都正常，根据网上的资料应该是selinux没有关闭，仔细查看才发现Linux 6.x和Linux 7.x的selinux永久关闭的配置文件的路径时不一样的，处理完错误后赶紧写个操作记录供大家参考学习。</p>
+<a id="more"></a>
+
+<ul>
+<li>查看队列显示如下错误</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">connection to Zabbix server <span class="string">"localhost"</span> failed. Possible reasons:</span><br><span class="line">1. incorrect server IP/DNS <span class="keyword">in</span> the <span class="string">"zabbix.conf.php"</span>;</span><br><span class="line">2. incorrect DNS server configuration.</span><br><span class="line">Permission denied</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查看操作系统版本</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@pe-sysmonitor-zabbix ~]<span class="comment"># cat /etc/redhat-release </span></span><br><span class="line">CentOS Linux release 8.1.1911 (Core)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查看Zabbix版本</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@pe-sysmonitor-zabbix ~]<span class="comment"># /usr/local/zabbix/sbin/zabbix_server -V</span></span><br><span class="line">zabbix_server (Zabbix) 5.0.1</span><br><span class="line">Revision c2a0b03480 25 May 2020, compilation time: Jun 10 2020 22:18:13</span><br><span class="line"></span><br><span class="line">Copyright (C) 2020 Zabbix SIA</span><br><span class="line">License GPLv2+: GNU GPL version 2 or later &lt;http://gnu.org/licenses/gpl.html&gt;.</span><br><span class="line">This is free software: you are free to change and redistribute it according to</span><br><span class="line">the license. There is NO WARRANTY, to the extent permitted by law.</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查看selinux状态</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@pe-sysmonitor-zabbix ~]<span class="comment"># getenforce </span></span><br><span class="line">enforcing</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>关闭selinux并重启</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 注意：selinux从7.x往后的永久修改关闭的文件跟6.x有很大的却别，6.x关闭的文件为/etc/sysconfig/selinux，而7.x及以后的版本修改的文件为/etc/selinux/config</span></span><br><span class="line">[root@pe-sysmonitor-zabbix ~]<span class="comment"># vi /etc/selinux/config #SELINUX=disabled</span></span><br><span class="line">[root@pe-sysmonitor-zabbix ~]<span class="comment"># reboot</span></span><br><span class="line">[root@pe-sysmonitor-zabbix ~]<span class="comment"># getenforce </span></span><br><span class="line">Disabled</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer>
+      
+        
+  
+  <div class="categories">
+    <a href="/categories/Linux/">Linux</a>
+  </div>
+
+        
+  
+  <div class="tags">
+    <a href="/tags/Zabbix/">Zabbix</a>
+  </div>
+
+        
+  <div class="addthis addthis_toolbox addthis_default_style">
+    
+      <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+    
+    
+      <a class="addthis_button_tweet"></a>
+    
+    
+      <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+    
+    
+      <a class="addthis_button_pinterest_pinit" pi:pinit:layout="horizontal"></a>
+    
+    <a class="addthis_counter addthis_pill_style"></a>
+  </div>
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js"></script>
+
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">Comments</h1>
+
+  
+      <div id="fb-root"></div>
+<script>
+  (function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=123456789012345";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+</script>
+
+<div class="fb-comments" data-href="http://falkon.cn/2020/08/26/linux/zabbix50-server-is-not-running/index.html" data-num-posts="5" data-width="840" data-colorscheme="light"></div>
+      
+  
+</section>
+
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="as_sitesearch" value="falkon.cn">
+  </form>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Categories</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/Database/">Database</a><small>23</small></li>
+  
+    <li><a href="/categories/Linux/">Linux</a><small>8</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/10g/">10g</a><small>1</small></li>
+  
+    <li><a href="/tags/11g/">11g</a><small>3</small></li>
+  
+    <li><a href="/tags/12c/">12c</a><small>4</small></li>
+  
+    <li><a href="/tags/19c/">19c</a><small>2</small></li>
+  
+    <li><a href="/tags/19g/">19g</a><small>1</small></li>
+  
+    <li><a href="/tags/AFD/">AFD</a><small>1</small></li>
+  
+    <li><a href="/tags/ASM/">ASM</a><small>3</small></li>
+  
+    <li><a href="/tags/Audit/">Audit</a><small>1</small></li>
+  
+    <li><a href="/tags/CentOS8/">CentOS8</a><small>1</small></li>
+  
+    <li><a href="/tags/Cloud/">Cloud</a><small>1</small></li>
+  
+    <li><a href="/tags/EMCC/">EMCC</a><small>1</small></li>
+  
+    <li><a href="/tags/EXP-IMP/">EXP/IMP</a><small>1</small></li>
+  
+    <li><a href="/tags/EXPDP-IMPDP/">EXPDP/IMPDP</a><small>1</small></li>
+  
+    <li><a href="/tags/Flex/">Flex</a><small>1</small></li>
+  
+    <li><a href="/tags/GoldenGate/">GoldenGate</a><small>1</small></li>
+  
+    <li><a href="/tags/Install/">Install</a><small>1</small></li>
+  
+    <li><a href="/tags/LUN/">LUN</a><small>1</small></li>
+  
+    <li><a href="/tags/Linux/">Linux</a><small>1</small></li>
+  
+    <li><a href="/tags/ODA/">ODA</a><small>1</small></li>
+  
+    <li><a href="/tags/OJVM/">OJVM</a><small>1</small></li>
+  
+    <li><a href="/tags/ORA-00700/">ORA-00700</a><small>1</small></li>
+  
+    <li><a href="/tags/ORA-01804/">ORA-01804</a><small>1</small></li>
+  
+    <li><a href="/tags/ORA-28000/">ORA-28000</a><small>1</small></li>
+  
+    <li><a href="/tags/ORA-600/">ORA-600</a><small>1</small></li>
+  
+    <li><a href="/tags/ORA-65500/">ORA-65500</a><small>1</small></li>
+  
+    <li><a href="/tags/Openfiler/">Openfiler</a><small>1</small></li>
+  
+    <li><a href="/tags/PDB/">PDB</a><small>1</small></li>
+  
+    <li><a href="/tags/PSU/">PSU</a><small>1</small></li>
+  
+    <li><a href="/tags/Patch/">Patch</a><small>1</small></li>
+  
+    <li><a href="/tags/RAC/">RAC</a><small>3</small></li>
+  
+    <li><a href="/tags/Req-mir-free-MB/">Req_mir_free_MB</a><small>1</small></li>
+  
+    <li><a href="/tags/Synonym/">Synonym</a><small>1</small></li>
+  
+    <li><a href="/tags/VNC/">VNC</a><small>1</small></li>
+  
+    <li><a href="/tags/Zabbix/">Zabbix</a><small>3</small></li>
+  
+    <li><a href="/tags/Zombie/">Zombie</a><small>1</small></li>
+  
+    <li><a href="/tags/silent/">silent</a><small>1</small></li>
+  
+    <li><a href="/tags/swap/">swap</a><small>1</small></li>
+  
+    <li><a href="/tags/udev/">udev</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2020 Falkon
+  
+</div>
+<div class="clearfix"></div></footer>
+  
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>
